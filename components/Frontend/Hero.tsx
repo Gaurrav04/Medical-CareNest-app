@@ -21,7 +21,7 @@ const Hero = () => {
                 {/* SEARCH BAR HERE */}
                 <SearchBar />
                  {/* CTA BUTTONS */}
-                <ul className="flex flex-wrap items-center">
+                <ul className="flex flex-wrap items-center mt-6">
                   <li>
                     <a
                       href="/#"
