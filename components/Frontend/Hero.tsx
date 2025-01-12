@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-
+import TransitionalText from "./TransitionalText"
 import SearchBar from "./SearchBar";
 
 const Hero = () => {
+  const TEXTS = ['Ophthalmologists','Cardiologists','Endocrinologists',
+    'Dental', 'Nephrologists','Radiologists','Therapist','Orthopedic surgeons']
   return (
     <>
     <div className="bg-white">
@@ -11,16 +13,14 @@ const Hero = () => {
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4 lg:w-6/12">
               <div className="hero-content">
-                <h1 className="mb-5 text-4xl font-bold !leading-[1.208] text-dark dark:text-white sm:text-[42px] lg:text-[40px] xl:text-5xl">
-                  <span>Book your</span> <span
-                  className="">Therapist</span>
-                  <br />
-                  <span>sessions now</span>
-                </h1>
+              <h1 className="mb-5 text-4xl font-bold leading-[1.208] sm:text-[42px] lg:text-[40px] xl:text-5xl flex flex-col">
+                 <span className="tracking-tight text-gray-800">Book your</span>
+                    <TransitionalText className="tracking-tight text-blue-600" TEXTS={TEXTS} />
+                  <span className="tracking-tight text-gray-600">sessions now</span>
+              </h1>
                 <p className="mb-8 max-w-[480px] text-base text-body-color dark:text-dark-6">
-                  With TailGrids, business and students thrive together.
-                  Business can perfectly match their staffing to changing demand
-                  throughout the dayed.
+                Healthcare should be straightforward.We're eliminating the complexity to provide you with simple,
+                affordable and transparent Healthcare solutions
                 </p>
                 {/* SEARCH BAR HERE */}
                 <SearchBar />
