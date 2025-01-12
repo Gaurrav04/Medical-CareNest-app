@@ -128,13 +128,13 @@ const Hero = () => {
 
 export default Hero;
 
-const SingleImage = ({ href, imgSrc }:{href:string,imgSrc:string}) => {
-  return (
-    <>
-      <a href={href} className="flex w-full items-center justify-center">
-        <img src={imgSrc} alt="brand image" className="h-10 w-full" />
-      </a>
-    </>
-  );
-};
+// const SingleImage = ({ href, imgSrc }:{href:string,imgSrc:string}) => {
+//   return (
+//     <>
+//       <a href={href} className="flex w-full items-center justify-center">
+//         <img src={imgSrc} alt="brand image" className="h-10 w-full" />
+//       </a>
+//     </>
+//   );
+// };
 
