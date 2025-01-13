@@ -1,36 +1,37 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 import {
   Dialog,
   DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Popover,
-  PopoverButton,
+  // Disclosure, // Unused variable, commented out.
+  // DisclosureButton, // Unused variable, commented out.
+  // DisclosurePanel, // Unused variable, commented out.
+  // Popover, // Unused variable, commented out.
+  // PopoverButton, // Unused variable, commented out.
   PopoverGroup,
-  PopoverPanel,
-} from '@headlessui/react'
+  // PopoverPanel, // Unused variable, commented out.
+} from "@headlessui/react";
 import {
-  ArrowPathIcon,
+  // ArrowPathIcon, // Unused variable, commented out.
   Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
+  // ChartPieIcon, // Unused variable, commented out.
+  // CursorArrowRaysIcon, // Unused variable, commented out.
+  // FingerPrintIcon, // Unused variable, commented out.
+  // SquaresPlusIcon, // Unused variable, commented out.
   XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-
-
+} from "@heroicons/react/24/outline";
+// import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from "@heroicons/react/20/solid"; // Unused variables, commented out.
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="bg-stone-100 border-gray-800/10">
-      <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8 border-b ">
+      <nav
+        aria-label="Global"
+        className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8 border-b "
+      >
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
@@ -63,12 +64,19 @@ export default function Navbar() {
           </a>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="#" className="text-sm/6 font-semibold text-white bg-gray-800 py-3 px-6 rounded-md">
-          Log in <span aria-hidden="true">&rarr;</span>
+          <a
+            href="#"
+            className="text-sm/6 font-semibold text-white bg-gray-800 py-3 px-6 rounded-md"
+          >
+            Log in <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </nav>
-      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+      <Dialog
+        open={mobileMenuOpen}
+        onClose={setMobileMenuOpen}
+        className="lg:hidden"
+      >
         <div className="fixed inset-0 z-10" />
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
@@ -124,5 +132,5 @@ export default function Navbar() {
         </DialogPanel>
       </Dialog>
     </header>
-  )
+  );
 }
