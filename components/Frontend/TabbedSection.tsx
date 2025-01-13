@@ -8,7 +8,7 @@ const TabbedSection = () => {
     <div className="-mx-4 flex flex-wrap">
       <div className="w-full px-4">
         <div className="mx-auto mb-12 max-w-5xl text-center lg:mb-20">
-          <h2 className="mb-4 text-3xl font-semibold leading-[1.3] text-gray-900 sm:text-4xl md:text-[42px]">
+          <h2 className="mb-4 text-3xl font-semibold leading-[1.3] text-gray-900 sm:text-4xl md:text-[40px]">
             <span className="block">Browse your Doctors by</span>
           </h2>
           <p className="text-lg text-gray-600">
