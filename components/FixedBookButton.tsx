@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function FixedBookButton() {
   return (
-    <div className="fixed bottom-0 bg-grey-200 z-50 w-full shadow-2xl py-8 px-6 rounded-md 
+    <div className="fixed bottom-0 bg-white z-50 w-full shadow-2xl py-8 px-6 rounded-md 
      border border-gray-200">
         <div className="max-w-4xl mx-auto gap-4 items-center flex justify-between ">
         <div className="w-full">
