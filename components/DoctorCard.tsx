@@ -1,23 +1,55 @@
-import { Stethoscope } from 'lucide-react';
+import { Stethoscope, Video } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-export default function DoctorCard() {
+export default function DoctorCard({ isInPerson=false }:{isInPerson?:boolean}) {
+  const timeStamps =[
+    {
+      time:"8:30",
+      period: "am"
+    },
+    {
+      time:"9:30",
+      period: "am"
+    },  {
+      time:"10:30",
+      period: "am"
+    },  {
+      time:"11:30",
+      period: "am"
+    },
+    {
+      time:"4:30",
+      period: "pm"
+    },
+    {
+      time:"5:30",
+      period: "pm"
+    },
+    {
+      time:"6:30",
+      period: "pm"
+    },
+  ];
   return (
-    <div className="border border-gray-200 bg-gray-100 inline-flex flex-col py-8 px-6 rounded-md">
-      <Link href="#">
+    <div className="border border-gray-200 bg-gray-100 inline-flex flex-col py-8 px-6 rounded-md hover:border-gray-800 duration-300 transition-all">
+      <Link href="/doctors/slug">
         <div>
           <h2 className="uppercase font-bold text-2xl tracking-widest">Vijay Patel, PA-C</h2>
-          <p className="py-3">678 Margoa-Goa, 403890</p>
+          {isInPerson && (<p className="py-3">678 Margoa-Goa, 403890</p>)}
           <div className="flex items-center gap-4 py-4">
-            <Image
+           <div className="relative">
+           <Image
               src="/Doctor.png"
               width={243}
               height={207}
               alt="Doctor"
               className="w-24 h-24 rounded-full object-cover"
             />
+            {!isInPerson && (<p className="absolute bottom-0 right-2 bg-blue-200 w-10 h-10 flex items-center justify-center rounded-full text-blue-700">
+              <Video className="w-6 h-6" /></p>)}
+           </div>
             <div className="flex flex-col gap-2">
               <p className="flex items-center">
                 <Stethoscope className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -29,10 +61,24 @@ export default function DoctorCard() {
         </div>
       </Link>
       <div className="pt-6 border-t border-gray-300">
-        <h3>
-          Monday, January 23 original price ₹500 ₹200 with CareNest Plus
+        <h3 className="flex gap-4 justify-between items-center"><span className="text-gray-800">Mon, Jan 23</span><span className="font-bold">₹200</span>
         </h3>
+        <div className="py-3 grid grid-cols-3 gap-2">
+            {
+              timeStamps.slice(0, 5).map((item,i)=>{
+                return( 
+                <Link 
+                className="bg-blue-500 text-sm text-white p-2 text-center"
+                 key={i} href="#">{item.time}{item.period}</Link>
+             );
+              })}
+            <Link className="text-[0.7rem] text-center bg-gray-300 text-grey py-2 px-3 truncate"
+            href="/doctors/slug"
+            >
+              More times</Link>
+          </div>
       </div>
     </div>
+          
   );
 }
