@@ -24,9 +24,9 @@ export default function RegisterForm({role="USER"}:{role?:UserRole}) {
         console.log("User Created Successfully"); 
         reset();
         setIsLoading(false);
-        toast.success("User Craeted Successfully");
+        toast.success("User Created Successfully");
         console.log(user.data);
-        
+
       } else {
         console.log(user.error)
       }
