@@ -27,14 +27,15 @@ export default function RegisterForm() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <TextInput label="First Name" register={register} name="firstName" errors={errors}/>
             
           <TextInput label="Last Name" register={register} name="lastName" errors={errors}/>
   
           <TextInput label="Email Address" register={register} name="email" type="email" errors={errors}/>
 
-           
+          <TextInput label="Phone Number" register={register} name="phone" type="tel" errors={errors}/>
+
             <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">

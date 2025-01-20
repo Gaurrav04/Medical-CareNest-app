@@ -8,4 +8,5 @@ export type RegisterInputProps={
     lastName: string;
     email: string;
     password: string;
+    phone: string;
 }   
