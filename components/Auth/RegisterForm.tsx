@@ -6,12 +6,30 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
+import { createUser } from "@/actions/users";
+import { UserRole } from "@prisma/client";
 
-export default function RegisterForm() {
+export default function RegisterForm({role="USER"}:{role?:UserRole}) {
   const [isloading, setIsLoading]=useState(false)
   const {register,handleSubmit,reset, formState:{errors}}=useForm<RegisterInputProps>();
   async function onSubmit (data: RegisterInputProps){
-    console.log(data);
+    // console.log(data);
+    setIsLoading(true);
+   
+    data.role = role;
+    try {
+      const user = await createUser(data);
+      if(user && user.status===200){
+        console.log("User Created Successfully"); 
+        reset();
+        setIsLoading(false);
+        console.log(user.data);
+      } else {
+        console.log(user.error)
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
