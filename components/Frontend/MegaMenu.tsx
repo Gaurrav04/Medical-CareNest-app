@@ -13,6 +13,7 @@ import {
   NavigationMenuTrigger,
   // navigationMenuTriggerStyle, // Unused variable, commented out.
 } from "@/components/ui/navigation-menu";
+import { usePathname } from "next/navigation";
 
 const megaMenu = [
   {
@@ -134,6 +135,9 @@ const megaMenu = [
 ];
 
 export default function MegaMenu() {
+  // const pathname = usePathname()
+  // if(pathname==="/login") return null;
+
   return (
     <NavigationMenu className="bg-white">
       <NavigationMenuList className="space-x-4">

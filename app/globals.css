@@ -76,3 +76,11 @@ body {
     min-width: 100vh;
   }
 }
+
+.linear-bg{
+  background: 
+  url("/Doctorl.png");
+  background-size:cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}

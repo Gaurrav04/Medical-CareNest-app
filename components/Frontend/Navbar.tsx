@@ -21,6 +21,7 @@ import {
   // SquaresPlusIcon, // Unused variable, commented out.
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 // import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from "@heroicons/react/20/solid"; // Unused variables, commented out.
 
 export default function Navbar() {
@@ -64,12 +65,12 @@ export default function Navbar() {
           </a>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a
-            href="#"
+          <Link
+            href="/login"
             className="text-sm/6 font-semibold text-white bg-blue-600 py-3 px-6 rounded-md hover:bg-gray-300"
           >
             Log in <span aria-hidden="true">&rarr;</span>
-          </a>
+          </Link>
         </div>
       </nav>
       <Dialog
@@ -120,12 +121,12 @@ export default function Navbar() {
                 </a>
               </div>
               <div className="py-6">
-                <a
-                  href="#"
+                <Link
+                  href="/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Log in
-                </a>
+                </Link>
               </div>
             </div>
           </div>
