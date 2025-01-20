@@ -1,11 +1,14 @@
 "use server"
 
+import EmailTemplate from "@/components/Emails/email-template";
 import { prismaClient } from "@/lib/db";
 import { RegisterInputProps } from "@/types/types";
 import bcrypt from "bcrypt";
+import { Resend } from "resend";
 
 export async function createUser(formData: RegisterInputProps) {
-  const { fullName, email, role, phone, password }= formData
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { fullName, email, role, phone, password } = formData;
   try {
     const existingUser = await prismaClient.user.findUnique({
         where: {
@@ -38,6 +41,22 @@ export async function createUser(formData: RegisterInputProps) {
         token: userToken,
       },
     });
+    //Send an Email with the Token on the link as a search param
+    const token = newUser.token;
+    const userId = newUser.id;
+    const firstName = newUser.name.split(" ")[0];
+    const linkText = "Verify your Account ";
+    const message =
+      "Thank you for registering with Gecko. To complete your registration and verify your email address, please enter the following 6-digit verification code on our website :";
+    const sendMail = await resend.emails.send({
+      from: "Medical App <carenest.com>",
+      to: email,
+      subject: "Verify Your Email Address",
+      react: EmailTemplate({ firstName, token, linkText, message }),
+    });
+    console.log(token);
+    console.log(sendMail);
+    console.log(newUser);
     return {
         data: newUser,
         error: null,

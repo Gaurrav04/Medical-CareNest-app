@@ -8,6 +8,7 @@ import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
 import { createUser } from "@/actions/users";
 import { UserRole } from "@prisma/client";
+import toast from "react-hot-toast";
 
 export default function RegisterForm({role="USER"}:{role?:UserRole}) {
   const [isloading, setIsLoading]=useState(false)
@@ -19,11 +20,13 @@ export default function RegisterForm({role="USER"}:{role?:UserRole}) {
     data.role = role;
     try {
       const user = await createUser(data);
-      if(user && user.status===200){
+      if(user && user.status===200) {
         console.log("User Created Successfully"); 
         reset();
         setIsLoading(false);
+        toast.success("User Craeted Successfully");
         console.log(user.data);
+        
       } else {
         console.log(user.error)
       }
