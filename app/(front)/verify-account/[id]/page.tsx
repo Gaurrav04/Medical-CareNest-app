@@ -4,12 +4,10 @@ import VerifyTokenForm from "@/components/Frontend/VerifyTokenForm";
 export default async function VerifyAccount({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>; 
 }) {
-  // Awaiting the `params` before accessing `id`
   const { id } = await params;
-  
-  // Get a User from DB using the awaited `id`
+
   const user = await getUserById(id);
   const userToken = user?.token;
 
