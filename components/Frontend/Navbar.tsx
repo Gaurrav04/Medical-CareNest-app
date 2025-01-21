@@ -31,17 +31,17 @@ export default function Navbar() {
     <header className="fixed top-0 bg-stone-100 border-b border-gray-800/10 w-full z-50">
       <nav
         aria-label="Global"
-        className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8 border-b "
+        className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 lg:px-8 border-b "
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img
               alt=""
               src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
               className="h-8 w-auto"
             />
-          </a>
+          </Link>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -67,7 +67,7 @@ export default function Navbar() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link
             href="/login"
-            className="text-sm/6 font-semibold text-white bg-blue-600 py-3 px-6 rounded-md hover:bg-gray-300"
+            className="text-sm/6 font-semibold text-white bg-blue-600 py-2 px-6 rounded-md hover:bg-gray-300"
           >
             Log in <span aria-hidden="true">&rarr;</span>
           </Link>

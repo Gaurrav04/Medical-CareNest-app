@@ -11,7 +11,9 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
+    "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.2.1",
+    "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-navigation-menu": "^1.2.3",
     "@radix-ui/react-slot": "^1.1.1",
     "@react-email/components": "^0.0.32",
@@ -21,6 +23,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "flowbite-react": "^0.10.2",
+    "input-otp": "^1.4.2",
     "lucide-react": "^0.471.0",
     "next": "^15.1.5",
     "prisma": "^6.2.1",
@@ -35,7 +38,8 @@
     "react-text-transition": "^3.1.0",
     "resend": "^4.1.1",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
