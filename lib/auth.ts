@@ -24,17 +24,15 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          console.log(
-            "Authorize function called with credentials:",
-            credentials
-          );
+          console.log("Authorize function called with credentials:", credentials);
 
           // Check if user credentials are provided
           if (!credentials?.email || !credentials?.password) {
+            console.log("Error: No inputs provided");
             throw new Error("No Inputs Found");
           }
 
-          console.log("Pass 1 checked");
+          console.log("Step 1: Credentials provided");
 
           // Check if user exists
           const existingUser = await prismaClient.user.findUnique({
@@ -42,12 +40,11 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!existingUser) {
-            console.log("No user found");
+            console.log("Error: No user found with email:", credentials.email);
             throw new Error("No user found");
           }
 
-          console.log("Pass 2 Checked");
-          console.log(existingUser);
+          console.log("Step 2: User found", existingUser);
 
           // Check if the password is correct
           const passwordMatch = existingUser.password
@@ -55,51 +52,54 @@ export const authOptions: NextAuthOptions = {
             : false;
 
           if (!passwordMatch) {
-            console.log("Password incorrect");
+            console.log("Error: Password mismatch for email:", credentials.email);
             throw new Error("Password Incorrect");
           }
 
-          console.log("Pass 3 Checked");
+          console.log("Step 3: Password matched");
 
-          // Return the user object with `id` converted to a string
+          // Return the user object
           const user = {
-            id: existingUser.id.toString(), 
+            id: existingUser.id.toString(),
             name: existingUser.name,
             email: existingUser.email,
             role: existingUser.role,
             picture: existingUser.image,
           };
 
-          console.log("User Compiled");
-          console.log(user);
+          console.log("Step 4: User authorized successfully", user);
           return user;
         } catch (error) {
-          console.log("Authorization failed");
-          console.error(error);
-          throw new Error("Something went wrong");
+          console.error("Authorization error:", error);
+          throw error;
         }
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
+      console.log("JWT Callback - token before update:", token, "user:", user);
       if (user) {
-        token.id = user.id; // Ensure `id` is string
+        token.id = user.id;
         token.name = user.name;
         token.email = user.email;
         token.role = user.role;
         token.picture = user.picture || null;
       }
+      console.log("JWT Callback - token after update:", token);
       return token;
     },
     async session({ session, token }) {
+      console.log("Session Callback - session before update:", session);
+      console.log("Session Callback - token:", token);
       if (session.user) {
-        session.user.id = token.id; // Ensure `id` is string
+        session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.picture || null;
         session.user.role = token.role;
       }
+      console.log("Session Callback - session after update:", session);
       return session;
     },
   },
