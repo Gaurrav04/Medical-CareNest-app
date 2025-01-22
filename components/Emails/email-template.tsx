@@ -8,7 +8,7 @@ interface EmailTemplateProps {
   message: string;
 }
  
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = process.env.NEXTAUTH_URL;
  
 export const EmailTemplate = ({
   firstName = "",
