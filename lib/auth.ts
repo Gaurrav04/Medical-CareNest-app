@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
 
           // Return the user object with `id` converted to a string
           const user = {
-            id: existingUser.id.toString(), // Convert ID to string
+            id: existingUser.id.toString(), 
             name: existingUser.name,
             email: existingUser.email,
             role: existingUser.role,
