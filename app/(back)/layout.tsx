@@ -8,7 +8,7 @@ export default function Layout({children}: {children:ReactNode}) {
     <Sidebar/>
     <div className="flex flex-col">
      <Navbar/>
-      <div className="p-4">{children}</div>
+      <div className="flex min-h-screen w-full flex-col">{children}</div>
     </div>
   </div>
   )
