@@ -96,7 +96,7 @@ const faqs: FAQItem[] = [
             whether you're just starting out or looking to expand your services.
             </p>
             <CustomButton 
-            title="List your Service"
+            title="Hospital Plan"
             href="#"
             className="bg-blue-600 hover:bg-gray-300"
             />
