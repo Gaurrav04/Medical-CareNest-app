@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import ModeToggle from "../ModeToggle";
 export default function Navbar(){
   const router = useRouter();
   async function handleLogout() {
@@ -124,6 +125,7 @@ export default function Navbar(){
               </div>
             </form>
           </div>
+          <ModeToggle/>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">

@@ -67,7 +67,7 @@ export default function LoginForm() {
               your credentials
             </Alert>
           )}
-          <TextInput label="Email Address" register={register} name="email" type="email" errors={errors}/>
+          <TextInput label="Email Address" register={register} name="email" type="email" errors={errors} placeholder="Eg JohnDoe@gmail.com"/>
 
 
           <div>

@@ -3,6 +3,7 @@ import TransitionalText from "./TransitionalText";
 import SearchBar from "./SearchBar";
 import { Pill } from "lucide-react";
 import Link from "next/link";
+import { CommandMenu } from "../command-menu";
 
 const Hero = () => {
   const TEXTS = [
@@ -34,12 +35,15 @@ const Hero = () => {
                       sessions now
                     </span>
                   </h1>
-                  <p className="mb-8 max-w-[480px] text-base text-body-color dark:text-dark-6">
+                  <p className="mb-8 max-w-[480px] text-base text-body-color text-gray-800">
                     Healthcare should be straightforward. We&#39;re eliminating the complexity to provide you with simple,
                     affordable, and transparent Healthcare solutions.
                   </p>
                   {/* SEARCH BAR HERE */}
-                  <SearchBar />
+                  {/* <SearchBar /> */}
+                      <div className="w-full flex-1 md:flex-none ">
+                      <CommandMenu />
+                      </div>
                   {/* CTA BUTTONS */}
                   <ul className="flex flex-wrap items-center mt-6">
                     <li>

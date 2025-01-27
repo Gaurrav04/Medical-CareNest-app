@@ -89,15 +89,6 @@ export default async function Sidebar() {
                 );
               })
              }
-              
-              <Link
-                href="#"
-                className=""
-              >
-                <Package className="h-4 w-4" />
-                Products
-              </Link>
-           
             </nav>
           </div>
           <div className="mt-auto p-4">
