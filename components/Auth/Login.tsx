@@ -77,6 +77,7 @@ async function onSubmit (data: LoginInputProps){
         <TextInput 
         label="Password" 
         register={register}
+         page="login"
          name="password" 
          type="password" 
          errors={errors} 

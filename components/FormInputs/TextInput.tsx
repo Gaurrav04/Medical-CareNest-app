@@ -9,13 +9,14 @@ type TextInputProps={
     name: string;
     errors: any;
     type?: string;
-    placeholder: string;
+    page?: string;
+    placeholder?: string;
 };
 
-export default function TextInput({label,register,name,errors,type="text", placeholder}:TextInputProps) {
+export default function TextInput({label,register,name,errors,type="text", placeholder, page}:TextInputProps) {
   return (
     <div className="grid gap-2">
-      {type==="password"?(<div className="flex items-center">
+      {type === "password" && page==="login" ?  (<div className="flex items-center">
               <Label htmlFor={`${name}`}> {label}</Label>
             <Link href="/forgot-password" className="ml-auto inline-block text-sm underline">
               Forgot your password?
@@ -30,7 +31,7 @@ export default function TextInput({label,register,name,errors,type="text", place
                name={`${name}`} 
                type={type}
                autoComplete="name"
-                placeholder={placeholder}
+                placeholder={placeholder ? placeholder:""}
                 />
                  {errors [`${name}`] && <span className="text-red-600 text-sm">{label} is required</span>}
             </div>

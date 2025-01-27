@@ -49,13 +49,13 @@ export default function RegisterForm({role="USER"}:{role?:UserRole}) {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <TextInput label="Full Name" register={register} name="fullName" errors={errors}/>
+          <TextInput label="Full Name" register={register} name="fullName" errors={errors} placeholder=""/>
               
-          <TextInput label="Email Address" register={register} name="email" type="email" errors={errors}/>
+          <TextInput label="Email Address" register={register} name="email" type="email" errors={errors} placeholder=""/>
 
-          <TextInput label="Phone Number" register={register} name="phone" type="tel" errors={errors}/>
+          <TextInput label="Phone Number" register={register} name="phone" type="tel" errors={errors} placeholder=""/>
 
-          <TextInput label="Password" register={register} name="password" type="password" errors={errors}/>
+          <TextInput label="Password" register={register} name="password" type="password" errors={errors} placeholder=""/>
 
             <div>
              <SubmitButton title="Create Account" isloading={isloading} loadingTitle="Creating please wait..."/>
