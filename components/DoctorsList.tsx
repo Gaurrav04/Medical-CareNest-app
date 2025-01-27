@@ -3,13 +3,14 @@ import SectionHeading from './SectionHeading'
 import ToggleButton from './ToggleButton'
 import Link from 'next/link'
 import DoctorCard from './DoctorCard'
-import { Map } from 'lucide-react'
+import { ArrowUpRight, Map } from 'lucide-react'
 import DoctorsListCarousel from './DoctorsListCarousel'
+import { Button } from './ui/button'
 
 export default function DoctorsList({
   title="Telehealth Visit",
   isInPerson,
-  className="bg-pink-100 py-8 lg:py-24"
+  className="bg-pink-100 dark:bg-blue-800 py-8 lg:py-24"
 }:  {title?:string;
     isInPerson?:boolean;
     className?:string
@@ -49,10 +50,12 @@ export default function DoctorsList({
         ):(
           <ToggleButton/>
         )}
-        <Link className="py-3 px-6 border border-blue-600 bg-blue-600 text-white" 
-        href="#">
+        <Button asChild>
+        <Link className="" href="#">
            See All
-           </Link>       
+           <ArrowUpRight className="h-4 w-4 ms-1"/>
+           </Link>  
+          </Button>     
         </div>
         <div className="py-6">
          <DoctorsListCarousel doctors={doctors} isInPerson={isInPerson} />

@@ -45,7 +45,7 @@ export default function Availability() {
 
     return (
         <div className="mb-[200px]">
-            <h2 className="font-bold py-4 text-xl uppercase text-gray-800 tracking-wider">SELECT A DATE AND TIME</h2>
+            <h2 className="font-bold py-4 text-xl uppercase text-gray-800 dark:text-gray-400 tracking-wider">SELECT A DATE AND TIME</h2>
             <div className="grid grid-cols-2 gap-4 lg:gap-0">
                 <div className="sm:col-span-1 col-span-full">
                     <Calendar
@@ -57,7 +57,8 @@ export default function Availability() {
                 </div>
                 <div className="sm:col-span-1 col-span-full">
                     <div className="px-4">
-                        <h2 className="pb-4 text-gray-900 text-center py-3 px-4 border border-blue-500">
+                        <h2 className="pb-4 dark:text-gray-400 text-gray-900 text-center
+                         py-3 px-4 border border-blue-500 dark:border border-gray-600">
                         {formattedDate}
                         </h2>
             <div className="py-3 grid grid-cols-3 gap-2">
@@ -69,7 +70,7 @@ export default function Availability() {
                  key={i} >{item.time}{item.period}</button>
              );
               })}
-            <button className="text-[0.7rem] text-center bg-gray-300 text-grey py-2 px-3 truncate"
+            <button className="text-[0.7rem] text-center bg-gray-300 dark:bg-gray-700 text-grey py-2 px-3 truncate"
             >
               More times</button>
           </div>

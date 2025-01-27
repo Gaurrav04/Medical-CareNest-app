@@ -56,7 +56,7 @@ export default function TabbedItems() {
     {
       title: "Symptoms",
       icon: Microscope, 
-      component:<LinkCards className="bg-purple-500"/>,
+      component:<LinkCards className="bg-purple-500 dark:bg-gray-500"/>,
       content: [],
     },
   ];

@@ -33,7 +33,7 @@ export default function DoctorCard({ isInPerson=false }:{isInPerson?:boolean}) {
     },
   ];
   return (
-    <div className="border border-gray-200 bg-gray-100 inline-flex flex-col py-8 px-6 rounded-md hover:border-gray-800 duration-300 transition-all">
+    <div className="border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-slate-800 inline-flex flex-col py-8 px-6 rounded-md hover:border-gray-800 duration-300 transition-all">
       <Link href="/doctors/slug">
         <div>
           <h2 className="uppercase font-bold text-2xl tracking-widest">Vijay Patel, PA-C</h2>
@@ -55,13 +55,13 @@ export default function DoctorCard({ isInPerson=false }:{isInPerson?:boolean}) {
                 <Stethoscope className="w-4 h-4 mr-2 flex-shrink-0" />
                 <span>Family Medicine</span>
               </p>
-              <p className="bg-green-300 py-3 px-6 uppercase">Available Today</p>
+              <p className="bg-green-300 dark:text-slate-900 py-3 px-6 uppercase">Available Today</p>
             </div>
           </div>
         </div>
       </Link>
-      <div className="pt-6 border-t border-gray-300">
-        <h3 className="flex gap-4 justify-between items-center"><span className="text-gray-800">Mon, Jan 23</span><span className="font-bold">₹200</span>
+      <div className="pt-6 border-t border-gray-300 dark:border-gray-600">
+        <h3 className="flex gap-4 justify-between items-center"><span className="text-gray-800 dark:text-gray-400">Mon, Jan 23</span><span className="font-bold">₹200</span>
         </h3>
         <div className="py-3 grid grid-cols-3 gap-2">
             {
@@ -72,7 +72,7 @@ export default function DoctorCard({ isInPerson=false }:{isInPerson?:boolean}) {
                  key={i} href="#">{item.time}{item.period}</Link>
              );
               })}
-            <Link className="text-[0.7rem] text-center bg-gray-300 text-grey py-2 px-3 truncate"
+            <Link className="text-[0.7rem] text-center bg-gray-300 dark:bg-gray-700 text-grey py-2 px-3 truncate"
             href="/doctors/slug"
             >
               More times</Link>

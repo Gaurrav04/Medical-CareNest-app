@@ -46,10 +46,10 @@ const brandsData: Brand[] = [
 
 export default function Brand() {
   return (
-    <section className="bg-slate-50 py-4 lg:py-[40px] dark:bg-dark">
-      <h3 className="text-center pb-1 text-lg">Trusted By</h3>
+    <section className="bg-slate-100 text-slate-800 dark:text-slate-200 py-10 lg:py-[60px] dark:bg-slate-800">
+      <h3 className="text-center pb-6 scroll-m-20 text-2xl font-semibold tracking-tight">Trusted By</h3>
       <div className="container mx-auto">
-        <div className="-mx-4 flex flex-wrap">
+        <div className="-mx-4 flex flex-wrap mx-4">
           <div className="w-full px-4">
             <div className="flex flex-wrap items-center justify-center">
               {brandsData.map((brand, i) => (

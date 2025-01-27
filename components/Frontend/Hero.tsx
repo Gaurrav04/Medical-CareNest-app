@@ -19,23 +19,23 @@ const Hero = () => {
 
   return (
     <>
-      <div className="bg-white ">
+      <div className="bg-white dark:bg-slate-950">
         <div className="relative pb-[110px] pt-[50px] dark:bg-dark lg:pt-[50px] max-w-6xl mx-auto">
           <div className="container">
             <div className="-mx-4 flex flex-wrap">
               <div className="w-full px-4 lg:w-6/12">
                 <div className="hero-content">
                   <h1 className="mb-5 text-4xl font-bold leading-[1.208] sm:text-[42px] lg:text-[40px] xl:text-5xl flex flex-col">
-                    <span className="tracking-tight text-gray-800">Book your</span>
+                    <span className="tracking-tight text-gray-800 dark:text-gray-400">Book your</span>
                     <TransitionalText
                       className="tracking-tight text-blue-600"
                       TEXTS={TEXTS}
                     />
-                    <span className="tracking-tight text-gray-600">
+                    <span className="tracking-tight text-gray-600 dark:text-gray-500">
                       sessions now
                     </span>
                   </h1>
-                  <p className="mb-8 max-w-[480px] text-base text-body-color text-gray-800">
+                  <p className="mb-8 max-w-[480px] text-base text-body-color text-gray-800 dark:text-gray-400">
                     Healthcare should be straightforward. We&#39;re eliminating the complexity to provide you with simple,
                     affordable, and transparent Healthcare solutions.
                   </p>
@@ -69,11 +69,11 @@ const Hero = () => {
                   <div className="py-4 pt-8 flex gap-4">
                     <div className="flex flex-col items-center justify-center">
                       <span className="font-bold text-blue-600">320</span>
-                      <span className="text-sm text-gray-950">Active Specialists</span>
+                      <span className="text-sm text-gray-950 dark:text-gray-400">Active Specialists</span>
                     </div>
                     <div className="flex flex-col items-center justify-center">
                       <span className="font-bold text-blue-600">1980</span>
-                      <span className="text-sm text-gray-950">Active Patients</span>
+                      <span className="text-sm text-gray-950 dark:text-gray-400">Active Patients</span>
                     </div>
                   </div>
                 </div>
