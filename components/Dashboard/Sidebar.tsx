@@ -16,7 +16,7 @@ import {
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
  
-export default async function Sidebar() {
+export default function Sidebar() {
   const pathname = usePathname()
   
   const sideBarLinks =[
