@@ -1,4 +1,5 @@
-import { BarChart, Bell, Folder, Grid2X2, Home, LineChart, Package, Package2, Plus, Settings, ShoppingCart, Users } from "lucide-react";
+"use client"
+import { Bell, Home, LineChart, Package, Package2, Settings, ShoppingCart, Users } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -12,8 +13,45 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
  
 export default async function Sidebar() {
+  const pathname = usePathname()
+  
+  const sideBarLinks =[
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: Home,
+    },
+    {
+      name: "Products",
+      path: "/dashboard/products",
+      icon: Package,
+    },
+    {
+      name: "Orders",
+      path: "/dashboard/orders",
+      icon: ShoppingCart,
+      badgeCount: 6
+    },
+    {
+      name: "Customers",
+      path: "/dashboard/customers",
+      icon: Users,
+    },
+    {
+      name: "Analytics",
+      path: "/dashboard/analytics",
+      icon: LineChart,
+    },
+    {
+      name: "Settings",
+      path: "/dashboard/settings",
+      icon: Settings,
+    },
+  ];
   return (
     <div className="bg-muted/40 hidden border-r md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
@@ -29,46 +67,37 @@ export default async function Sidebar() {
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <a
-                href="##"
-                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
+             {
+              sideBarLinks.map((item,i)=>{
+                const Icon = item.icon
+                return(
+                <Link
+                key={i}
+                href={item.path}
+                className={cn("text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                pathname === item.path ? "bg-muted text-primary ": ""
+                )}
               >
-                <Home className="h-4 w-4" />
-                Dashboard
-              </a>
-              <a
-                href="##"
-                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-              >
-                <ShoppingCart className="h-4 w-4" />
-                Orders
-                <Badge
+                <Icon className="h-4 w-4" />
+                {item.name}
+                {item.badgeCount&& <Badge
                   className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
                 >
-                  6
-                </Badge>
-              </a>
-              <a
-                href="##"
-                className="bg-muted text-primary hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
+                  {item.badgeCount}
+                </Badge>}
+              </Link>
+                );
+              })
+             }
+              
+              <Link
+                href="#"
+                className=""
               >
                 <Package className="h-4 w-4" />
                 Products
-              </a>
-              <a
-                href="##"
-                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-              >
-                <Users className="h-4 w-4" />
-                Customers
-              </a>
-              <a
-                href="##"
-                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-              >
-                <LineChart className="h-4 w-4" />
-                Analytics
-              </a>
+              </Link>
+           
             </nav>
           </div>
           <div className="mt-auto p-4">

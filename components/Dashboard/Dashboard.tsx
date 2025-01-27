@@ -83,12 +83,13 @@ export default function Dashboard() {
             <CardTitle>Transactions</CardTitle>
             <CardDescription>Recent transactions from your store.</CardDescription>
           </div>
-          <Button size="sm" className="ml-auto gap-1">
-            <Link href="##">
-              View All
-            <ArrowUpRight className="h-4 w-4" />
+          <Button size="sm" className="ml-auto gap-1 justify-start">
+            <Link href="##" className="flex items-center gap-1 w-full text-left">
+             View All
+              <ArrowUpRight className="h-4 w-4" />
             </Link>
           </Button>
+
         </CardHeader>
         <CardContent>
           <Table>
