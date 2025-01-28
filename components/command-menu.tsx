@@ -14,7 +14,7 @@ import {
   CommandGroup,
   CommandInput, 
   CommandItem,
-  CommandList,
+  CommandList, 
   CommandSeparator,
 } from "@/components/ui/command";
 
@@ -66,8 +66,9 @@ export function CommandMenu({ ...props }: DialogProps) {
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput /> {/* Removed placeholder prop */}
-        <CommandList>
+        <CommandInput /> 
+        <CommandList> 
+          {/* Corrected usage of CommandList with children */}
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Links">
             {docsConfig.mainNav
