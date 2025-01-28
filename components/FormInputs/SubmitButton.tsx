@@ -19,7 +19,7 @@ export default function SubmitButton({title,buttonType="submit",isloading=false,
          {loadingTitle}
        </Button>
      ):(
-      <Button type={buttonType} className="w-full">
+      <Button type={buttonType} >
       {title}
       </Button>
    )}
