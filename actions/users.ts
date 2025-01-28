@@ -8,7 +8,7 @@ import { Resend } from "resend";
 
 export async function createUser(formData: RegisterInputProps) {
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const { fullName, email, role, phone, password } = formData;
+  const { fullName, email, role, phone, password,plan } = formData;
   try {
     const existingUser = await prismaClient.user.findUnique({
         where: {
@@ -37,7 +37,8 @@ export async function createUser(formData: RegisterInputProps) {
         email,
         phone,
         password: hashedPassword,
-        role,
+        role: role.toUpperCase(),
+        plan,
         token: userToken,
       },
     });

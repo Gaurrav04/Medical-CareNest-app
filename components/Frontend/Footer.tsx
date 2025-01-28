@@ -93,7 +93,7 @@ export default function Footer() {
             title:"X",
             href:"https://www.linkedin.com/company/medical-app",
             icon: FaXTwitter,
-            color:"text-gray-900"
+            color:"text-gray-900 dark:text-slate-500"
 
         },
         {

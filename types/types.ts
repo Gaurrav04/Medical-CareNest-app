@@ -10,7 +10,8 @@ export type RegisterInputProps={
     email: string;
     password: string;
     phone: string;
-    role: UserRole;
+    role: any;
+    plan: any;
 }   
 
 export type LoginInputProps={ 

@@ -1,13 +1,14 @@
 "use client"
-import * as React from "react";
-import { useRouter } from "next/navigation";
-import { type DialogProps } from "@radix-ui/react-dialog";
-import { Circle, File, Laptop, Moon, Search, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 
-import { docsConfig } from "@/config/docs";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import * as React from "react"
+import { useRouter } from "next/navigation"
+import { type DialogProps } from "@radix-ui/react-dialog"
+import { Circle, File, Laptop, Moon, Search, Sun } from "lucide-react"
+import { useTheme } from "next-themes"
+
+import { docsConfig } from "@/config/docs"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
   CommandEmpty,
@@ -16,12 +17,12 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 
 export function CommandMenu({ ...props }: DialogProps) {
-  const router = useRouter();
-  const [open, setOpen] = React.useState(false);
-  const { setTheme } = useTheme();
+  const router = useRouter()
+  const [open, setOpen] = React.useState(false)
+  const { setTheme } = useTheme()
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -32,22 +33,22 @@ export function CommandMenu({ ...props }: DialogProps) {
           e.target instanceof HTMLTextAreaElement ||
           e.target instanceof HTMLSelectElement
         ) {
-          return;
+          return
         }
 
-        e.preventDefault();
-        setOpen((open) => !open);
+        e.preventDefault()
+        setOpen((open) => !open)
       }
-    };
+    }
 
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
 
   const runCommand = React.useCallback((command: () => unknown) => {
-    setOpen(false);
-    command();
-  }, []);
+    setOpen(false)
+    command()
+  }, [])
 
   return (
     <>
@@ -61,14 +62,14 @@ export function CommandMenu({ ...props }: DialogProps) {
       >
         <span className="hidden lg:inline-flex">Search documentation...</span>
         <span className="inline-flex lg:hidden">Search...</span>
-        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.5rem] hidden h-5 select-none items-center gap-1 rounded px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-          <Search className="w-4 h-4 flex-shrink-0" />
+        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.5rem] hidden h-5 select-none items-center gap-1 rounded px-1.5 
+        font-mono text-[10px] font-medium opacity-100 sm:flex">
+        <Search className="w-4 h-4 flex-shrink-0"/>
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput />
+        <CommandInput placeholder="Type a command or search..." />
         <CommandList>
-          {/* Corrected usage of CommandList with children */}
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Links">
             {docsConfig.mainNav
@@ -78,7 +79,7 @@ export function CommandMenu({ ...props }: DialogProps) {
                   key={navItem.href}
                   value={navItem.title}
                   onSelect={() => {
-                    runCommand(() => router.push(navItem.href as string));
+                    runCommand(() => router.push(navItem.href as string))
                   }}
                 >
                   <File />
@@ -93,7 +94,7 @@ export function CommandMenu({ ...props }: DialogProps) {
                   key={navItem.href}
                   value={navItem.title}
                   onSelect={() => {
-                    runCommand(() => router.push(navItem.href as string));
+                    runCommand(() => router.push(navItem.href as string))
                   }}
                 >
                   <div className="mr-2 flex h-4 w-4 items-center justify-center">
@@ -122,5 +123,5 @@ export function CommandMenu({ ...props }: DialogProps) {
         </CommandList>
       </CommandDialog>
     </>
-  );
+  )
 }

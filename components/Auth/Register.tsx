@@ -13,7 +13,14 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function RegisterWithBg({role="USER"}:{role?:UserRole}) {
+export default function RegisterWithBg({
+  role="USER",
+  plan="",
+}:{
+  role?: string | string[] | undefined; 
+  plan?: string | string[] | undefined;
+}) {
+
   const [isloading, setIsLoading]=useState(false)
   const {register,handleSubmit,reset, formState:{errors}}=useForm<RegisterInputProps>();
   const router = useRouter()
@@ -22,6 +29,7 @@ export default function RegisterWithBg({role="USER"}:{role?:UserRole}) {
     setIsLoading(true);
    
     data.role = role;
+    data.plan = plan;
     try {
       const user = await createUser(data);
       if(user && user.status === 200) {
