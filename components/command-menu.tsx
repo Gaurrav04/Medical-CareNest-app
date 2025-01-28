@@ -12,7 +12,7 @@ import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
+  CommandInput, 
   CommandItem,
   CommandList,
   CommandSeparator,
@@ -66,7 +66,7 @@ export function CommandMenu({ ...props }: DialogProps) {
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput /> {/* Removed placeholder prop */}
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Links">
