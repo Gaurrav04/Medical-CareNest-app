@@ -12,10 +12,16 @@ import toast from "react-hot-toast";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { DatePickerInput } from "../FormInputs/DatePickerInput";
 
 export default function BioDataForm(){
 
   const [isloading, setIsLoading]=useState(false)
+  const [dob, setDOB] = useState<Date>()
+  const [expiry, setExpiry] = useState<Date>()
+
+  // console.log(date);
+
   const {register,handleSubmit,reset, formState:{errors}}=useForm<RegisterInputProps>();
   const router = useRouter()
   async function onSubmit (data: RegisterInputProps){
@@ -40,48 +46,61 @@ export default function BioDataForm(){
       register={register} 
       name="fullName" 
       errors={errors}
-      placeholder="Eg John Doe"
+      placeholder="Eg John "
+      className="col-span-full sm:col-span-1"
+
       />
 
        <TextInput 
-        label="Email Address" 
+        label="Last Name" 
         register={register}
-         name="email" 
-         type="email" 
+         name="lastName" 
          errors={errors} 
-         placeholder="Eg Johndoe@gmail.com"
+         placeholder="Eg Doe"
          className="col-span-full sm:col-span-1"
         />
 
         <TextInput 
-        label="Email Address" 
+        label="Middle Name(optional)" 
         register={register}
-         name="email" 
-         type="email" 
+         name="middleName" 
          errors={errors} 
-         placeholder="Eg Johndoe@gmail.com"
+         placeholder="Eg A"
          className="col-span-full sm:col-span-1"
          />
 
+         <DatePickerInput  
+         className="col-span-full sm:col-span-1"
+         date={dob} 
+         setDate={setDOB}
+         title="Date of Birth"
+         />
         <TextInput 
-        label="Email Address" 
+        label="Medical License" 
         register={register}
-         name="email" 
-         type="email" 
+         name="medicalLicense" 
          errors={errors} 
-         placeholder="Eg Johndoe@gmail.com"
+         placeholder="Enter Medical License"
          className="col-span-full sm:col-span-1"
          />
 
-        <TextInput
-         label="Phone Number" 
-         register={register}
-         name="phone" 
-         type="tel" 
+      
+        <DatePickerInput  
+         className="col-span-full sm:col-span-1"
+         date={expiry} 
+         setDate={setExpiry}
+         title="Medical License Expiry"
+         />
+
+          <TextInput 
+        label="Medical License Expiration" 
+        register={register}
+         name="email" 
          errors={errors} 
-         placeholder="Eg 7808089090"
+         placeholder=""
          className="col-span-full sm:col-span-1"
          />
+
       </div>
 
         <div className="mt-8 flex justify-center items-center">
