@@ -55,14 +55,14 @@ const faqs: FAQItem[] = [
 }
 ];
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen dark:bg-gray-800">
         <section className="py-12 px-4">
             <div className="max-w-6xl gap-4 mx-auto grid grid-cols-1 md:grid-cols-2">
           <div className="">
-          <h2 className="sm:text-[3.2rem] text-[1.5rem] leading-[3.5rem]">
+          <h2 className="scroll-m-20 text-4xl dark:text-slate-300 font-extrabold tracking-tight lg:text-5xl">
             Build a successful {" "}
              <span className="text-blue-600 font-semibold">direct-pay</span>{" "}
-             practice with <span className="text-gray-600">CareNest.</span> 
+             practice with <span className="text-gray-600 dark:text-gray-500">CareNest.</span> 
             </h2>
             <p className="py-4">
             Welcome to CareNest - Empowering Your Practice, Enhancing Patient Care
@@ -73,7 +73,7 @@ const faqs: FAQItem[] = [
             <CustomButton 
             title="Hospital Plan"
             href="#"
-            className="bg-blue-600 hover:bg-gray-300"
+            className="bg-blue-600 dark:bg-slate-200 hover:bg-gray-300"
             />
             <div className="py-6">
             {

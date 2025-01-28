@@ -13,28 +13,24 @@ export const docsConfig: DocsConfig = {
       href: "/",
     },
     {
-      title: "Documentation",
-      href: "/docs",
+      title: "Find Doctor",
+      href: "/find-doctor",
     },
     {
-      title: "Components",
-      href: "/docs/components/accordion",
+      title: "Telehealth Visit",
+      href: "/telehealth",
     },
     {
-      title: "Blocks",
-      href: "/blocks",
+      title: "Inperson Visit",
+      href: "/doctors",
     },
     {
-      title: "Charts",
-      href: "/charts",
+      title: "About",
+      href: "/about",
     },
     {
-      title: "Themes",
-      href: "/themes",
-    },
-    {
-      title: "Colors",
-      href: "/colors",
+      title: "Be service provider",
+      href: "/about",
     },
   ],
   sidebarNav: [

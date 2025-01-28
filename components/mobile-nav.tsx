@@ -25,6 +25,32 @@ export function MobileNav() {
     },
     [setMetaColor, metaColor]
   )
+  const mobileNavLinks = [
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "Find Doctor",
+      path: "/find-doctor",
+    },
+    {
+      name: "Telehealth Visit",
+      path: "/telehealth",
+    },
+    {
+      name: "Inperson Visit",
+      path: "/doctors",
+    },
+    {
+      name: "About",
+      path: "/about",
+    },
+    {
+      name: "Be service provider",
+      path: "/about",
+    },
+  ];
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -62,6 +88,7 @@ export function MobileNav() {
                     onOpenChange={setOpen}
                   >
                     {item.title}
+                    
                   </MobileLink>
                 )
             )}
