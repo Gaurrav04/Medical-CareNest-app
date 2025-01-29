@@ -16,22 +16,35 @@ export default function OnboardingSteps({id}:{id:string}){
         {
             title: "Bio Data",
             page: "bio-data",
-            component: <BioDataForm page={page}/>
+            component: <BioDataForm 
+            title="Bio Data" 
+            description="Please fill in your Bio Data Info"
+            page={page}/>
         },
         {
             title: "Profile Information",
             page: "profile",
-            component: <ProfileInfoForm page={page}/>
+            component: <ProfileInfoForm 
+            title="Profile Information" 
+            description="Please fill in your Profile Info"
+            page={page}/>
         },
         {
             title: "Contact Information",
             page: "contact",
-            component: <ContactInfo/>
+            component: <ContactInfo
+            title="Contact Information" 
+            description="Please fill in your Contact Info"
+            page={page}/>
         },
         {
             title: "Profession Information",
             page: "profession",
-            component: <ProfessionInfo/>
+            component: <ProfessionInfo
+            title="Profession Information" 
+            description="Please fill in your Profession Info"
+            page={page}
+            />
         },
         {
             title: "Education Information",

@@ -16,8 +16,13 @@ import { DatePickerInput } from "../FormInputs/DatePickerInput";
 import TextAreaInput from "../FormInputs/TextAreaInput";
 import RadioInput from "../FormInputs/RadioInput";
 import ImageInput from "../FormInputs/ImageInput";
+import { StepFormProps } from "./BioDataForm";
 
-export default function ProfileInfoForm({page}:{page:string}){
+export default function ProfileInfoForm({
+  page,
+  title,
+  description
+}:StepFormProps){
 
   const [isloading, setIsLoading]=useState(false)
   const [dob, setDOB] = useState<Date>()
@@ -58,10 +63,10 @@ export default function ProfileInfoForm({page}:{page:string}){
       <div className="w-full">
       <div className="text-center border-b border-gray-200 pb-4">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
-        Bio Data
+        {title}
       </h1>        
         <p className="text-muted-foreground text-balance">
-          Enter your information to create an account
+        {description}
         </p>
       </div>
       <form className="py-4 px-4 mx-auto " onSubmit={handleSubmit(onSubmit)}>
@@ -75,7 +80,15 @@ export default function ProfileInfoForm({page}:{page:string}){
          placeholder="Enter Medical License"
          className="col-span-full sm:col-span-1"
          />
-
+        
+        <TextInput 
+        label="Years of Experience" 
+        register={register}
+         name="yearOfExperience" 
+         errors={errors} 
+         placeholder="Enter Years of Experience"
+         className="col-span-full sm:col-span-1"
+         />
       
         <DatePickerInput  
          className="col-span-full sm:col-span-1"

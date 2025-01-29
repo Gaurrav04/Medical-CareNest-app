@@ -17,7 +17,16 @@ import TextAreaInput from "../FormInputs/TextAreaInput";
 import RadioInput from "../FormInputs/RadioInput";
 import ImageInput from "../FormInputs/ImageInput";
 
-export default function BioDataForm({page}:{page:string}){
+export type StepFormProps={
+    page:string, 
+    title:string,
+    description:string
+}
+export default function BioDataForm({
+  page,
+  title,
+  description
+}:StepFormProps){
 
   const [isloading, setIsLoading]=useState(false)
   const [dob, setDOB] = useState<Date>()
@@ -58,10 +67,10 @@ export default function BioDataForm({page}:{page:string}){
       <div className="w-full">
       <div className="text-center border-b border-gray-200 pb-4">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
-        Bio Data
+        {title}
       </h1>        
         <p className="text-muted-foreground text-balance">
-          Enter your information to create an account
+          {description}
         </p>
       </div>
       <form className="py-4 px-4 mx-auto " onSubmit={handleSubmit(onSubmit)}>

@@ -20,7 +20,7 @@ export const ourFileRouter = {
   
   doctorProfessionDocs: f({
     pdf: {
-      maxFileSize: "4MB",
+      maxFileSize: "4MB", maxFileCount: 4
     },
   })
     .onUploadComplete(async ({ metadata, file }) => {
