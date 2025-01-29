@@ -25,7 +25,7 @@ export default function RegisterWithBg({
   const {register,handleSubmit,reset, formState:{errors}}=useForm<RegisterInputProps>();
   const router = useRouter()
   async function onSubmit (data: RegisterInputProps){
-    // console.log(data);
+    //  console.log(data);
     setIsLoading(true);
    
     data.role = role;

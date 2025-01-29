@@ -23,7 +23,7 @@ export default function TextInput({
   type="text", 
   placeholder,
   page,
-  className="col-span-full"
+  className="col-span-full",
 }:TextInputProps) {
   return (
     <div className={cn("grid gap-2", className)}>

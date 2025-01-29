@@ -4,6 +4,9 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import { ThemeProvider } from "@/components/theme-provider"
 import { siteConfig } from "@/config/site";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -79,6 +82,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 
       >
+        <NextSSRPlugin
+          routerConfig={extractRouterConfig(ourFileRouter)}
+        />
         <Providers>
         <ThemeProvider
             attribute="class"

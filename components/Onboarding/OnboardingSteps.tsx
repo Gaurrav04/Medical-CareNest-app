@@ -6,16 +6,22 @@ import React from 'react';
 import BioDataForm from "./BioDataForm"
 import ContactInfo from "./ContactInfo"
 import ProfessionInfo from "./ProfessionInfo"
+import ProfileInfoForm from './ProfileInfoForm';
 
 export default function OnboardingSteps({id}:{id:string}){
     const params = useSearchParams();
-    const page = params.get("page") ?? 5;
+    const page = params.get("page")??"bio-data";
     console.log(page);
     const steps = [
         {
             title: "Bio Data",
             page: "bio-data",
-            component: <BioDataForm/>
+            component: <BioDataForm page={page}/>
+        },
+        {
+            title: "Profile Information",
+            page: "profile",
+            component: <ProfileInfoForm page={page}/>
         },
         {
             title: "Contact Information",

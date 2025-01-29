@@ -17,7 +17,7 @@ import TextAreaInput from "../FormInputs/TextAreaInput";
 import RadioInput from "../FormInputs/RadioInput";
 import ImageInput from "../FormInputs/ImageInput";
 
-export default function BioDataForm({page}:{page:string}){
+export default function ProfileInfoForm({page}:{page:string}){
 
   const [isloading, setIsLoading]=useState(false)
   const [dob, setDOB] = useState<Date>()
@@ -66,48 +66,38 @@ export default function BioDataForm({page}:{page:string}){
       </div>
       <form className="py-4 px-4 mx-auto " onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-4 grid-cols-2">
-      <TextInput 
-      label="Full Name" 
-      register={register} 
-      name="fullName" 
-      errors={errors}
-      placeholder="Eg John "
-      className="col-span-full sm:col-span-1"
-
-      />
-
-       <TextInput 
-        label="Last Name" 
-        register={register}
-         name="lastName" 
-         errors={errors} 
-         placeholder="Eg Doe"
-         className="col-span-full sm:col-span-1"
-        />
 
         <TextInput 
-        label="Middle Name(optional)" 
+        label="Medical License" 
         register={register}
-         name="middleName" 
+         name="medicalLicense" 
          errors={errors} 
-         placeholder="Eg A"
+         placeholder="Enter Medical License"
          className="col-span-full sm:col-span-1"
          />
 
-         <DatePickerInput  
+      
+        <DatePickerInput  
          className="col-span-full sm:col-span-1"
-         date={dob} 
-         setDate={setDOB}
-         title="Date of Birth"
+         date={expiry} 
+         setDate={setExpiry}
+         title="Medical License Expiry"
          />
 
-        <RadioInput 
-        radioOptions={genderOptions}
-        errors={errors} 
-        name="gender"
-        title="Gender" 
-        register={register}/>
 
+        <TextAreaInput
+        label="Enter your Biography" 
+        register={register}
+         name="bio" 
+         errors={errors} 
+         placeholder="Enter your Biography"
+         />
+        <ImageInput 
+          label="Professional Profile Image"
+          imageUrl={profileImage}
+          setImageUrl={setProfileImage}
+          endpoint = "doctorProfileImage"
+          />
       </div>
 
         <div className="mt-8 flex justify-center items-center">
