@@ -16,16 +16,22 @@ import { DatePickerInput } from "../FormInputs/DatePickerInput";
 import TextAreaInput from "../FormInputs/TextAreaInput";
 import RadioInput from "../FormInputs/RadioInput";
 import ImageInput from "../FormInputs/ImageInput";
+import { generateTrackingNumber } from "@/lib/generateTracking";
+import { createDoctorProfile } from "@/actions/onboarding";
 
 export type StepFormProps={
-    page:string, 
-    title:string,
-    description:string
+    page:string;
+    title:string;
+    description:string;
+    userId?:string;
+    nextPage?:string;
 }
 export default function BioDataForm({
   page,
   title,
-  description
+  description,
+  userId,
+  nextPage,
 }:StepFormProps){
 
   const [isloading, setIsLoading]=useState(false)
@@ -48,20 +54,26 @@ export default function BioDataForm({
   const {register,handleSubmit,reset, formState:{errors}}=useForm<BioDataFormProps>();
   const router = useRouter()
   async function onSubmit (data: BioDataFormProps){
+    setIsLoading(true);
     if(!dob){
       toast.error("Please select your date of birth");
       return;
     }
-    if(!expiry){
-      toast.error("Please select your License Expiry Date");
-      return;
-    }
+    data.userId = userId;
     data.dob = dob;
-    data.medicalLicenseExpiry = expiry;
+    data.trackingNumber= generateTrackingNumber()
     data.page = page;
     console.log("Form data:", data);
-    // setIsLoading(true);
  
+    try{
+      const newProfile  = await createDoctorProfile(data);
+      setIsLoading(false)
+      router.push(`/onboarding/${userId}?page=${nextPage}&&tracking=${data.trackingNumber}`);
+      console.log(newProfile)
+      
+    }catch (error){
+      console.log(error)
+    }
   }
     return (
       <div className="w-full">
@@ -75,10 +87,11 @@ export default function BioDataForm({
       </div>
       <form className="py-4 px-4 mx-auto " onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-4 grid-cols-2">
+        
       <TextInput 
       label="Full Name" 
       register={register} 
-      name="fullName" 
+      name="firstName" 
       errors={errors}
       placeholder="Eg John "
       className="col-span-full sm:col-span-1"
@@ -99,6 +112,7 @@ export default function BioDataForm({
         register={register}
          name="middleName" 
          errors={errors} 
+         isRequired={false}
          placeholder="Eg A"
          className="col-span-full sm:col-span-1"
          />

@@ -25,9 +25,56 @@ export type BioDataFormProps = {
     middleName?: string;
     dob?: Date;
     gender: string;
-    profilePicture?: string;
+    page: string;
+    userId?: string | undefined;
+    trackingNumber: string;
+};
+
+export type ProfileFormProps ={
+    profilePicture?:string;
     bio: string;
     page: string;
     medicalLicense: string;
     medicalLicenseExpiry?: Date;
+    yearOfExperience: number;
 };
+
+export type ContactFormProps ={
+    email: string;
+    phone: string;
+    country: string;
+    city: string;
+    state: string;
+    page: string;
+};
+
+export type EducationFormProps ={
+    medicalSchool: string;
+    graduationYear: number;
+    primarySpecializations: string;
+    otherSpecialties: string[];
+    boardCerticates: string[];
+    page: string;
+}
+
+export type PracticeFormProps ={
+   hospitalName: string;
+   hospitalAddress: string;
+   hospitalContactNumber: string;
+   hospitalEmailAddress: string;
+   hospitalWebsite?: string;
+   hospitalHoursOfOperation: number;
+   servicesOffered: string[];
+   insuranceAccepted: string;
+   languagesSpoken:string[];
+   page: string;
+};
+
+export type AdditionalFormProps ={
+   educationHistory: string;
+   research: string;
+   accomplishments: string;
+   additionalDocs: string[];
+   page: string;
+ };
+ 

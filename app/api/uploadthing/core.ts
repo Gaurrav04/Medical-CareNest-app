@@ -30,6 +30,18 @@ export const ourFileRouter = {
       console.log("File:", file);
       return { uploadedBy: "Gaurav" };
     }),
+    additionalDocs: f({
+      pdf: {
+        maxFileSize: "4MB", maxFileCount: 4
+      },
+    })
+      .onUploadComplete(async ({ metadata, file }) => {
+        // Log the uploaded file info and metadata
+        console.log("doctorProfessionDocs upload complete");
+        console.log("Metadata:", metadata);
+        console.log("File:", file);
+        return { uploadedBy: "Gaurav" };
+      }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

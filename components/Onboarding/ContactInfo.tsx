@@ -1,6 +1,6 @@
 "use client"
 
-import {BioDataFormProps } from "@/types/types";
+import {BioDataFormProps, ContactFormProps } from "@/types/types";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -41,19 +41,10 @@ export default function ContactInfo({
 
   // console.log(date);
 
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<BioDataFormProps>();
+  const {register,handleSubmit,reset, formState:{errors}}=useForm<ContactFormProps>();
   const router = useRouter()
-  async function onSubmit (data: BioDataFormProps){
-    if(!dob){
-      toast.error("Please select your date of birth");
-      return;
-    }
-    if(!expiry){
-      toast.error("Please select your License Expiry Date");
-      return;
-    }
-    data.dob = dob;
-    data.medicalLicenseExpiry = expiry;
+  async function onSubmit (data: ContactFormProps){
+    
     data.page = page;
     console.log("Form data:", data);
     // setIsLoading(true);
@@ -75,7 +66,7 @@ export default function ContactInfo({
         <TextInput 
         label="Email Address" 
         register={register}
-         name="emailAddress" 
+         name="email" 
          errors={errors} 
          placeholder="Eg Johndos@gmail.com"
          />

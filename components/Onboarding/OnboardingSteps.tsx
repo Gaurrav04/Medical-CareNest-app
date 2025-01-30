@@ -5,8 +5,11 @@ import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import BioDataForm from "./BioDataForm"
 import ContactInfo from "./ContactInfo"
-import ProfessionInfo from "./ProfessionInfo"
 import ProfileInfoForm from './ProfileInfoForm';
+import EducationInfo from './EducationInfo';
+import PracticeInfo from './PracticeInfo';
+import AdditionalInfo from './AdditionalInfo';
+import AvailabilityForm from './AvailabilityForm';
 
 export default function OnboardingSteps({id}:{id:string}){
     const params = useSearchParams();
@@ -16,55 +19,79 @@ export default function OnboardingSteps({id}:{id:string}){
         {
             title: "Bio Data",
             page: "bio-data",
-            component: <BioDataForm 
+            component: ( <BioDataForm 
+            userId={id}
             title="Bio Data" 
             description="Please fill in your Bio Data Info"
-            page={page}/>
+            page={page}
+            nextPage = "profile"
+            />
+            ),
         },
         {
             title: "Profile Information",
             page: "profile",
-            component: <ProfileInfoForm 
+            component: (<ProfileInfoForm 
             title="Profile Information" 
             description="Please fill in your Profile Info"
-            page={page}/>
+            page={page}
+            nextPage = "contact"
+            />
+            ),
         },
         {
             title: "Contact Information",
             page: "contact",
-            component: <ContactInfo
+            component: (<ContactInfo
             title="Contact Information" 
             description="Please fill in your Contact Info"
-            page={page}/>
-        },
-        {
-            title: "Profession Information",
-            page: "profession",
-            component: <ProfessionInfo
-            title="Profession Information" 
-            description="Please fill in your Profession Info"
             page={page}
+            nextPage = "education"
             />
+            ),
         },
         {
             title: "Education Information",
             page: "education",
-            component: <></>
+            component: ( <EducationInfo
+            title="Profession Information" 
+            description="Please fill in your Education Info"
+            page={page}
+            nextPage = "practice"
+            />
+            ),
         },
         {
             title: "Practice Information",
             page: "practice",
-            component: <></>
+            component: ( <PracticeInfo
+            title="Profession Information" 
+            description="Please fill in your Practice Info"
+            page={page}
+            nextPage = "additional"
+            />
+            ),
         },
         {
             title: "Additional Information",
             page: "additional",
-            component: <></>
+            component: (<AdditionalInfo
+            title="Additional Information" 
+            description="Please fill in your Additional Info"
+            page={page}
+            nextPage = "availability"
+            />
+            ),
         },
         {
             title: "Availability",
             page: "availability",
-            component: <></>
+            component: (<AvailabilityForm
+            title="Availability Information" 
+            description="Please fill in your Availability Info"
+            page={page}
+            />
+            ),
         },
     ];
     const currentStep = steps.find((steps)=>steps.page===page)
@@ -72,7 +99,7 @@ export default function OnboardingSteps({id}:{id:string}){
     return (
         <div className="grid grid-cols-12 mx-auto rounded-lg shadow-inner
         overflow-hidden border border-slate-300 min-h-screen bg-slate-100">
-          <div className="col-span-full sm:col-span-3 divide-y-2 divide-gray-200">
+          <div className="col-span-full sm:col-span-3 divide-y-2 divide-gray-200 bg-gray-300 h-full">
 
       
           {

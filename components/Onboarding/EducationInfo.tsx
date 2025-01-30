@@ -1,6 +1,6 @@
 "use client"
 
-import {BioDataFormProps } from "@/types/types";
+import {EducationFormProps } from "@/types/types";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,8 +21,9 @@ import SelectInput from "../FormInputs/SelectInput";
 import ArrayItemsInput from "../FormInputs/ArrayInput";
 import MultipleImageInput from "../FormInputs/MultipleImageInput";
 import MultipleFileUpload from "../FormInputs/MultipleFileUpload";
+import ShadSelectInput from "../FormInputs/ShadSelectInput";
 
-export default function ProfessionInfo({
+export default function EducationInfo({
   page,
   title,
   description
@@ -33,7 +34,6 @@ export default function ProfessionInfo({
   const [expiry, setExpiry] = useState<Date>()
   const [profileImage,setProfileImage] = useState("")
   const [skills, setSkills] = useState<string[]>([]); // State to hold array of items
-
   const specialities = [
     {
         label: "Medicine",
@@ -44,17 +44,28 @@ export default function ProfessionInfo({
       value: "health",
   },
 ];
+const insuranceOptions = [
+  {
+      label: "Yes",
+      value: "yes",
+  },
+  {
+      label: "No",
+      value: "no",
+  },
+];
+
 
   // console.log(date);
   const [otherSpecialties, setOthereSpecialities] = useState([])
   const [docs, setDocs] = useState([])
+  const [primarySpecializations,setPrimarySpecializations] = useState("")
+
   
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<BioDataFormProps>();
+  const {register,handleSubmit,reset, formState:{errors}}=useForm<EducationFormProps>();
   const router = useRouter()
-  async function onSubmit (data: BioDataFormProps){
+  async function onSubmit (data: EducationFormProps){
   
-    data.dob = dob;
-    data.medicalLicenseExpiry = expiry;
     data.page = page;
     console.log("Form data:", data);
     // setIsLoading(true);
@@ -89,27 +100,27 @@ export default function ProfessionInfo({
          placeholder="Enter your Grad Year"
          className="col-span-full sm:col-span-1"
          />
-          <SelectInput
-            options={specialities} 
-            label="Select Your Primary Specializations"
-            name="primarySpecializations"
-            register={register}
-            className="col-span-full sm:col-span-1"
-          />
+           
+        <ShadSelectInput
+        label="Select Your Primary Specializations"
+        optionTitle="Primary Specializations"
+        options={specialities}
+        selectedOption={primarySpecializations}
+        setSelectedOption={setPrimarySpecializations}
+        />
 
-           <ArrayItemsInput
-            setItems={setOthereSpecialities}
-            items={otherSpecialties} 
-            itemTitle="Add Other Specialties" 
-            
+        <ArrayItemsInput
+        setItems={setOthereSpecialities}
+        items={otherSpecialties} 
+        itemTitle="Add Other Specialties" 
+        />
 
-          />
-          <MultipleFileUpload
-          label="Upload your Academic Documents (Max of 4 Documents)"
-          files={docs}
-          setFiles={setDocs}
-          endpoint="doctorProfessionDocs"
-          />
+        <MultipleFileUpload
+        label="Upload your Academic Documents (Max of 4 Documents)"
+        files={docs}
+        setFiles={setDocs}
+        endpoint="doctorProfessionDocs"
+        />
     
       </div>
 

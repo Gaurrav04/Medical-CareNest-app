@@ -1,6 +1,6 @@
 "use client"
 
-import {BioDataFormProps } from "@/types/types";
+import {BioDataFormProps, ProfileFormProps } from "@/types/types";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -41,22 +41,17 @@ export default function ProfileInfoForm({
 
   // console.log(date);
 
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<BioDataFormProps>();
+  const {register,handleSubmit,reset, formState:{errors}}=useForm<ProfileFormProps>();
   const router = useRouter()
-  async function onSubmit (data: BioDataFormProps){
-    if(!dob){
-      toast.error("Please select your date of birth");
-      return;
-    }
+  async function onSubmit (data: ProfileFormProps){
     if(!expiry){
       toast.error("Please select your License Expiry Date");
       return;
     }
-    data.dob = dob;
-    data.medicalLicenseExpiry = expiry;
     data.page = page;
-    console.log("Form data:", data);
-    // setIsLoading(true);
+    data.medicalLicenseExpiry = expiry;
+    console.log(data)
+  
  
   }
     return (
@@ -105,6 +100,7 @@ export default function ProfileInfoForm({
          errors={errors} 
          placeholder="Enter your Biography"
          />
+
         <ImageInput 
           label="Professional Profile Image"
           imageUrl={profileImage}
