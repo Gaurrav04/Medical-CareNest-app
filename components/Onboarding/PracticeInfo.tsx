@@ -20,11 +20,15 @@ import ArrayItemsInput from "../FormInputs/ArrayInput";
 import SelectInput from "../FormInputs/SelectInput";
 import ShadSelectInput from "../FormInputs/ShadSelectInput";
 import { StepFormProps } from "./BioDataForm";
+import { updateDoctorProfile } from "@/actions/onboarding";
 
 export default function BioDataForm({
   page,
   title,
-  description
+  description,
+  formId,
+  userId,
+  nextPage,
 }:StepFormProps){
 
   const [isloading, setIsLoading]=useState(false)
@@ -52,14 +56,34 @@ const [insuranceAccepted,setInsuranceAccepted] = useState("")
 
   const {register,handleSubmit,reset, formState:{errors}}=useForm<PracticeFormProps>();
   const router = useRouter()
-  async function onSubmit (data: PracticeFormProps){
-
+  async function onSubmit (data: PracticeFormProps) {
     data.page = page;
+    data.servicesOffered = services;
+    data.languagesSpoken = languages;
+    data.insuranceAccepted = insuranceAccepted;
+  
+    if (data.hospitalHoursOfOperation) {
+      data.hospitalHoursOfOperation = Number(data.hospitalHoursOfOperation);
+    }
+  
     console.log("Form data:", data);
-    // setIsLoading(true);
-    
-    
+    setIsLoading(true);
+  
+    try {
+      const res = await updateDoctorProfile(formId, data);
+      if (res?.status === 201) {
+        setIsLoading(false);
+        router.push(`/onboarding/${userId}?page=${nextPage}`);
+      } else {
+        setIsLoading(false);
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Error updating profile");
+    }
   }
+  
     return (
       <div className="w-full">
       <div className="text-center border-b border-gray-200 pb-4">

@@ -91,6 +91,7 @@ export default function OnboardingSteps({id}:{id:string}){
             description="Please fill in your Additional Info"
             page={page}
             nextPage = "availability"
+            formId={doctorProfileId}
             userId={id}
             />
             ),
