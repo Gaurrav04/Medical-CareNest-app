@@ -73,3 +73,34 @@ export async function updateDoctorProfile(id: string | undefined, data:any) {
     }
   }
 }
+
+export async function getApplicationByTrack(trackingNumber: string) {
+  if (trackingNumber) {
+    try {
+      const existingProfile = await prismaClient.doctorProfile.findUnique({
+        where: {
+          trackingNumber, 
+        },
+      });
+      if(!existingProfile){
+        return {
+          data: null,
+          error: "Wrong Tracking Number",
+          status: 400,
+        };
+      }
+      return {
+        data: existingProfile,
+        error: null,
+        status: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        error: "Something Went wrong",
+        status: 500,
+    }
+  }
+}
+}

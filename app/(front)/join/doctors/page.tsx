@@ -21,13 +21,13 @@ const cards = [
   {
     title: "Begin Your Journey",
     description:"Start a new application to join our network of healthcare providers.",
-    link: "/",
+    link: "/register?role=Doctor&plan=free",
     linkTitle:"Start a new application"
   },
   {
     title: "Resume Application",
     description:"Pick up where you left off and complete your onboarding process.Schedule for physical Approval",
-    link: "/",
+    link: "/onboarding/resume",
     linkTitle:"Continue your Application"
   },
   {
