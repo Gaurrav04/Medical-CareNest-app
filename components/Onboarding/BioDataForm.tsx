@@ -18,6 +18,7 @@ import RadioInput from "../FormInputs/RadioInput";
 import ImageInput from "../FormInputs/ImageInput";
 import { generateTrackingNumber } from "@/lib/generateTracking";
 import { createDoctorProfile } from "@/actions/onboarding";
+import { useOnboardingContext } from "@/context/context";
 
 export type StepFormProps={
     page:string;
@@ -25,6 +26,8 @@ export type StepFormProps={
     description:string;
     userId?:string;
     nextPage?:string;
+    formId?: string;
+
 }
 export default function BioDataForm({
   page,
@@ -32,12 +35,17 @@ export default function BioDataForm({
   description,
   userId,
   nextPage,
+  formId="",
 }:StepFormProps){
-
+// Get context data
+const { truckingNumber,
+  setTruckingNumber,
+  doctorProfileId,
+  setDoctorProfileId} = useOnboardingContext();
+console.log(truckingNumber,doctorProfileId)
   const [isloading, setIsLoading]=useState(false)
   const [dob, setDOB] = useState<Date>()
-  const [expiry, setExpiry] = useState<Date>()
-  const [profileImage,setProfileImage] = useState("")
+ 
   const genderOptions = [
     {
         label: "Male",
@@ -53,26 +61,34 @@ export default function BioDataForm({
 
   const {register,handleSubmit,reset, formState:{errors}}=useForm<BioDataFormProps>();
   const router = useRouter()
-  async function onSubmit (data: BioDataFormProps){
+  async function onSubmit(data: BioDataFormProps) {
     setIsLoading(true);
-    if(!dob){
+    if (!dob) {
       toast.error("Please select your date of birth");
       return;
     }
     data.userId = userId;
     data.dob = dob;
-    data.trackingNumber= generateTrackingNumber()
+    data.trackingNumber = generateTrackingNumber().toString(); 
     data.page = page;
     console.log("Form data:", data);
- 
-    try{
-      const newProfile  = await createDoctorProfile(data);
-      setIsLoading(false)
-      router.push(`/onboarding/${userId}?page=${nextPage}&&tracking=${data.trackingNumber}`);
-      console.log(newProfile)
-      
-    }catch (error){
-      console.log(error)
+  
+    try {
+      const res = await createDoctorProfile(data);
+      if (res.status === 201) {
+        setIsLoading(false);
+        toast.success("Doctor Profile Created")
+        setTruckingNumber(res.data?.trackingNumber?.toString() ?? ""); 
+        setDoctorProfileId(res.data?.id?.toString() ?? "");
+        router.push(`/onboarding/${userId}?page=${nextPage}`);
+        console.log(res.data);
+      }else{
+        setIsLoading(false)
+        throw new Error("Something went wrong")
+       }
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
     }
   }
     return (

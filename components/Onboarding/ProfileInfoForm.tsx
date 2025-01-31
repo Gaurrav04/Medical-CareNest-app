@@ -17,107 +17,117 @@ import TextAreaInput from "../FormInputs/TextAreaInput";
 import RadioInput from "../FormInputs/RadioInput";
 import ImageInput from "../FormInputs/ImageInput";
 import { StepFormProps } from "./BioDataForm";
+import { useOnboardingContext } from "@/context/context";
+import { updateDoctorProfile } from "@/actions/onboarding";
 
 export default function ProfileInfoForm({
   page,
   title,
-  description
-}:StepFormProps){
-
-  const [isloading, setIsLoading]=useState(false)
-  const [dob, setDOB] = useState<Date>()
-  const [expiry, setExpiry] = useState<Date>()
-  const [profileImage,setProfileImage] = useState("")
+  description,
+  formId,
+  userId,
+  nextPage,
+}: StepFormProps) {
+  const [isloading, setIsLoading] = useState(false);
+  const [dob, setDOB] = useState<Date>();
+  const [expiry, setExpiry] = useState<Date>();
+  const [profileImage, setProfileImage] = useState("");
+  const { truckingNumber, doctorProfileId } = useOnboardingContext();
   const genderOptions = [
-    {
-        label: "Male",
-        value: "male",
-    },
-    {
-        label: "Female",
-        value: "female",
-    },
-];
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+  ];
 
-  // console.log(date);
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<ProfileFormProps>();
+  const router = useRouter();
 
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<ProfileFormProps>();
-  const router = useRouter()
-  async function onSubmit (data: ProfileFormProps){
-    if(!expiry){
+  async function onSubmit(data: ProfileFormProps) {
+    setIsLoading(true);
+    if (!expiry) {
       toast.error("Please select your License Expiry Date");
       return;
     }
     data.page = page;
     data.medicalLicenseExpiry = expiry;
-    console.log(data)
-  
- 
+    data.yearOfExperience = Number(data.yearOfExperience);
+    data.profilePicture = profileImage;
+
+    try {
+      const res = await updateDoctorProfile(formId, data);
+      if (res?.status === 201) {
+        setIsLoading(false);
+        router.push(`/onboarding/${userId}?page=${nextPage}`);
+      } else {
+        setIsLoading(false);
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Error updating profile");
+    }
   }
-    return (
-      <div className="w-full">
+
+  return (
+    <div className="w-full">
       <div className="text-center border-b border-gray-200 pb-4">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
-        {title}
-      </h1>        
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2">
+          {title}
+        </h1>
         <p className="text-muted-foreground text-balance">
-        {description}
+          {description}
         </p>
       </div>
-      <form className="py-4 px-4 mx-auto " onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid gap-4 grid-cols-2">
-
-        <TextInput 
-        label="Medical License" 
-        register={register}
-         name="medicalLicense" 
-         errors={errors} 
-         placeholder="Enter Medical License"
-         className="col-span-full sm:col-span-1"
-         />
-        
-        <TextInput 
-        label="Years of Experience" 
-        register={register}
-         name="yearOfExperience" 
-         errors={errors} 
-         placeholder="Enter Years of Experience"
-         className="col-span-full sm:col-span-1"
-         />
-      
-        <DatePickerInput  
-         className="col-span-full sm:col-span-1"
-         date={expiry} 
-         setDate={setExpiry}
-         title="Medical License Expiry"
-         />
-
-
-        <TextAreaInput
-        label="Enter your Biography" 
-        register={register}
-         name="bio" 
-         errors={errors} 
-         placeholder="Enter your Biography"
-         />
-
-        <ImageInput 
-          label="Professional Profile Image"
-          imageUrl={profileImage}
-          setImageUrl={setProfileImage}
-          endpoint = "doctorProfileImage"
+      <form className="py-4 px-4 mx-auto" onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid gap-4 grid-cols-2">
+          <TextInput
+            label="Medical License"
+            register={register}
+            name="medicalLicense"
+            errors={errors}
+            placeholder="Enter Medical License"
+            className="col-span-full sm:col-span-1"
           />
-      </div>
 
-        <div className="mt-8 flex justify-center items-center">
-        <SubmitButton
-        title="Save and Continue" 
-        isloading={isloading} 
-        loadingTitle="Saving please wait..."/>
+          <TextInput
+            label="Years of Experience"
+            register={register}
+            name="yearOfExperience"
+            errors={errors}
+            placeholder="Enter Years of Experience"
+            className="col-span-full sm:col-span-1"
+          />
+
+          <DatePickerInput
+            className="col-span-full sm:col-span-1"
+            date={expiry}
+            setDate={setExpiry}
+            title="Medical License Expiry"
+          />
+
+          <TextAreaInput
+            label="Enter your Biography"
+            register={register}
+            name="bio"
+            errors={errors}
+            placeholder="Enter your Biography"
+          />
+
+          <ImageInput
+            label="Professional Profile Image"
+            imageUrl={profileImage}
+            setImageUrl={setProfileImage}
+            endpoint="doctorProfileImage"
+          />
         </div>
 
+        <div className="mt-8 flex justify-center items-center">
+          <SubmitButton
+            title="Save and Continue"
+            isloading={isloading}
+            loadingTitle="Saving please wait..."
+          />
+        </div>
       </form>
     </div>
-    )
-  }
-  
+  );
+}

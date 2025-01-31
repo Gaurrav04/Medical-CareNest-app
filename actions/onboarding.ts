@@ -32,16 +32,44 @@ export async function createDoctorProfile(formData: any) {
         medicalLicense: formData.medicalLicense || "",
       },
     });
-
+     console.log(newProfile)
     return {
       data: newProfile,
       error: null,
-      status: 200,
+      status: 201,
     };
   } catch (error) {
     console.error("Error creating doctor profile:", error);
     return {
+      data: null,
       error: "Something went wrong",
+      status: 500,
     };
+  }
+}
+
+
+export async function updateDoctorProfile(id: string | undefined, data:any) {
+  if (id) {
+    try {
+      const updatedProfile = await prismaClient.doctorProfile.update({
+        where: {
+          id: parseInt(id), 
+        },
+        data,
+      });
+      return {
+        data: updatedProfile,
+        error: null,
+        status: 201,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        error: "Profile was not updated",
+        status: 500,
+      };
+    }
   }
 }

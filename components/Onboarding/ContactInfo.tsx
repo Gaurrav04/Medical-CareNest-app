@@ -17,11 +17,15 @@ import TextAreaInput from "../FormInputs/TextAreaInput";
 import RadioInput from "../FormInputs/RadioInput";
 import ImageInput from "../FormInputs/ImageInput";
 import { StepFormProps } from "./BioDataForm";
+import { updateDoctorProfile } from "@/actions/onboarding";
 
 export default function ContactInfo({
   page,
   title,
-  description
+  description,
+  formId,
+  userId,
+  nextPage,
 }:StepFormProps){
 
   const [isloading, setIsLoading]=useState(false)
@@ -44,12 +48,27 @@ export default function ContactInfo({
   const {register,handleSubmit,reset, formState:{errors}}=useForm<ContactFormProps>();
   const router = useRouter()
   async function onSubmit (data: ContactFormProps){
+    setIsLoading(true);
     
     data.page = page;
     console.log("Form data:", data);
     // setIsLoading(true);
- 
+
+    try {
+      const res = await updateDoctorProfile(formId, data);
+      if (res?.status === 201) {
+        setIsLoading(false);
+        router.push(`/onboarding/${userId}?page=${nextPage}`);
+      } else {
+        setIsLoading(false);
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Error updating profile");
+    }
   }
+ 
     return (
       <div className="w-full">
       <div className="text-center border-b border-gray-200 pb-4">
@@ -120,4 +139,5 @@ export default function ContactInfo({
     </div>
     )
   }
+
   

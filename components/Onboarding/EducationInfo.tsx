@@ -22,11 +22,15 @@ import ArrayItemsInput from "../FormInputs/ArrayInput";
 import MultipleImageInput from "../FormInputs/MultipleImageInput";
 import MultipleFileUpload from "../FormInputs/MultipleFileUpload";
 import ShadSelectInput from "../FormInputs/ShadSelectInput";
+import { updateDoctorProfile } from "@/actions/onboarding";
 
 export default function EducationInfo({
   page,
   title,
-  description
+  description,
+  formId,
+  userId,
+  nextPage,
 }:StepFormProps){
 
   const [isloading, setIsLoading]=useState(false)
@@ -67,9 +71,26 @@ const insuranceOptions = [
   async function onSubmit (data: EducationFormProps){
   
     data.page = page;
+    data.primarySpecializations = primarySpecializations;
+    data.otherSpecialties = otherSpecialties;
+    data.boardCerticates = docs
     console.log("Form data:", data);
     // setIsLoading(true);
- 
+
+
+    try {
+      const res = await updateDoctorProfile(formId, data);
+      if (res?.status === 201) {
+        setIsLoading(false);
+        router.push(`/onboarding/${userId}?page=${nextPage}`);
+      } else {
+        setIsLoading(false);
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Error updating profile");
+    }
   }
     return (
       <div className="w-full">

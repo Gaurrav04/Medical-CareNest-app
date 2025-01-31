@@ -65,7 +65,7 @@ model DoctorProfile  {
   id            Int        @id @default(autoincrement())
   userId        Int    @unique
   user          User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  trackingNumber  String
+  trackingNumber  String @unique
   firstName     String
   lastName      String
   middleName    String?
