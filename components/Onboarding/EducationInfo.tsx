@@ -33,11 +33,7 @@ export default function EducationInfo({
   nextPage,
 }:StepFormProps){
 
-  const [isloading, setIsLoading]=useState(false)
-  const [dob, setDOB] = useState<Date>()
-  const [expiry, setExpiry] = useState<Date>()
-  const [profileImage,setProfileImage] = useState("")
-  const [skills, setSkills] = useState<string[]>([]); // State to hold array of items
+  const [isloading, setIsLoading]=useState(false);
   const specialities = [
     {
         label: "Medicine",
@@ -68,16 +64,20 @@ const insuranceOptions = [
   
   const {register,handleSubmit,reset, formState:{errors}}=useForm<EducationFormProps>();
   const router = useRouter()
-  async function onSubmit (data: EducationFormProps){
-  
+  async function onSubmit(data: EducationFormProps) {
     data.page = page;
     data.primarySpecializations = primarySpecializations;
     data.otherSpecialties = otherSpecialties;
-    data.boardCerticates = docs
+  
+    data.boardCerticates = docs.map((doc: any) => doc.url || doc.name); 
+  
+    if (data.graduationYear) {
+      data.graduationYear = Number(data.graduationYear); 
+    }
+  
     console.log("Form data:", data);
-    // setIsLoading(true);
-
-
+    setIsLoading(true);
+  
     try {
       const res = await updateDoctorProfile(formId, data);
       if (res?.status === 201) {
@@ -92,6 +92,7 @@ const insuranceOptions = [
       toast.error("Error updating profile");
     }
   }
+  
     return (
       <div className="w-full">
       <div className="text-center border-b border-gray-200 pb-4">
