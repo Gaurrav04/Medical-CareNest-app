@@ -6,21 +6,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
-import { createUser } from "@/actions/users";
-import { UserRole } from "@prisma/client";
 import toast from "react-hot-toast";
-import { Button } from "../ui/button";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { DatePickerInput } from "../FormInputs/DatePickerInput";
-import TextAreaInput from "../FormInputs/TextAreaInput";
-import RadioInput from "../FormInputs/RadioInput";
-import ImageInput from "../FormInputs/ImageInput";
 import ArrayItemsInput from "../FormInputs/ArrayInput";
-import SelectInput from "../FormInputs/SelectInput";
 import ShadSelectInput from "../FormInputs/ShadSelectInput";
 import { StepFormProps } from "./BioDataForm";
 import { updateDoctorProfile } from "@/actions/onboarding";
+import { useOnboardingContext } from "@/context/context";
 
 export default function BioDataForm({
   page,
@@ -32,9 +24,8 @@ export default function BioDataForm({
 }:StepFormProps){
 
   const [isloading, setIsLoading]=useState(false)
-  const [dob, setDOB] = useState<Date>()
-  const [expiry, setExpiry] = useState<Date>()
-  const [profileImage,setProfileImage] = useState("")
+  const{practiceData,savedDBData, setPracticeData } = useOnboardingContext()
+
 
   const insuranceOptions = [
     {
@@ -46,15 +37,32 @@ export default function BioDataForm({
         value: "no",
     },
 ];
-
-const [services,setServices] = useState([])
-const [languages,setLanguages] = useState([])
-const [insuranceAccepted,setInsuranceAccepted] = useState("")
+const initialServices = 
+practiceData.servicesOffered.length>0 ? practiceData.servicesOffered: savedDBData.servicesOffered;
+const initialLanguages = 
+practiceData.languagesSpoken.length>0 ? practiceData.languagesSpoken: savedDBData.languagesSpoken;
+const initialInsuranceStatus = practiceData.insuranceAccepted || savedDBData.insuranceAccepted;
+const [services,setServices] = useState(initialServices);
+console.log(services,initialServices)
+const [languages,setLanguages] = useState(initialLanguages);
+const [insuranceAccepted,setInsuranceAccepted] = useState(initialInsuranceStatus);
 
 
   // console.log(date);
 
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<PracticeFormProps>();
+  const {register,handleSubmit,reset, formState:{errors}}=useForm<PracticeFormProps>({
+    defaultValues:{
+      hospitalName: practiceData.hospitalName || savedDBData.hospitalName,
+      hospitalAddress: practiceData.hospitalAddress || savedDBData.hospitalAddress,
+      hospitalContactNumber: practiceData.hospitalContactNumber || savedDBData.hospitalContactNumber,
+      hospitalEmailAddress: practiceData.hospitalEmailAddress || savedDBData.hospitalEmailAddress,
+      hospitalWebsite: practiceData.hospitalWebsite || savedDBData.hospitalWebsite,
+      hospitalHoursOfOperation:practiceData.hospitalHoursOfOperation || savedDBData.hospitalHoursOfOperation,
+      insuranceAccepted: practiceData.insuranceAccepted || savedDBData.insuranceAccepted,
+      languagesSpoken:practiceData.languagesSpoken || savedDBData.languagesSpoken,
+      page: practiceData.page || savedDBData.page,
+    },
+  });
   const router = useRouter()
   async function onSubmit (data: PracticeFormProps) {
     data.page = page;
@@ -71,8 +79,11 @@ const [insuranceAccepted,setInsuranceAccepted] = useState("")
   
     try {
       const res = await updateDoctorProfile(formId, data);
+      setPracticeData(data);
       if (res?.status === 201) {
         setIsLoading(false);
+        toast.success("Practice Info Updated Succesfully")
+
         router.push(`/onboarding/${userId}?page=${nextPage}`);
       } else {
         setIsLoading(false);
@@ -86,7 +97,7 @@ const [insuranceAccepted,setInsuranceAccepted] = useState("")
   
     return (
       <div className="w-full">
-      <div className="text-center border-b border-gray-200 pb-4">
+      <div className="text-center border-b border-gray-200 dark:border-slate-600 pb-4">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
         {title}
       </h1>        

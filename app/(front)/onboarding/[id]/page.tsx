@@ -4,6 +4,8 @@ import OnboardingSteps from "@/components/Onboarding/OnboardingSteps"
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;  
 
+  //Get existing doctor profile
+
   console.log("params", id); 
   return (
     <div className="bg-teal-600 dark:bg-gray-800">

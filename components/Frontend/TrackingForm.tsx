@@ -7,8 +7,6 @@ import { Alert } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Loader } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -21,13 +19,9 @@ import {
 import { Input } from "../ui/input";
 import { getApplicationByTrack } from "@/actions/onboarding";
 import SubmitButton from "../FormInputs/SubmitButton";
-import { UserRole } from "@prisma/client";
+import { useOnboardingContext } from "@/context/context";
+import toast from "react-hot-toast";
 
-interface TrackingFormProps {
-  role?: UserRole;
-  userToken?: number;
-  id: string;
-}
 
 const FormSchema = z.object({
   trackingNumber: z.string().min(10, {
@@ -35,7 +29,8 @@ const FormSchema = z.object({
   }),
 });
 
-export default function TrackingForm({ role, userToken, id }: TrackingFormProps) {
+export default function TrackingForm() {
+  const {setSavedDBData} = useOnboardingContext()
   const [loading, setLoading] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
 
@@ -52,11 +47,16 @@ export default function TrackingForm({ role, userToken, id }: TrackingFormProps)
     setLoading(true);
     setShowNotification(false); // Reset notification before request
     try {
+      //Make Request
       const res = await getApplicationByTrack(data.trackingNumber);
+
+      //Save to the Context Api
+      setSavedDBData(res?.data)
       if (res?.status === 404) {
         setShowNotification(true);
         setLoading(false);
       } else if (res?.status === 200) {
+        toast.success("Redirecting you");
         setShowNotification(false);
         setLoading(false);
         router.push(`/onboarding/${res.data?.userId}?page=${res.data?.page}`);

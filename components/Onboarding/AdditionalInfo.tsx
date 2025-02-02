@@ -1,27 +1,17 @@
 "use client"
 
 import {AdditionalFormProps, PracticeFormProps } from "@/types/types";
-import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
-import { createUser } from "@/actions/users";
-import { UserRole } from "@prisma/client";
 import toast from "react-hot-toast";
-import { Button } from "../ui/button";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { DatePickerInput } from "../FormInputs/DatePickerInput";
 import TextAreaInput from "../FormInputs/TextAreaInput";
-import RadioInput from "../FormInputs/RadioInput";
-import ImageInput from "../FormInputs/ImageInput";
-import ArrayItemsInput from "../FormInputs/ArrayInput";
-import SelectInput from "../FormInputs/SelectInput";
-import ShadSelectInput from "../FormInputs/ShadSelectInput";
 import MultipleFileUpload from "../FormInputs/MultipleFileUpload";
 import { StepFormProps } from "./BioDataForm";
-import { updateDoctorProfile } from "@/actions/onboarding";
+import { CompleteProfile, updateDoctorProfile } from "@/actions/onboarding";
+import { useOnboardingContext } from "@/context/context";
+import { File } from "@/components/FormInputs/MultipleFileUpload"; 
 
 export default function AdditionalInfo({
   page,
@@ -31,14 +21,23 @@ export default function AdditionalInfo({
   userId,
   nextPage,
 }:StepFormProps){
-
+  const {additionalData,savedDBData,setAdditionalData} = useOnboardingContext()
+  const initialDocs = additionalData.additionalDocs || savedDBData.additionalDocs;
   const [isloading, setIsLoading]=useState(false);
-  const [additionalDocs, setAdditionalDocs] = useState([]);
+  const [additionalDocs, setAdditionalDocs] = useState<File[]>([initialDocs]);
+  console.log(formId)
 
 
   // console.log(date);
 
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<AdditionalFormProps>();
+  const {register,handleSubmit,reset, formState:{errors}}=useForm<AdditionalFormProps>({
+    defaultValues:{
+      educationHistory: additionalData.educationHistory || savedDBData.educationHistory,
+      research: additionalData.research || savedDBData.research,
+      accomplishments: additionalData.accomplishments || savedDBData.accomplishments,
+      page: additionalData.page || savedDBData.page,
+    }
+  });
   const router = useRouter()
   async function onSubmit(data: AdditionalFormProps) {
     data.page = page;
@@ -47,10 +46,16 @@ export default function AdditionalInfo({
     setIsLoading(true);
   
     try {
-      const res = await updateDoctorProfile(formId, data);
+      const res = await CompleteProfile(formId, data);
+      setAdditionalData(data);
       if (res?.status === 201) {
         setIsLoading(false);
-        router.push(`/onboarding/${userId}?page=${nextPage}`);
+
+        //Send a welcome email
+        toast.success("Profile Completed Succesfully")
+
+        //Route to login
+        router.push("/login");
       } else {
         setIsLoading(false);
         throw new Error("Something went wrong");
@@ -65,7 +70,7 @@ export default function AdditionalInfo({
       
     return (
       <div className="w-full">
-      <div className="text-center border-b border-gray-200 pb-4">
+      <div className="text-center border-b border-gray-200 dark:border-slate-600 pb-4">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
         {title}
       </h1>        
@@ -111,7 +116,7 @@ export default function AdditionalInfo({
 
         <div className="mt-8 flex justify-center items-center">
         <SubmitButton
-        title="Save and Continue" 
+        title="Complete" 
         isloading={isloading} 
         loadingTitle="Saving please wait..."/>
         </div>

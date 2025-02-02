@@ -6,18 +6,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
-import { createUser } from "@/actions/users";
-import { UserRole } from "@prisma/client";
 import toast from "react-hot-toast";
-import { Button } from "../ui/button";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { DatePickerInput } from "../FormInputs/DatePickerInput";
-import TextAreaInput from "../FormInputs/TextAreaInput";
 import RadioInput from "../FormInputs/RadioInput";
-import ImageInput from "../FormInputs/ImageInput";
 import { generateTrackingNumber } from "@/lib/generateTracking";
-import { createDoctorProfile } from "@/actions/onboarding";
+import { createDoctorProfile, updateDoctorProfile } from "@/actions/onboarding";
 import { useOnboardingContext } from "@/context/context";
 
 export type StepFormProps={
@@ -42,9 +36,14 @@ const { truckingNumber,
   setTruckingNumber,
   doctorProfileId,
   setDoctorProfileId} = useOnboardingContext();
-console.log(truckingNumber,doctorProfileId)
+console.log(truckingNumber,doctorProfileId);
   const [isloading, setIsLoading]=useState(false)
-  const [dob, setDOB] = useState<Date>()
+  const {bioData,savedDBData,setBioData} = useOnboardingContext()
+  const initialDOB = bioData.dob ? new Date(bioData.dob) : undefined || savedDBData.dob;
+  const [dob, setDOB] = useState<Date | undefined>(initialDOB);
+  const defaultData = bioData || savedDBData
+  console.log(savedDBData)
+
  
   const genderOptions = [
     {
@@ -59,41 +58,89 @@ console.log(truckingNumber,doctorProfileId)
 
   // console.log(date);
 
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<BioDataFormProps>();
+  const {register,handleSubmit,reset, formState:{errors}}=useForm<BioDataFormProps>({
+    defaultValues:  { 
+    firstName: bioData.firstName || savedDBData.firstName,
+    lastName: bioData.lastName || savedDBData.lastName,
+    middleName: bioData.middleName || savedDBData.middleName,
+    dob: bioData.dob || savedDBData.dob,
+    gender: bioData.gender || savedDBData.gender,
+    page: bioData.page || savedDBData.page,
+    trackingNumber: bioData.trackingNumber || savedDBData.trackingNumber,
+    },
+  });
   const router = useRouter()
   async function onSubmit(data: BioDataFormProps) {
     setIsLoading(true);
+    
     if (!dob) {
       toast.error("Please select your date of birth");
+      setIsLoading(false);
       return;
     }
-    data.userId = userId;
-    data.dob = dob;
-    data.trackingNumber = generateTrackingNumber().toString(); 
+  
+    if (!userId) {
+      toast.error("User ID is missing.");
+      return;
+    }
+  
+    data.userId = userId as string;
+    
+    data.dob = dob.toISOString(); 
+    data.trackingNumber = generateTrackingNumber().toString();
     data.page = page;
+  
     console.log("Form data:", data);
   
     try {
-      const res = await createDoctorProfile(data);
-      if (res.status === 201) {
+      const requestPayload = {
+        ...data,
+        userId: parseInt(data.userId,10), 
+      };
+     if(formId){
+      const res = await updateDoctorProfile(formId,data);
+      if (res && res.status === 201) {
         setIsLoading(false);
-        toast.success("Doctor Profile Created")
-        setTruckingNumber(res.data?.trackingNumber?.toString() ?? ""); 
+        toast.success("Bio Data Updated Successfully");   
+        setTruckingNumber(res.data?.trackingNumber?.toString() ?? "");
         setDoctorProfileId(res.data?.id?.toString() ?? "");
+             
+        //Route to the Next Form
         router.push(`/onboarding/${userId}?page=${nextPage}`);
-        console.log(res.data);
-      }else{
-        setIsLoading(false)
-        throw new Error("Something went wrong")
-       }
+        } else {
+        setIsLoading(false);
+        throw new Error("Something went wrong");
+        }
+     }else {
+      const res = await createDoctorProfile(requestPayload);
+
+      //save data to the context api
+      setBioData(data)
+      if (res.status === 201) {
+      setIsLoading(false);
+      toast.success("Doctor Profile Created");
+     
+      setTruckingNumber(res.data?.trackingNumber?.toString() ?? "");
+      setDoctorProfileId(res.data?.id?.toString() ?? "");
+           
+      //Route to the Next Form
+      router.push(`/onboarding/${userId}?page=${nextPage}`);
+      } else {
+      setIsLoading(false);
+      throw new Error("Something went wrong");
+      }
+     }
+   
     } catch (error) {
       setIsLoading(false);
       console.log(error);
     }
   }
+  
+  
     return (
       <div className="w-full">
-      <div className="text-center border-b border-gray-200 pb-4">
+      <div className="text-center border-b border-gray-200 dark:border-slate-600 pb-4">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
         {title}
       </h1>        

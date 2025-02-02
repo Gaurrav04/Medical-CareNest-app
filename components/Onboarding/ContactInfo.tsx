@@ -1,23 +1,15 @@
 "use client"
 
 import {BioDataFormProps, ContactFormProps } from "@/types/types";
-import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
-import { createUser } from "@/actions/users";
-import { UserRole } from "@prisma/client";
 import toast from "react-hot-toast";
-import { Button } from "../ui/button";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { DatePickerInput } from "../FormInputs/DatePickerInput";
-import TextAreaInput from "../FormInputs/TextAreaInput";
-import RadioInput from "../FormInputs/RadioInput";
-import ImageInput from "../FormInputs/ImageInput";
 import { StepFormProps } from "./BioDataForm";
 import { updateDoctorProfile } from "@/actions/onboarding";
+import { useOnboardingContext } from "@/context/context";
 
 export default function ContactInfo({
   page,
@@ -27,25 +19,22 @@ export default function ContactInfo({
   userId,
   nextPage,
 }:StepFormProps){
-
+  const {contactData,savedDBData,setContactData} = useOnboardingContext()
   const [isloading, setIsLoading]=useState(false)
-  const [dob, setDOB] = useState<Date>()
-  const [expiry, setExpiry] = useState<Date>()
-  const [profileImage,setProfileImage] = useState("")
-  const genderOptions = [
-    {
-        label: "Male",
-        value: "male",
-    },
-    {
-        label: "Female",
-        value: "female",
-    },
-];
+
 
   // console.log(date);
 
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<ContactFormProps>();
+  const {register,handleSubmit,reset, formState:{errors}}=useForm<ContactFormProps>({
+    defaultValues:{
+      email: contactData.email || savedDBData.email,
+      phone: contactData.phone || savedDBData.phone,
+      country: contactData.country || savedDBData.country,
+      city: contactData.city || savedDBData.city,
+      state: contactData.state || savedDBData.state,
+      page: contactData.page || savedDBData.page,
+    }
+  });
   const router = useRouter()
   async function onSubmit (data: ContactFormProps){
     setIsLoading(true);
@@ -56,8 +45,12 @@ export default function ContactInfo({
 
     try {
       const res = await updateDoctorProfile(formId, data);
+      setContactData(data)
       if (res?.status === 201) {
         setIsLoading(false);
+        toast.success("Contact Info Updated Succesfully")
+
+
         router.push(`/onboarding/${userId}?page=${nextPage}`);
       } else {
         setIsLoading(false);
@@ -71,7 +64,7 @@ export default function ContactInfo({
  
     return (
       <div className="w-full">
-      <div className="text-center border-b border-gray-200 pb-4">
+      <div className="text-center border-b border-gray-200 dark:border-slate-600 pb-4">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
         {title}
       </h1>        

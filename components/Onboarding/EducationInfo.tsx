@@ -1,28 +1,19 @@
 "use client"
 
-import {EducationFormProps } from "@/types/types";
-import Link from "next/link";
+import { EducationFormProps } from "@/types/types";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
-import { createUser } from "@/actions/users";
-import { UserRole } from "@prisma/client";
 import toast from "react-hot-toast";
-import { Button } from "../ui/button";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { DatePickerInput } from "../FormInputs/DatePickerInput";
-import TextAreaInput from "../FormInputs/TextAreaInput";
-import RadioInput from "../FormInputs/RadioInput";
-import ImageInput from "../FormInputs/ImageInput";
 import { StepFormProps } from "./BioDataForm";
-import SelectInput from "../FormInputs/SelectInput";
 import ArrayItemsInput from "../FormInputs/ArrayInput";
-import MultipleImageInput from "../FormInputs/MultipleImageInput";
-import MultipleFileUpload from "../FormInputs/MultipleFileUpload";
 import ShadSelectInput from "../FormInputs/ShadSelectInput";
 import { updateDoctorProfile } from "@/actions/onboarding";
+import { useOnboardingContext } from "@/context/context";
+import { File } from "@/components/FormInputs/MultipleFileUpload"; // Import the File type
+import MultipleFileUpload from "@/components/FormInputs/MultipleFileUpload"; 
 
 export default function EducationInfo({
   page,
@@ -31,57 +22,64 @@ export default function EducationInfo({
   formId,
   userId,
   nextPage,
-}:StepFormProps){
+}: StepFormProps) {
 
-  const [isloading, setIsLoading]=useState(false);
+  const { educationData,savedDBData, setEducationData } = useOnboardingContext();
+  const [isLoading, setIsLoading] = useState(false);
+
   const specialities = [
     {
-        label: "Medicine",
-        value: "medicine",
-    }, 
+      label: "Medicine",
+      value: "medicine",
+    },
     {
       label: "Health",
       value: "health",
-  },
-];
-const insuranceOptions = [
-  {
-      label: "Yes",
-      value: "yes",
-  },
-  {
-      label: "No",
-      value: "no",
-  },
-];
+    },
+  ];
 
+  // Ensure otherSpecialties is an array of strings
+  const initialSpecialities = 
+  educationData.otherSpecialties.length> 0 ? educationData.otherSpecialties: savedDBData.otherSpecialties;
+  const [otherSpecialties, setOtherSpecialties] = useState<string[]>(initialSpecialities); // Fix type here
+  const initialDocs = educationData.boardCerticates || savedDBData.boardCerticates;
+  const [docs, setDocs] = useState<File[]>(initialDocs); // Ensure docs is of File type
 
-  // console.log(date);
-  const [otherSpecialties, setOthereSpecialities] = useState([])
-  const [docs, setDocs] = useState([])
-  const [primarySpecializations,setPrimarySpecializations] = useState("")
+  const [primarySpecializations, setPrimarySpecializations] = useState<string>(
+    educationData.primarySpecializations || savedDBData.primarySpecializations || "");
+  console.log(docs);
 
-  
-  const {register,handleSubmit,reset, formState:{errors}}=useForm<EducationFormProps>();
-  const router = useRouter()
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<EducationFormProps>({
+    defaultValues: {
+      medicalSchool: educationData.medicalSchool || savedDBData.medicalSchool,
+      graduationYear:educationData.graduationYear || savedDBData.graduationYear,
+      primarySpecializations: educationData.primarySpecializations || savedDBData.primarySpecializations,
+      page: educationData.page || savedDBData.page,
+    },
+  });
+  const router = useRouter();
+
   async function onSubmit(data: EducationFormProps) {
     data.page = page;
     data.primarySpecializations = primarySpecializations;
     data.otherSpecialties = otherSpecialties;
-  
-    data.boardCerticates = docs.map((doc: any) => doc.url || doc.name); 
-  
+
+    data.boardCerticates = docs.map((doc: any) => doc.url || doc.name);
+
     if (data.graduationYear) {
-      data.graduationYear = Number(data.graduationYear); 
+      data.graduationYear = Number(data.graduationYear);
     }
-  
+
     console.log("Form data:", data);
     setIsLoading(true);
-  
+
     try {
       const res = await updateDoctorProfile(formId, data);
+      setEducationData(data);
       if (res?.status === 201) {
         setIsLoading(false);
+        toast.success("Education Info Updated Successfully");
+
         router.push(`/onboarding/${userId}?page=${nextPage}`);
       } else {
         setIsLoading(false);
@@ -92,69 +90,67 @@ const insuranceOptions = [
       toast.error("Error updating profile");
     }
   }
-  
-    return (
-      <div className="w-full">
-      <div className="text-center border-b border-gray-200 pb-4">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
-        {title}
-      </h1>        
+
+  return (
+    <div className="w-full">
+      <div className="text-center border-b border-gray-200 dark:border-slate-600 pb-4">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 ">
+          {title}
+        </h1>
         <p className="text-muted-foreground text-balance">
-        {description}
+          {description}
         </p>
       </div>
       <form className="py-4 px-4 mx-auto " onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid gap-4 grid-cols-2">
+        <div className="grid gap-4 grid-cols-2">
+          <TextInput
+            label="Medical School"
+            register={register}
+            name="medicalSchool"
+            errors={errors}
+            placeholder="Enter your Grad School Name"
+          />
 
-        <TextInput 
-        label="Medical School" 
-        register={register}
-         name="medicalSchool" 
-         errors={errors} 
-         placeholder="Enter your Grad School Name"
-         />
-        
-        <TextInput 
-        label="Graduation Year" 
-        register={register}
-         name="graduationYear" 
-         errors={errors} 
-         placeholder="Enter your Grad Year"
-         className="col-span-full sm:col-span-1"
-         />
-           
-        <ShadSelectInput
-        label="Select Your Primary Specializations"
-        optionTitle="Primary Specializations"
-        options={specialities}
-        selectedOption={primarySpecializations}
-        setSelectedOption={setPrimarySpecializations}
-        />
+          <TextInput
+            label="Graduation Year"
+            register={register}
+            name="graduationYear"
+            errors={errors}
+            placeholder="Enter your Grad Year"
+            className="col-span-full sm:col-span-1"
+          />
 
-        <ArrayItemsInput
-        setItems={setOthereSpecialities}
-        items={otherSpecialties} 
-        itemTitle="Add Other Specialties" 
-        />
+          <ShadSelectInput
+            label="Select Your Primary Specializations"
+            optionTitle="Primary Specializations"
+            options={specialities}
+            selectedOption={primarySpecializations}
+            setSelectedOption={setPrimarySpecializations}
+          />
 
-        <MultipleFileUpload
-        label="Upload your Academic Documents (Max of 4 Documents)"
-        files={docs}
-        setFiles={setDocs}
-        endpoint="doctorProfessionDocs"
-        />
-    
-      </div>
+          <ArrayItemsInput
+            setItems={setOtherSpecialties} // Corrected this
+            items={otherSpecialties} // Corrected this
+            itemTitle="Add Other Specialties"
+          />
+
+          <MultipleFileUpload
+            label="Upload your Academic Documents (Max of 4 Documents)"
+            files={docs}
+            setFiles={setDocs}
+            endpoint="doctorProfessionDocs"
+          />
+        </div>
 
         <div className="mt-8 flex justify-center items-center">
-        <SubmitButton
-        title="Save and Continue" 
-        isloading={isloading} 
-        loadingTitle="Saving please wait..."/>
+          <SubmitButton
+            title="Save and Continue"
+            isloading={isLoading}
+            loadingTitle="Saving please wait..."
+          />
         </div>
 
       </form>
     </div>
-    )
-  }
-  
+  );
+}

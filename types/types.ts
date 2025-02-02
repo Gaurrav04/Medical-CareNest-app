@@ -1,3 +1,4 @@
+import { File } from "@/components/FormInputs/MultipleFileUpload";
 import { UserRole } from "@prisma/client";
 
 export type ServiceProps={  title: string,
@@ -23,19 +24,19 @@ export type BioDataFormProps = {
     firstName: string;
     lastName: string;
     middleName?: string;
-    dob?: Date;
+    dob: string | Date;
     gender: string;
     page: string;
-    userId?: string | undefined;
+    userId?: string; 
     trackingNumber: string;
-};
+  };
 
 export type ProfileFormProps ={
-    profilePicture?:string;
+    profilePicture:string;
     bio: string;
     page: string;
     medicalLicense: string;
-    medicalLicenseExpiry?: Date;
+    medicalLicenseExpiry: any;
     yearOfExperience: number;
 };
 
@@ -53,7 +54,7 @@ export type EducationFormProps ={
     graduationYear: number;
     primarySpecializations: string;
     otherSpecialties: string[];
-    boardCerticates: string[];
+    boardCerticates: any;
     page: string;
 }
 
@@ -74,7 +75,7 @@ export type AdditionalFormProps ={
    educationHistory: string;
    research: string;
    accomplishments: string;
-   additionalDocs: string[];
+   additionalDocs: any;
    page: string;
  };
  

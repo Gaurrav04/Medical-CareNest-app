@@ -9,13 +9,12 @@ import ProfileInfoForm from './ProfileInfoForm';
 import EducationInfo from './EducationInfo';
 import PracticeInfo from './PracticeInfo';
 import AdditionalInfo from './AdditionalInfo';
-import AvailabilityForm from './AvailabilityForm';
 import { useOnboardingContext } from '@/context/context';
 
 export default function OnboardingSteps({id}:{id:string}){
     const params = useSearchParams();
     const page = params.get("page")??"bio-data";
-    const { truckingNumber,doctorProfileId} = useOnboardingContext();
+    const { truckingNumber,doctorProfileId, savedDBData} = useOnboardingContext();
     console.log(page);
     const steps = [
         {
@@ -27,7 +26,7 @@ export default function OnboardingSteps({id}:{id:string}){
             description="Please fill in your Bio Data Info"
             page={page}
             nextPage = "profile"
-            formId={doctorProfileId}
+            formId={doctorProfileId?doctorProfileId:savedDBData.id}
             />
             ),
         },
@@ -39,7 +38,7 @@ export default function OnboardingSteps({id}:{id:string}){
             description="Please fill in your Profile Info"
             page={page}
             nextPage = "contact"
-            formId={doctorProfileId}
+            formId={doctorProfileId?doctorProfileId:savedDBData.id}
             userId={id}
             />
             ),
@@ -52,7 +51,7 @@ export default function OnboardingSteps({id}:{id:string}){
             description="Please fill in your Contact Info"
             page={page}
             nextPage = "education"
-            formId={doctorProfileId}
+            formId={doctorProfileId?doctorProfileId:savedDBData.id}
             userId={id}
             />
             ),
@@ -65,7 +64,7 @@ export default function OnboardingSteps({id}:{id:string}){
             description="Please fill in your Education Info"
             page={page}
             nextPage = "practice"
-            formId={doctorProfileId}
+            formId={doctorProfileId?doctorProfileId:savedDBData.id}
             userId={id}
             />
             ),
@@ -74,11 +73,11 @@ export default function OnboardingSteps({id}:{id:string}){
             title: "Practice Information",
             page: "practice",
             component: ( <PracticeInfo
-            title="Profession Information" 
+            title="Practice Information" 
             description="Please fill in your Practice Info"
             page={page}
             nextPage = "additional"
-            formId={doctorProfileId}
+            formId={doctorProfileId?doctorProfileId:savedDBData.id}
             userId={id}
             />
             ),
@@ -90,32 +89,33 @@ export default function OnboardingSteps({id}:{id:string}){
             title="Additional Information" 
             description="Please fill in your Additional Info"
             page={page}
-            nextPage = "availability"
-            formId={doctorProfileId}
+            nextPage = "final"
+            formId={doctorProfileId?doctorProfileId:savedDBData.id}
             userId={id}
             />
             ),
         },
-        {
-            title: "Availability",
-            page: "availability",
-            component: (
-            <AvailabilityForm
-            title="Availability Information" 
-            description="Please fill in your Availability Info"
-            page={page}
-            formId={doctorProfileId}
-            userId={id}
-            />
-            ),
-        },
+        // {
+        //     title: "Availability",
+        //     page: "availability",
+        //     component: (
+        //     <AvailabilityForm
+        //     title="Availability Information" 
+        //     description="Please fill in your Availability Info"
+        //     page={page}
+        //     formId={doctorProfileId}
+        //     userId={id}
+        //     />
+        //     ),
+        // },
     ];
     const currentStep = steps.find((steps)=>steps.page===page)
     console.log(currentStep)
     return (
         <div className="grid grid-cols-12 mx-auto rounded-lg shadow-inner
-        overflow-hidden border border-slate-300 min-h-screen bg-slate-100">
-          <div className="col-span-full sm:col-span-3 divide-y-2 divide-gray-200 bg-gray-300 h-full">
+        overflow-hidden border border-slate-200 dark:border-slate-600 min-h-screen bg-slate-100 dark:bg-slate-900">
+          <div className="col-span-full sm:col-span-3 divide-y-2 divide-gray-200 
+           bg-gray-300 h-full dark:bg-slate-900">
 
       
           {
@@ -125,7 +125,7 @@ export default function OnboardingSteps({id}:{id:string}){
                     key={i}
                     href={`/onboarding/${id}?page=${step.page}`} 
                     className={cn("block py-3 px-4 bg-gray-200 text-gray-800 shadow-inner uppercase text-sm", 
-                        step.page === page?"bg-teal-800 text-gray-100":"")}
+                        step.page === page?"bg-teal-800 text-gray-100 ":"")}
                     >
                        {step.title}
                     </Link>
@@ -134,12 +134,16 @@ export default function OnboardingSteps({id}:{id:string}){
           }
          </div>
          <div className="col-span-full sm:col-span-9 p-4">
-           {truckingNumber &&  <p className="border-b border-gray-200 text-teal-500 pb-2">
-                Your Trucking Number is <span className="font-bold">{truckingNumber} </span> 
+           {truckingNumber || savedDBData.id &&  (<p className="border-b border-gray-200 dark:border-slate-600
+            text-teal-500 dark:text-white-400 pb-2">
+                Your Trucking Number is {" "}
+                <span className="font-bold">
+                    {truckingNumber ? truckingNumber : savedDBData.trackingNumber}
+                </span>{" "}
                 <span className="text-xs">
                 (Use this to check the status or resume application)</span>
                 </p>
-                }
+                )}
             {currentStep?.component}
         </div>
 
