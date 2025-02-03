@@ -26,7 +26,9 @@ export default function page() {
             <NewButton title="New Appointment" href="#"/>
            </div>
           </div>
-           <HomeDisplayCard/>
+           <div className="">
+            <h2>Detailed Page</h2>
+           </div>
         </div>
          </div>
     </div>
