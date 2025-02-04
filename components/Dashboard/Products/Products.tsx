@@ -134,7 +134,7 @@ export default function Products() {
                       <Badge variant="outline">Draft</Badge>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      $499.99
+                    ₹499.99
                     </TableCell>
                     <TableCell className="hidden md:table-cell">25</TableCell>
                     <TableCell className="hidden md:table-cell">
@@ -177,7 +177,7 @@ export default function Products() {
                       <Badge variant="outline">Active</Badge>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      $129.99
+                    ₹129.99
                     </TableCell>
                     <TableCell className="hidden md:table-cell">100</TableCell>
                     <TableCell className="hidden md:table-cell">
@@ -219,7 +219,7 @@ export default function Products() {
                     <TableCell>
                       <Badge variant="outline">Active</Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">$39.99</TableCell>
+                    <TableCell className="hidden md:table-cell">₹39.99</TableCell>
                     <TableCell className="hidden md:table-cell">50</TableCell>
                     <TableCell className="hidden md:table-cell">
                       2023-11-29 08:15 AM
@@ -260,7 +260,7 @@ export default function Products() {
                     <TableCell>
                       <Badge variant="secondary">Draft</Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">$2.99</TableCell>
+                    <TableCell className="hidden md:table-cell">₹2.99</TableCell>
                     <TableCell className="hidden md:table-cell">0</TableCell>
                     <TableCell className="hidden md:table-cell">
                       2023-12-25 11:59 PM
@@ -301,7 +301,7 @@ export default function Products() {
                     <TableCell>
                       <Badge variant="outline">Active</Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">$59.99</TableCell>
+                    <TableCell className="hidden md:table-cell">₹59.99</TableCell>
                     <TableCell className="hidden md:table-cell">75</TableCell>
                     <TableCell className="hidden md:table-cell">
                       2024-01-01 12:00 AM
@@ -343,7 +343,7 @@ export default function Products() {
                       <Badge variant="outline">Active</Badge>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      $199.99
+                    ₹199.99
                     </TableCell>
                     <TableCell className="hidden md:table-cell">30</TableCell>
                     <TableCell className="hidden md:table-cell">

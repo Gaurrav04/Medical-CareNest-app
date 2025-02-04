@@ -4,6 +4,7 @@ import { prismaClient } from "@/lib/db";
 import { Resend } from "resend";
 import { DoctorProfile } from "@prisma/client";
 import WelcomeEmail from "@/components/Emails/welcome-email";
+
 export async function createDoctorProfile(formData: any) {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -48,6 +49,23 @@ export async function createDoctorProfile(formData: any) {
     };
   }
 }
+export async function createAvailability(data: any) {
+
+  try {
+    const newAvail = await prismaClient.availability.create({
+      data,
+    });
+    console.log(newAvail);
+    return newAvail;
+  } catch (error) {
+    console.error("Error creating availability:", error);
+    return {
+      data: null,
+      error: "Something went wrong",
+      status: 500,
+    };
+  }
+}
 
 
 export async function updateDoctorProfile(id: string | undefined, data:any) {
@@ -69,6 +87,32 @@ export async function updateDoctorProfile(id: string | undefined, data:any) {
       return {
         data: null,
         error: "Profile was not updated",
+        status: 500,
+      };
+    }
+  }
+}
+
+export async function updateAvailabilityById(id: string | undefined, data:any) {
+  if (id) {
+    try {
+      const updatedAva = await prismaClient.availability.update({
+        where: {
+          id: parseInt(id), 
+        },
+        data,
+      });
+      console.log(updatedAva);
+      return {
+        data: updatedAva,
+        error: null,
+        status: 201,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        error: "Availability was not updated",
         status: 500,
       };
     }
@@ -156,4 +200,48 @@ export async function CompleteProfile(id: string | undefined, data:any) {
       };
     }
   }
+}
+
+export async function getDoctorProfileById(userId: string | undefined) {
+  if (userId) {
+    try {
+      const numericUserId = parseInt(userId, 10);
+      
+      if (isNaN(numericUserId)) {
+        return {
+          data: null,
+          error: "Invalid userId format",
+          status: 400,
+        };
+      }
+
+      const profile = await prismaClient.doctorProfile.findUnique({
+        where: {
+          userId: numericUserId,
+        },
+        include: {
+          availability: true,
+        },
+      });
+
+      console.log(profile);
+      return {
+        data: profile,
+        error: null,
+        status: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        error: "Profile was not fetched",
+        status: 500,
+      };
+    }
+  }
+  return {
+    data: null,
+    error: "userId is required",
+    status: 400,
+  };
 }

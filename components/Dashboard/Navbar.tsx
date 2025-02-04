@@ -60,7 +60,7 @@ export default function Navbar({session}:{session:Session}){
               <nav className="grid gap-2 text-lg font-medium">
                 <a href="##" className="flex items-center gap-2 text-lg font-semibold">
                   <Package className="h-6 w-6" />
-                  <span className="sr-only">Acme Inc</span>
+                  <span className="sr-only">CareNest</span>
                 </a>
                 <a
                   href="##"

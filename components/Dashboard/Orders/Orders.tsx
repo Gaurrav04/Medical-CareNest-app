@@ -75,7 +75,7 @@ export default function Orders() {
           >
             <CardHeader className="pb-2">
               <CardDescription>This Week</CardDescription>
-              <CardTitle className="text-4xl">$1329</CardTitle>
+              <CardTitle className="text-4xl">₹4249</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-muted-foreground text-xs">+25% from last week</div>
@@ -90,7 +90,7 @@ export default function Orders() {
           >
             <CardHeader className="pb-2">
               <CardDescription>This Month</CardDescription>
-              <CardTitle className="text-3xl">$5,329</CardTitle>
+              <CardTitle className="text-3xl">₹15,929</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-muted-foreground text-xs">+10% from last month</div>
@@ -182,7 +182,7 @@ export default function Orders() {
                       <TableCell className="hidden md:table-cell">
                         2023-06-23
                       </TableCell>
-                      <TableCell className="text-right">$250.00</TableCell>
+                      <TableCell className="text-right">₹250.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -204,7 +204,7 @@ export default function Orders() {
                       <TableCell className="hidden md:table-cell">
                         2023-06-24
                       </TableCell>
-                      <TableCell className="text-right">$150.00</TableCell>
+                      <TableCell className="text-right">₹150.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -226,7 +226,7 @@ export default function Orders() {
                       <TableCell className="hidden md:table-cell">
                         2023-06-25
                       </TableCell>
-                      <TableCell className="text-right">$350.00</TableCell>
+                      <TableCell className="text-right">₹350.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -248,7 +248,7 @@ export default function Orders() {
                       <TableCell className="hidden md:table-cell">
                         2023-06-26
                       </TableCell>
-                      <TableCell className="text-right">$450.00</TableCell>
+                      <TableCell className="text-right">₹450.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -270,7 +270,7 @@ export default function Orders() {
                       <TableCell className="hidden md:table-cell">
                         2023-06-23
                       </TableCell>
-                      <TableCell className="text-right">$250.00</TableCell>
+                      <TableCell className="text-right">₹250.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -292,7 +292,7 @@ export default function Orders() {
                       <TableCell className="hidden md:table-cell">
                         2023-06-23
                       </TableCell>
-                      <TableCell className="text-right">$250.00</TableCell>
+                      <TableCell className="text-right">₹250.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -314,7 +314,7 @@ export default function Orders() {
                       <TableCell className="hidden md:table-cell">
                         2023-06-24
                       </TableCell>
-                      <TableCell className="text-right">$150.00</TableCell>
+                      <TableCell className="text-right">₹150.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -336,7 +336,7 @@ export default function Orders() {
                       <TableCell className="hidden md:table-cell">
                         2023-06-26
                       </TableCell>
-                      <TableCell className="text-right">$450.00</TableCell>
+                      <TableCell className="text-right">₹450.00</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -364,7 +364,7 @@ export default function Orders() {
                   <span className="sr-only">Copy Order ID</span>
                 </Button>
               </CardTitle>
-              <CardDescription>Date: November 23, 2023</CardDescription>
+              <CardDescription>Date: November 23, 2024</CardDescription>
             </div>
             <div className="ml-auto flex items-center gap-1">
               <Button size="sm" variant="outline" className="h-8 gap-1">
@@ -401,32 +401,32 @@ export default function Orders() {
                   <span className="text-muted-foreground">
                     Glimmer Lamps x <span>2</span>
                   </span>
-                  <span>$250.00</span>
+                  <span>₹250.00</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <span className="text-muted-foreground">
                     Aqua Filters x <span>1</span>
                   </span>
-                  <span>$49.00</span>
+                  <span>₹49.00</span>
                 </li>
               </ul>
               <Separator className="my-2" />
               <ul className="grid gap-3">
                 <li className="flex items-center justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span>$299.00</span>
+                  <span>₹299.00</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <span className="text-muted-foreground">Shipping</span>
-                  <span>$5.00</span>
+                  <span>₹5.00</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <span className="text-muted-foreground">Tax</span>
-                  <span>$25.00</span>
+                  <span>₹25.00</span>
                 </li>
                 <li className="flex items-center justify-between font-semibold">
                   <span className="text-muted-foreground">Total</span>
-                  <span>$329.00</span>
+                  <span>₹329.00</span>
                 </li>
               </ul>
             </div>
@@ -483,7 +483,7 @@ export default function Orders() {
           </CardContent>
           <CardFooter className="bg-muted/50 flex flex-row items-center border-t px-6 py-3">
             <div className="text-muted-foreground text-xs">
-              Updated <time dateTime="2023-11-23">November 23, 2023</time>
+              Updated <time dateTime="2023-11-23">November 23, 2024</time>
             </div>
             <Pagination className="ml-auto mr-0 w-auto">
               <PaginationContent>

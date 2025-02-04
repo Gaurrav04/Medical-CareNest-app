@@ -134,16 +134,18 @@ export default function OnboardingSteps({id}:{id:string}){
           }
          </div>
          <div className="col-span-full sm:col-span-9 p-4">
-           {truckingNumber || savedDBData.id &&  (<p className="border-b border-gray-200 dark:border-slate-600
-            text-teal-500 dark:text-white-400 pb-2">
+         {((truckingNumber || savedDBData?.trackingNumber) && (
+            <p className="border-b border-gray-200 dark:border-slate-600
+            text-green-500 dark:text-white-400 pb-2">
                 Your Trucking Number is {" "}
                 <span className="font-bold">
                     {truckingNumber ? truckingNumber : savedDBData.trackingNumber}
                 </span>{" "}
                 <span className="text-xs">
                 (Use this to check the status or resume application)</span>
-                </p>
-                )}
+            </p>
+            ))}
+
             {currentStep?.component}
         </div>
 
