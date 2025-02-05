@@ -53,7 +53,16 @@ model User {
   password      String
   accounts      Account[]
   sessions      Session[]
-  doctorProfile DoctorProfile?
+  symptomIds    Int[]
+  doctorProfile     DoctorProfile?
+
+  serviceId        Int?   
+  service          Service?  @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  specialityId        Int?  
+  speciality          Speciality?   @relation(fields: [specialityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+
   isVerified    Boolean    @default(false)
   token         Int
   createdAt     DateTime   @default(now())
@@ -71,6 +80,37 @@ model Availability  {
   friday        String[]
   saturday      String[]
   sunday        String[]
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+
+model Service  {
+  id                     Int        @id @default(autoincrement())
+  doctors                User[]
+  title                  String
+  slug                   String @unique
+  imageUrl               String
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Speciality  {
+  id                     Int        @id @default(autoincrement())
+  doctors                User[]
+  title                  String
+  slug                   String @unique
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Symptom  {
+  id                     Int        @id @default(autoincrement())
+  title                  String
+  slug                   String @unique
 
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -126,3 +166,4 @@ model DoctorProfile  {
   createdAt     DateTime   @default(now())
   updatedAt     DateTime?  @updatedAt
 }
+

@@ -46,6 +46,9 @@ export default function Sidebar({ session }: { session: Session }) {
 
     ADMIN: [
       { title: "Dashboard", path: "/dashboard", icon: Home },
+      { title: "Services", path: "/dashboard/services", icon: Users },
+      { title: "Specialties", path: "/dashboard/specialties", icon: Users },
+      { title: "Symptoms", path: "/dashboard/symptoms", icon: Users },
       { title: "Doctors", path: "/dashboard/doctors", icon: Users },
       { title: "Patients", path: "/dashboard/patients", icon: Users },
       { title: "Appointments", path: "/dashboard/appointments", icon: Users },
