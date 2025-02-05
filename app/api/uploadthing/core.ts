@@ -17,6 +17,20 @@ export const ourFileRouter = {
       console.log("File:", file);
       return { uploadedBy: "Gaurav" };
     }),
+
+    serviceImage: f({
+      image: {
+        maxFileSize: "1MB",
+      },
+    })
+      .onUploadComplete(async ({ metadata, file }) => {
+        // Log the uploaded file info and metadata
+        console.log("serviceImage upload complete");
+        console.log("Metadata:", metadata);
+        console.log("File:", file);
+        return { uploadedBy: "Gaurav" };
+      }),
+
   
   doctorProfessionDocs: f({
     pdf: {

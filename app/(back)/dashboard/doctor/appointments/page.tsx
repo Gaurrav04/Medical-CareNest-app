@@ -2,6 +2,7 @@ import HomeDisplayCard from '@/components/Dashboard/Doctor/HomeDisplayCard'
 import ListPanel from '@/components/Dashboard/Doctor/ListPanel'
 import NewButton from '@/components/Dashboard/Doctor/NewButton'
 import PanelHeader from '@/components/Dashboard/Doctor/PanelHeader'
+import { CalendarDays } from 'lucide-react'
 import React from 'react'
 
 export default function page() {
@@ -13,7 +14,7 @@ export default function page() {
          <div className="grid grid-cols-12">
            {/* List Panel */}
            <div className="col-span-4 py-3 border-r border-gray-100">
-            <PanelHeader/>
+            <PanelHeader title="Appointments" count={10} icon={CalendarDays}/>
            <div className="px-3">
             <ListPanel/>
             </div>
