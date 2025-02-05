@@ -10,7 +10,7 @@ export default function PanelHeader() {
         <CalendarDays className="w-4 h-4 flex-shrink-0" />
         <span>Appointments</span>
         <span className="bg-white w-6 h-6 rounded-full flex items-center 
-        justify-center shadow-sm border text-xs">10</span>
+        justify-center shadow-sm border text-xs dark:text-slate-900">10</span>
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export default function ListPanel() {
         <Link 
           href="/dashboard/doctor/appointments/view/1" 
           className="border mb-2 border-gray-100 shadow-sm text-xs 
-          bg-white py-3 px-2 inline-block w-full rounded-md">
+          bg-white dark:text-slate-900 py-3 px-2 inline-block w-full rounded-md">
          <div className="flex justify-between items-center pb-2">
             <h2>Aditya Desai</h2>
             <span>4:00pm</span>

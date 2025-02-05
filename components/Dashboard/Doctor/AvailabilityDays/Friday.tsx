@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import SelectedTimes from './SelectedTimes';
 import { timesArray } from '@/config/constants';
 
-export default function Monday({
+export default function Friday({
     profile,
     day,
 }:{
@@ -17,6 +17,8 @@ export default function Monday({
 }) {
     const availability = profile?.availability||"";
     const initialData:string[] = profile?.availability[day]||[]
+
+
 
     const [selectedTimes,setSelectedTimes] = useState(initialData);
 
@@ -45,7 +47,7 @@ export default function Monday({
        try {
         if(profile?.id && availability?.id){
             const data = {
-                monday: selectedTimes,
+                friday: selectedTimes,
                 doctorProfileId: profile.id,
             };
             await updateAvailabilityById(availability?.id,data);
@@ -53,9 +55,9 @@ export default function Monday({
             toast.success("Settings Updated Successfully")
             // console.log(data);
         }else if(profile?.id){
-            // console.log("id not set");
+            console.log("id not set");
             const data = {
-                monday: selectedTimes,
+                friday: selectedTimes,
                 doctorProfileId: profile.id,
             };
             await createAvailability(data);
