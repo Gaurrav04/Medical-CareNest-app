@@ -9,7 +9,7 @@ export default function PanelHeader({
   icon
 }:{
   title:string;
-  count:number;
+  count:string;
   icon:LucideIcon
 }) {
   const Icon = icon

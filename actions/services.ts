@@ -30,31 +30,31 @@ export async function createService(data: ServiceProps){
         error:null,
       };
     } catch (error) {
-        console.log(error)
-        return {
-            data:null,
-            status:500,
-            error,
-          };
-    }
+      console.log('Error creating service:', error);
+      return {
+          data: null,
+          status: 500,
+          error: error instanceof Error ? error.message : 'Unknown error',
+      };
+  }
 }
 
 export async function createManyServices(){
   try {
   const services = [
     {
-      title: 'Telehealth',
-      slug: 'telehealth',
+      title: "Telehealth",
+      slug: "telehealth",
       imageUrl: "https://fb63r4sbul.ufs.sh/f/8htzWBGInkGDzwXvZVWyCdKbjP5wf6VJTasHQtDSWBpFI28c",
     },
     {
-      title: 'Video Prescription Refill',
-      slug: 'video-prescription-refill',
+      title: "Video Prescription Refill",
+      slug: "video-prescription-refill",
       imageUrl: "https://fb63r4sbul.ufs.sh/f/8htzWBGInkGDdUHU2COeMqkNtipcvL1h9jamyOWIRxwbV7EX",
     },
     {
-      title: 'In-Person doctor visit',
-      slug: 'in-person-doctor-visit',
+      title: "In-Person doctor visit",
+      slug: "in-person-doctor-visit",
       imageUrl: "https://fb63r4sbul.ufs.sh/f/8htzWBGInkGDb56iAzm9amdIlEwcG56sjz3Rigf07xoSHPMU",
     }, 
     {
@@ -107,4 +107,27 @@ export async function getServices(){
             error,
           };
     }
+}
+
+export async function deleteService(id: string){
+  try {
+    await prismaClient.service.delete({
+      where:{
+        id: parseInt(id, 10),
+      },
+    });
+    revalidatePath("/dashboard/services")
+    return {
+      ok:true,
+      status:200,
+      error:null,
+    };
+  } catch (error) {
+      console.log(error)
+      return {
+          data:null,
+          status:500,
+          error,
+        };
+  }
 }

@@ -14,7 +14,7 @@ export default function page() {
          <div className="grid grid-cols-12">
            {/* List Panel */}
            <div className="col-span-4 py-3 border-r border-gray-100">
-            <PanelHeader title="Appointments" count={10} icon={CalendarDays}/>
+            <PanelHeader title="Appointments" count="11" icon={CalendarDays}/>
            <div className="px-3">
             <ListPanel/>
             </div>
