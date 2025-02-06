@@ -7,21 +7,22 @@ import React from 'react'
 import { SpecialtyProps } from './SpecialtyForm'
 import { deleteSpecialty } from '@/actions/specialities'
 import toast from 'react-hot-toast'
-import { Speciality } from '@prisma/client'
+import { Symptom } from '@prisma/client'
 import { DeletePopup } from './DeletePopup'
+import { deleteSymptom } from '@/actions/symptom'
 
-export default function SpecialtyCard({ 
-  specialty 
+export default function SymptomCard({ 
+  symptom 
 }: { 
-  specialty: Speciality ;
+  symptom: Symptom ;
 }) {
 
   async function handleDelete(id: string) {
     if (id) {
-      await deleteSpecialty(id);
-      toast.success("Specialty Deleted Successfully");
+      await deleteSymptom(id);
+      toast.success("Symptom Deleted Successfully");
     } else {
-      toast.error("Invalid Specialty ID");
+      toast.error("Invalid Symptom ID");
     }
   }
   
@@ -30,13 +31,13 @@ export default function SpecialtyCard({
         className="border mb-2 border-gray-100 shadow-sm text-xs 
           bg-white dark:text-slate-900 py-3 px-4 w-full rounded-md flex items-center gap-4 justify-between">
       
-        <h2>{specialty.title}</h2>
+        <h2>{symptom.title}</h2>
         <div className="flex">
-          <Link className="text-blue-600" href={`/dashboard/services/update/${specialty.slug}`}>
+        <Link className="text-blue-600" href={`/dashboard/symptoms/update/${symptom.slug}`}>
           <Pencil className="w- h-4"/>
           </Link>
 
-          <DeletePopup title="service" id={specialty.id.toString()} handleDelete={handleDelete} />
+          <DeletePopup title="service" id={symptom.id.toString()} handleDelete={handleDelete} />
 
 
         </div>

@@ -24,9 +24,10 @@ export default function ServiceCard({service}:{service:Service}) {
   return (
      <div 
         className="border mb-2 border-gray-100 shadow-sm text-xs 
-          bg-white dark:text-slate-900 py-3 px-2 w-full rounded-md flex items-center gap-4">
+          bg-white dark:text-slate-900 py-3 px-2 w-full rounded-md flex items-center gap-4 justify-between">
         
-        <Image 
+       <div className="flex items-center gap-3">
+       <Image 
          src={service.imageUrl} 
          width={512} 
           height={512} 
@@ -35,6 +36,7 @@ export default function ServiceCard({service}:{service:Service}) {
           />
 
         <h2>{service.title}</h2>
+       </div>
         <div className="flex">
           <Link className="text-blue-600" href={`/dashboard/services/update/${service.slug}`}>
           <Pencil className="w- h-4"/>

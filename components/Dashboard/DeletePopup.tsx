@@ -31,7 +31,7 @@ import { Trash } from "lucide-react"
           <AlertDialogHeader>
             <AlertDialogTitle className="text-red-600">Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
+              This action cannot be undone. This will permanently delete your {" "}
               {title}
             </AlertDialogDescription>
           </AlertDialogHeader>

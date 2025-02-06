@@ -11,54 +11,36 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { X } from "lucide-react";
 import generateSlug from "@/utils/generateSlug";
-import { createManyServices, createService, updateService } from "@/actions/services";
-import { Service } from "@prisma/client";
+import { createManyServices, createService } from "@/actions/services";
+import { createManySpecialties, createSpecialty } from "@/actions/specialities";
+import { createManySymptoms, createSymptom } from "@/actions/symptom";
 
-export type ServiceProps={
-    title: string,
-    imageUrl: string,
-    slug: string,
-}
+export type SymptomProps = { 
+  title: string;
+  slug: string;
+};
 
-export default function ServiceForm({
-  title,
-  initialData,
-}:{
-  title:string, 
-  initialData?: Service;
-}) {
-  const editingId = initialData?.id?.toString() || "";  
+
+export default function SymptomForm() {
   const [isloading, setIsLoading] = useState(false);
-  const initialImageUrl = initialData?.imageUrl||""
-  const [imageUrl, setImageUrl] = useState(initialImageUrl);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ServiceProps>({
-    defaultValues: {
-      title: initialData?.title
-    },
-  });
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<SymptomProps >();
   const router = useRouter();
 
-  async function onSubmit(data: ServiceProps) {
+  async function onSubmit(data: SymptomProps ) {
     setIsLoading(true)
     const slug = generateSlug(data.title)
-    data.imageUrl = imageUrl;
     data.slug = slug
     console.log(data);
-    if(editingId) {
-      await updateService(editingId,data)
-    toast.success("Service Updated Successfully")
-    }else {
-      await createService(data)
-    toast.success("Service Created Successfully")
-    }
+    await createSymptom(data)
+    toast.success("Symptom Created Successfully")
     reset()
-    router.push("/dashboard/services")
+    router.push("/dashboard/symptoms")
   }
   async function handleCreateMany(){
     setIsLoading(true)
     try{
-      await createManyServices()
+      await createManySymptoms()
       setIsLoading(false)
   }catch (error) {
     console.log(error)
@@ -69,14 +51,14 @@ export default function ServiceForm({
       <div className="text-center border-b border-gray-200 dark:border-slate-600 py-4">
         <div className="flex items-center justify-between px-6">
         <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight">
-          {title}
+          Create Symptom
         </h1>
-        {/* <Button tyep="button" onClick={handleCreateMany}>
+        {/* <Button type="button" onClick={handleCreateMany}>
           {isloading?"Creating...":"Create Many"}
         </Button> */}
 
-        <Button type="button" asChild variant={"outline"}>
-          <Link href="/dashboard/services">
+        <Button asChild variant={"outline"}>
+          <Link href="/dashboard/symptoms">
           <X className="w-4 h-4"/>
           </Link>
         </Button>
@@ -85,31 +67,30 @@ export default function ServiceForm({
       <form className="py-4 px-4 mx-auto" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4 grid-cols-2">
           <TextInput
-            label="Service Title"
+            label="Symptom Title"
             register={register}
             name="title"
             errors={errors}
-            placeholder="Enter Service Title"
+            placeholder="Enter Symptom Title"
           />
 
-          <ImageInput
-            label="Professional Profile Image"
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
-            endpoint="serviceImage"
-          />
         </div>
 
         <div className="mt-8 flex justify-between gap-4 items-center">
-        <Button type="button" asChild variant={"outline"}>
-          <Link href="/dashboard/services">
+        <Button asChild variant={"outline"}>
+          <Link href="/dashboard/symptoms">
            Cancel
           </Link>
         </Button>
+
+        <Button asChild variant={"outline"}>
+         Create Many Symptoms
+        </Button>
+
             <SubmitButton
-            title={editingId ? "Update Service":"Create Service"}
+            title="Create Symptom"
             isloading={isloading}
-            loadingTitle={editingId ? "Updating please wait...":"Saving please wait..."}
+            loadingTitle="Saving please wait..."
           />
         </div>
       </form>

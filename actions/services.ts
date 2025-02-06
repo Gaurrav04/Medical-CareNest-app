@@ -39,6 +39,42 @@ export async function createService(data: ServiceProps){
   }
 }
 
+export async function updateService(id:string, data: ServiceProps){
+  try {
+  const existingService = await prismaClient.service.findUnique({
+      where:{
+        id: parseInt(id, 10),
+      }
+  })
+  if(!existingService){
+      return{
+          data:null,
+          status:404,
+          error:"Service with that does exist",
+      };
+  }
+  const updatedService = await prismaClient.service.update({
+      where:{
+        id: parseInt(id, 10)
+      }, data
+    });
+    revalidatePath("/dashboard/services")
+    console.log(updatedService)
+    return {
+      data:updatedService,
+      status:201,
+      error:null,
+    };
+  } catch (error) {
+    console.log('Error creating service:', error);
+    return {
+        data: null,
+        status: 500,
+        error: error instanceof Error ? error.message : 'Unknown error',
+    };
+}
+}
+
 export async function createManyServices(){
   try {
   const services = [
@@ -107,6 +143,30 @@ export async function getServices(){
             error,
           };
     }
+}
+
+export async function getServiceByslug(slug:string){
+  try {
+   if(slug) {
+    const service = await prismaClient.service.findUnique({
+      where:{
+        slug,
+      },
+    });
+    return {
+      data:service,
+      status:200,
+      error:null,
+    };
+   }
+  } catch (error) {
+      console.log(error)
+      return {
+          data:null,
+          status:500,
+          error,
+        };
+  }
 }
 
 export async function deleteService(id: string){
