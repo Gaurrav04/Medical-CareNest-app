@@ -12,7 +12,8 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import generateSlug from "@/utils/generateSlug";
 import { createManyServices, createService } from "@/actions/services";
-import { createManySpecialties, createSpecialty } from "@/actions/specialities";
+import { createManySpecialties, createSpecialty, updateSpecialty } from "@/actions/specialities";
+import { Speciality } from "@prisma/client";
 
 export type SpecialtyProps = { 
   title: string;
@@ -20,12 +21,20 @@ export type SpecialtyProps = {
 };
 
 
-export default function SpecialtyForm() {
+export default function SpecialtyForm({
+  title,
+  initialData
+}:{
+  title:string,
+  initialData?: Speciality
+}) {
   const [isloading, setIsLoading] = useState(false);
-
-  const [imageUrl, setImageUrl] = useState("");
-
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<SpecialtyProps>();
+  const editingId = initialData?.id?.toString() || "";  
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<SpecialtyProps>({
+    defaultValues: {
+      title:initialData?.title
+    }
+  });
   const router = useRouter();
 
   async function onSubmit(data: SpecialtyProps) {
@@ -33,8 +42,13 @@ export default function SpecialtyForm() {
     const slug = generateSlug(data.title)
     data.slug = slug
     console.log(data);
-    await createSpecialty(data)
+    if(editingId){
+      await updateSpecialty(editingId,data);
+    toast.success("Specialty Updated Successfully")
+    }else {
+      await createSpecialty(data)
     toast.success("Specialty Created Successfully")
+    }
     reset()
     router.push("/dashboard/specialties")
   }
@@ -88,10 +102,10 @@ export default function SpecialtyForm() {
          Create Many Specialties
         </Button>
 
-            <SubmitButton
-            title="Create Specialty"
+        <SubmitButton
+            title={editingId ? "Update Specialty":"Create Specialty"}
             isloading={isloading}
-            loadingTitle="Saving please wait..."
+            loadingTitle={editingId ? "Updating please wait...":"Saving please wait..."}
           />
         </div>
       </form>

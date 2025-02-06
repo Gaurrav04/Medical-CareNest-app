@@ -13,7 +13,8 @@ import { X } from "lucide-react";
 import generateSlug from "@/utils/generateSlug";
 import { createManyServices, createService } from "@/actions/services";
 import { createManySpecialties, createSpecialty } from "@/actions/specialities";
-import { createManySymptoms, createSymptom } from "@/actions/symptom";
+import { createManySymptoms, createSymptom, updateSymptom } from "@/actions/symptom";
+import { Symptom } from "@prisma/client";
 
 export type SymptomProps = { 
   title: string;
@@ -21,10 +22,20 @@ export type SymptomProps = {
 };
 
 
-export default function SymptomForm() {
+export default function SymptomForm({
+  title,
+  initialData
+}:{
+  title:string,
+  initialData?:Symptom
+}) {
   const [isloading, setIsLoading] = useState(false);
-
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<SymptomProps >();
+  const editingId = initialData?.id?.toString() || "";   
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<SymptomProps >({
+    defaultValues:{
+      title:initialData?.title
+    }
+  });
   const router = useRouter();
 
   async function onSubmit(data: SymptomProps ) {
@@ -32,8 +43,13 @@ export default function SymptomForm() {
     const slug = generateSlug(data.title)
     data.slug = slug
     console.log(data);
+    if(editingId){
+      await updateSymptom(editingId,data)
+      toast.success("Symptom Updated Successfully")
+    }else{
     await createSymptom(data)
     toast.success("Symptom Created Successfully")
+    }
     reset()
     router.push("/dashboard/symptoms")
   }
@@ -51,7 +67,7 @@ export default function SymptomForm() {
       <div className="text-center border-b border-gray-200 dark:border-slate-600 py-4">
         <div className="flex items-center justify-between px-6">
         <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight">
-          Create Symptom
+          {title}
         </h1>
         {/* <Button type="button" onClick={handleCreateMany}>
           {isloading?"Creating...":"Create Many"}
@@ -87,10 +103,10 @@ export default function SymptomForm() {
          Create Many Symptoms
         </Button>
 
-            <SubmitButton
-            title="Create Symptom"
+        <SubmitButton
+            title={editingId ? "Update Symptom":"Create Symptom"}
             isloading={isloading}
-            loadingTitle="Saving please wait..."
+            loadingTitle={editingId ? "Updating please wait...":"Saving please wait..."}
           />
         </div>
       </form>

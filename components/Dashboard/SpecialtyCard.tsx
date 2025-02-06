@@ -32,11 +32,11 @@ export default function SpecialtyCard({
       
         <h2>{specialty.title}</h2>
         <div className="flex">
-          <Link className="text-blue-600" href={`/dashboard/services/update/${specialty.slug}`}>
+          <Link className="text-blue-600" href={`/dashboard/specialties/update/${specialty.slug}`}>
           <Pencil className="w- h-4"/>
           </Link>
 
-          <DeletePopup title="service" id={specialty.id.toString()} handleDelete={handleDelete} />
+          <DeletePopup title="Specialty" id={specialty.id.toString()} handleDelete={handleDelete} />
 
 
         </div>

@@ -40,6 +40,44 @@ export async function createSymptom(data: SpecialtyProps){
     }
 }
 
+export async function updateSymptom(id: string,data: SpecialtyProps){
+  try {
+  const existingSymptom = await prismaClient.symptom.findUnique({
+      where:{
+        id:parseInt(id, 10),
+      },
+  });
+  if(!existingSymptom){
+      return{
+          data:null,
+          status:404,
+          error:"Symptom does not exist",
+      }
+  }
+  const updatedSymptom = await prismaClient.symptom.update({
+      where: 
+      {
+        id:parseInt(id, 10),
+      },
+      data
+    });
+    revalidatePath("/dashboard/symptoms")
+    console.log(updatedSymptom)
+    return {
+      data:updatedSymptom,
+      status:201,
+      error:null,
+    };
+  } catch (error) {
+      console.log(error)
+      return {
+          data:null,
+          status:500,
+          error,
+        };
+  }
+}
+
 export async function createManySymptoms(){
   try {
   const symptoms = [
@@ -129,6 +167,27 @@ export async function getSymptoms(){
     }
 }
 
+export async function getSymptomBySlug(slug:string){
+  try {
+  const symptom = await prismaClient.symptom.findUnique({
+      where:{
+         slug
+      },
+    });
+    return {
+      data:symptom,
+      status:200,
+      error:null,
+    };
+  } catch (error) {
+      console.log(error)
+      return {
+          data:null,
+          status:500,
+          error,
+        };
+  }
+}
 
 export async function deleteSymptom(id: string){
   try {

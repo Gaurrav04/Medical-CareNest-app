@@ -50,7 +50,7 @@ export async function updateService(id:string, data: ServiceProps){
       return{
           data:null,
           status:404,
-          error:"Service with that does exist",
+          error:"Service does not exist",
       };
   }
   const updatedService = await prismaClient.service.update({

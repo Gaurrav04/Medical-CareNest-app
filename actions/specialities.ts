@@ -40,6 +40,43 @@ export async function createSpecialty(data: SpecialtyProps){
     }
 }
 
+export async function updateSpecialty(id:string,data: SpecialtyProps){
+  try {
+  const existingSpecialty = await prismaClient.speciality.findUnique({
+      where:{
+          id:parseInt(id, 10),
+      }
+  })
+  if(!existingSpecialty){
+      return{
+          data:null,
+          status:404,
+          error:"Specialty does not exist",
+      }
+  }
+  const updatedSpecialty = await prismaClient.speciality.update({
+    where :{
+      id:parseInt(id, 10)
+    },
+      data
+    });
+    revalidatePath("/dashboard/specialties")
+    console.log(updatedSpecialty)
+    return {
+      data:updatedSpecialty,
+      status:201,
+      error:null,
+    };
+  } catch (error) {
+      console.log(error)
+      return {
+          data:null,
+          status:500,
+          error,
+        };
+  }
+}
+
 export async function createManySpecialties(){
   try {
   const specialties = [
@@ -103,6 +140,28 @@ export async function getspecialties(){
             error,
           };
     }
+}
+
+export async function getSpecialtyBySlug(slug:string){
+  try {
+  const specialty = await prismaClient.speciality.findUnique({
+      where:{
+         slug
+      },
+    });
+    return {
+      data:specialty,
+      status:200,
+      error:null,
+    };
+  } catch (error) {
+      console.log(error)
+      return {
+          data:null,
+          status:500,
+          error,
+        };
+  }
 }
 
 

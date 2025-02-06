@@ -5,7 +5,7 @@ import React from 'react';
 export default function page() {
   return (
     <div>
-        <SpecialtyForm/>
+        <SpecialtyForm title="New Specialty"/>
     </div>
   )
 }

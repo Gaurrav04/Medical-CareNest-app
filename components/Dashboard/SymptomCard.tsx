@@ -37,7 +37,7 @@ export default function SymptomCard({
           <Pencil className="w- h-4"/>
           </Link>
 
-          <DeletePopup title="service" id={symptom.id.toString()} handleDelete={handleDelete} />
+          <DeletePopup title="symptom" id={symptom.id.toString()} handleDelete={handleDelete} />
 
 
         </div>
