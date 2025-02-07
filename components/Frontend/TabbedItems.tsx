@@ -3,37 +3,21 @@ import { Tabs } from "flowbite-react";
 import { HeartPulse, Microscope, ShieldPlus, Stethoscope, X } from "lucide-react";
 import ServiceList from "./Services/ServiceList";
 import LinkCards from "./Doctors/LinkCards";
+import { Service, Speciality, Symptom } from "@prisma/client";
+import SymptomCards from "./Doctors/SymptomCard";
 // import { HiUserCircle } from "react-icons/hi"; 
 
-export default function TabbedItems() {
-  const services = [
-    {
-      title:"Telehealth",
-      image:"/Pic.jpg",
-      slug:"telehealth",
-    },
-    {
-      title:"Video Prescription",
-      image:"/Pic.jpg",
-      slug:"telehealth",
-    },
-    {
-      title:"UTI Consult",
-      image:"/Pic.jpg",
-      slug:"telehealth",
-    },{
-      title:"Health",
-      image:"/Pic.jpg",
-      slug:"telehealth",
-    },{
-      title:"ED Consult",
-      image:"/Pic.jpg",
-      slug:"telehealth",
-    },{
-      title:"Urgent Care",
-      image:"/Pic.jpg",
-      slug:"telehealth",
-    }];
+type TabbedItemsProps = {
+  services:Service[];
+  specialties:Speciality[];
+  symptoms: Symptom[];
+}
+export default function TabbedItems({
+  services, 
+  specialties,
+  symptoms
+}:TabbedItemsProps) {
+
   const tabs = [
     {
       title: "Popular Services",
@@ -41,22 +25,22 @@ export default function TabbedItems() {
       component:<ServiceList data={services}/>,
       content: [],
     },
-    {
-      title: "Doctors",
-      icon: ShieldPlus,
-      component:<LinkCards/>,
-      content: [],
-    },
+    // {
+    //   title: "Doctors",
+    //   icon: ShieldPlus,
+    //   component:<LinkCards/>,
+    //   content: [],
+    // },
     {
       title: "Specialists",
       icon: HeartPulse,
-      component:<LinkCards className="bg-cyan-500"/>, 
+      component:<LinkCards className="bg-cyan-500" specialties={specialties}/>, 
       content: [],
     },
     {
       title: "Symptoms",
       icon: Microscope, 
-      component:<LinkCards className="bg-purple-500 dark:bg-gray-500"/>,
+      component:<SymptomCards symptoms={symptoms} className="bg-blue-500"/>,
       content: [],
     },
   ];

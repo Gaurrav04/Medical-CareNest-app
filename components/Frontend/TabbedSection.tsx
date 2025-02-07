@@ -1,7 +1,14 @@
 import React from "react";
 import TabbedItems from "./TabbedItems";
+import { getServices } from "@/actions/services";
+import { getspecialties } from "@/actions/specialities";
+import { getSymptoms } from "@/actions/symptom";
 
-const TabbedSection = () => {
+const TabbedSection = async () => {
+  const services = (await getServices()).data ||[];
+  const specialties = (await getspecialties()).data ||[];
+  const symptoms = (await getSymptoms()).data ||[];
+
   return (
     <section className="pb-16 pt-24 bg-gradient-to-r from-gray-100 to-gray-300 lg:py-[60px] ">
   <div className="container mx-auto">
@@ -20,7 +27,7 @@ const TabbedSection = () => {
     </div>
     {/* TABS */}
     <div className="mx-auto max-w-6xl">
-      <TabbedItems/>
+      <TabbedItems services={services} specialties={specialties} symptoms={symptoms}/>
     </div>
   </div>
 </section>
