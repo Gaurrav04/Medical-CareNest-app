@@ -16,7 +16,7 @@ export default function Friday({
     day:string;
 }) {
     const availability = profile?.availability||"";
-    const initialData:string[] = profile?.availability[day]||[]
+    const initialData: string[] = profile?.availability?.[day] || [];
 
 
 

@@ -2,9 +2,12 @@ import Link from "next/link"
 import {
   Activity,
   ArrowUpRight,
+  CalendarDays,
   CreditCard,
   DollarSign,
+  LayoutGrid,
   Users,
+  UsersRound,
 } from "lucide-react"
 
 import {
@@ -30,51 +33,64 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { getStats } from "@/actions/stats"
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const stats = await getStats()
+
+  const statsCards = [
+    {
+      title:"Doctors",
+      icon: Users,
+      count:stats.doctors,
+      href: "/dashboard/doctors"
+    },
+    {
+      title:"Patients",
+      icon: UsersRound,
+      count:stats.patients,
+      href: "/dashboard/patients"
+    },
+    {
+      title:"Appointments",
+      icon: CalendarDays,
+      count:stats.appointments,
+      href: "/dashboard/appointments"
+    },
+    {
+      title:"Services",
+      icon: LayoutGrid,
+      count:stats.services,
+      href: "/dashboard/services"
+    },
+  ]
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          <Card> 
+          {
+            statsCards.map((item,i)=>{
+              const Icon = item.icon
+              return (
+            <Card key={i}> 
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-              <DollarSign className="text-muted-foreground h-4 w-4" />
+              <CardTitle className="text-sm font-medium">
+                {item.title}
+              </CardTitle>
+              <Icon className="text-muted-foreground h-4 w-4" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₹45,231.89</div>
-              <p className="text-muted-foreground text-xs">+20.1% from last month</p>
+              <div className="text-2xl font-bold">
+                {item.count}
+              </div>
+              <Link href={item.href} className="text-muted-foreground text-xs">
+                View all {item.title}
+              </Link>
             </CardContent>
           </Card>
-          <Card> 
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
-              <Users className="text-muted-foreground h-4 w-4" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
-              <p className="text-muted-foreground text-xs">+180.1% from last month</p>
-            </CardContent>
-          </Card>
-          <Card> 
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Sales</CardTitle>
-              <CreditCard className="text-muted-foreground h-4 w-4" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+12,234</div>
-              <p className="text-muted-foreground text-xs">+19% from last month</p>
-            </CardContent>
-          </Card>
-          <Card> 
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-              <Activity className="text-muted-foreground h-4 w-4" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+573</div>
-              <p className="text-muted-foreground text-xs">+201 since last hour</p>
-            </CardContent>
-          </Card>
+              )
+            })
+          }
+
         </div>
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 grid-cols-1">
           <Card className=""> 

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { MultiSelect } from "react-multi-select-component";
 
 type SelectInputProps = {
   label: string;
@@ -21,7 +15,7 @@ export type SelectOption = {
   label: string;
 };
 
-export default function ShadSelectInput({
+export default function CustomMultiSelect({
   label,
   className = "sm-col-span-2",
   optionTitle,
@@ -34,21 +28,12 @@ export default function ShadSelectInput({
       <label className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-50 mb-2">
         {label}
       </label>
-      <Select
-        onValueChange={(value) => setSelectedOption(value)}
+      <MultiSelect
+        options={options}
         value={selectedOption}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder={optionTitle} />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option, i: number) => (
-            <SelectItem key={i} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        onChange={setSelectedOption}
+        labelledBy={optionTitle}
+      />
     </div>
   );
 }

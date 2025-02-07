@@ -86,7 +86,7 @@ export default function RootLayout({
         <NextSSRPlugin
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <Providers>
+         <Providers>
         <OnboardingContextProvider>
         <ThemeProvider
             attribute="class"
