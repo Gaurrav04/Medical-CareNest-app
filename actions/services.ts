@@ -191,3 +191,38 @@ export async function deleteService(id: string){
         };
   }
 }
+
+export async function updateDoctorProfileWithService(id: string | undefined, data: any) {
+  if (id) {
+    try {
+      const updatePayload: any = {
+        serviceId: data.serviceId ? parseInt(data.serviceId) : null,
+        specialtyId: data.specialtyId ? parseInt(data.specialtyId) : null,
+        symptomIds: Array.isArray(data.symptomIds) ? data.symptomIds.map(String) : [],
+      };
+
+      const updatedProfile = await prismaClient.doctorProfile.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: updatePayload,
+      });
+
+      console.log(updatedProfile);
+      revalidatePath("/dashboard/doctor/settings");
+
+      return {
+        data: updatedProfile,
+        error: null,
+        status: 201,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        error: "Profile was not updated",
+        status: 500,
+      };
+    }
+  }
+}

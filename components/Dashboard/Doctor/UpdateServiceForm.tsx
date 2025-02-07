@@ -1,5 +1,6 @@
 "use client"
 
+import { updateDoctorProfileWithService } from '@/actions/services';
 import CustomMultiSelect from '@/components/FormInputs/CustomMultiSelect';
 import ShadSelectInput, { SelectOption } from '@/components/FormInputs/ShadSelectInput'
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,7 @@ import { DoctorProfile } from '@prisma/client';
 import { Loader } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 
 export default function UpdateServiceForm({
     services,
@@ -22,7 +24,8 @@ export default function UpdateServiceForm({
 
 }) {
     // const {data:session,status} = useSession();
-    const profileId =profile?.id
+    console.log(profile)
+    const profileId = profile?.id !== undefined ? String(profile.id) : undefined;
     if(status==="loading"){
         return <div className="flex items-center">
             <Loader className="mr-1 w-4 h-4 animate-spin"/>
@@ -33,15 +36,24 @@ export default function UpdateServiceForm({
     const [selectedServiceId,setSelectedServiceId] = useState();
     const [specialtyId,setSpecialtyId] = useState();
     const [symptomIds,setSymptomIds] = useState<SelectOption[]>([]);
+    const [loading,setLoading] = useState(false);
 
-    function handleUpdateService(){
+    async function handleUpdateService(){
+        setLoading(true)
         const data = {
             serviceId: selectedServiceId,
             specialtyId,
             symptomIds:symptomIds.map((item)=>item.value),
-            profileId,
         };
-        console.log(data)
+        try{
+         await updateDoctorProfileWithService(profileId,data)
+         toast.success("Profile Updated Successfully")
+         setLoading(false)
+        } catch (error){
+            console.log(error)
+            setLoading(false)
+        }
+        console.log(data);
     }
 
   return (
@@ -69,7 +81,9 @@ export default function UpdateServiceForm({
             setSelectedOption={setSymptomIds}/>      
        </CardContent>
       <CardFooter className="border-t px-6 py-4">
-      <Button onClick={handleUpdateService}>Save</Button>
+      <Button disabled={loading} onClick={handleUpdateService}>
+        {loading? "Saving Please wait...":"Save"}
+      </Button>
     </CardFooter>
        </>
   )
