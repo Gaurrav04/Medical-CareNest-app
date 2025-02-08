@@ -160,6 +160,8 @@ model DoctorProfile {
   accomplishments  String?
   additionalDocs   String[]
 
+  operationMode    String?
+
   serviceId Int?    @unique
   service   Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 

@@ -199,6 +199,7 @@ export async function updateDoctorProfileWithService(id: string | undefined, dat
         serviceId: data.serviceId ? parseInt(data.serviceId) : null,
         specialtyId: data.specialtyId ? parseInt(data.specialtyId) : null,
         symptomIds: Array.isArray(data.symptomIds) ? data.symptomIds.map(String) : [],
+        operationMode: data.operationMode || null,
       };
 
       const updatedProfile = await prismaClient.doctorProfile.update({
