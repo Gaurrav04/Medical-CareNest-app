@@ -1,9 +1,16 @@
+import { User } from '@prisma/client';
 import { Stethoscope, Video } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-export default function DoctorCard({ isInPerson=false }:{isInPerson?:boolean}) {
+export default function DoctorCard({
+  isInPerson=false,
+  doctor
+ }:{
+  isInPerson?:boolean;
+  doctor:User
+}) {
   const timeStamps =[
     {
       time:"8:30",
@@ -36,7 +43,9 @@ export default function DoctorCard({ isInPerson=false }:{isInPerson?:boolean}) {
     <div className="border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-slate-800 inline-flex flex-col py-8 px-6 rounded-md hover:border-gray-800 duration-300 transition-all">
       <Link href="/doctors/slug">
         <div>
-          <h2 className="uppercase font-bold text-2xl tracking-widest">Vijay Patel, PA-C</h2>
+          <h2 className="uppercase font-bold text-2xl tracking-widest">
+             {doctor.name}
+            </h2>
           {isInPerson && (<p className="py-3">678 Margoa-Goa, 403890</p>)}
           <div className="flex items-center gap-4 py-4">
            <div className="relative">

@@ -22,28 +22,24 @@ export default function EducationInfo({
   formId,
   userId,
   nextPage,
+  specialties
 }: StepFormProps) {
 
   const { educationData,savedDBData, setEducationData } = useOnboardingContext();
   const [isLoading, setIsLoading] = useState(false);
 
-  const specialities = [
-    {
-      label: "Medicine",
-      value: "medicine",
-    },
-    {
-      label: "Health",
-      value: "health",
-    },
-  ];
-
+  const allSpecialties = specialties?.map((item)=>{
+    return {
+      label:item.title,
+      value: String(item.id),
+    }
+  }) || [];
   // Ensure otherSpecialties is an array of strings
   const initialSpecialities = 
   educationData.otherSpecialties.length> 0 ? educationData.otherSpecialties: savedDBData.otherSpecialties;
-  const [otherSpecialties, setOtherSpecialties] = useState<string[]>(initialSpecialities); // Fix type here
+  const [otherSpecialties, setOtherSpecialties] = useState<string[]>(initialSpecialities); 
   const initialDocs = educationData.boardCerticates || savedDBData.boardCerticates;
-  const [docs, setDocs] = useState<File[]>(initialDocs); // Ensure docs is of File type
+  const [docs, setDocs] = useState<File[]>(initialDocs); 
 
   const [primarySpecializations, setPrimarySpecializations] = useState<string>(
     educationData.primarySpecializations || savedDBData.primarySpecializations || "");
@@ -123,14 +119,14 @@ export default function EducationInfo({
           <ShadSelectInput
             label="Select Your Primary Specializations"
             optionTitle="Primary Specializations"
-            options={specialities}
+            options={allSpecialties}
             selectedOption={primarySpecializations}
             setSelectedOption={setPrimarySpecializations}
           />
 
           <ArrayItemsInput
-            setItems={setOtherSpecialties} // Corrected this
-            items={otherSpecialties} // Corrected this
+            setItems={setOtherSpecialties} 
+            items={otherSpecialties} 
             itemTitle="Add Other Specialties"
           />
 

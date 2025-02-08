@@ -71,6 +71,7 @@ export async function createUser(formData: RegisterInputProps) {
     };
   }
 }
+
 export async function getUserById(id: string) {
   if (id) {
     try {
@@ -101,5 +102,22 @@ export async function updateUserById(id: string) {
     } catch (error) {
       console.log(error);
     }
+  }
+}
+
+export async function getDoctors(){
+  try {
+    const doctors = await prismaClient.user.findMany({
+      where:{
+        role:"DOCTOR",
+      },
+      include:{
+        doctorProfile: true,
+      }
+    })
+    return doctors;
+  } catch (error) {
+    console.log(error);
+    return null  
   }
 }

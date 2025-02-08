@@ -48,7 +48,7 @@ export default function DoctorsListCarousel({ doctors,isInPerson }:
       itemClass="px-4"
     >
       {doctors.map((doctor:any,i:number)=>{
-              return (<DoctorCard key={i} isInPerson={isInPerson} />)
+              return (<DoctorCard doctor={doctor} key={i} isInPerson={isInPerson} />)
             })
           }
     </Carousel>

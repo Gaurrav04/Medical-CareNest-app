@@ -13,6 +13,7 @@ import RadioInput from "../FormInputs/RadioInput";
 import { generateTrackingNumber } from "@/lib/generateTracking";
 import { createDoctorProfile, updateDoctorProfile } from "@/actions/onboarding";
 import { useOnboardingContext } from "@/context/context";
+import { Speciality } from "@prisma/client";
 
 export type StepFormProps={
     page:string;
@@ -21,6 +22,7 @@ export type StepFormProps={
     userId?:string;
     nextPage?:string;
     formId?: string;
+    specialties?:Speciality[];
 
 }
 export default function BioDataForm({

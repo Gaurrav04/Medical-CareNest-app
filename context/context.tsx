@@ -99,6 +99,7 @@ const initialBioData: BioDataFormProps = {
     insuranceAccepted: "",
     languagesSpoken:[],
     page: "",
+    hourlyWage: 200,
   };
 
   const initialAdditionalData: AdditionalFormProps = {

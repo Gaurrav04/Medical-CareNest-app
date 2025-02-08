@@ -118,6 +118,17 @@ const [insuranceAccepted,setInsuranceAccepted] = useState(initialInsuranceStatus
 
       />
 
+     <TextInput 
+      label="Hourly Charge" 
+      register={register} 
+      name="hourlyWage" 
+      type="number"
+      errors={errors}
+      placeholder="Enter Charge per Hour"
+      className="col-span-full sm:col-span-1"
+
+      />
+
        <TextInput 
         label="Hospital Address" 
         register={register}

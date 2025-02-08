@@ -68,6 +68,7 @@ export type PracticeFormProps ={
    servicesOffered: string[];
    insuranceAccepted: string;
    languagesSpoken:string[];
+   hourlyWage:number;
    page: string;
 };
 

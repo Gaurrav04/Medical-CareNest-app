@@ -160,12 +160,14 @@ model DoctorProfile {
   accomplishments  String?
   additionalDocs   String[]
 
-  operationMode    String?
+  operationMode    String? @default("Telehealth Visit")
 
-  serviceId Int?    @unique
+  hourlyWage       Int @default(200)
+
+  serviceId Int?    
   service   Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  specialtyId Int?       @unique
+  specialtyId Int?       
   specialty   Speciality? @relation(fields: [specialtyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   symptomIds           String[]

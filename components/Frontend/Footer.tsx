@@ -17,8 +17,8 @@ export default function Footer() {
                     name: "Hospital Plan",
                 },
                 {
-                    href: 'javascript:void()',
-                    name: 'Blog'
+                    href: "/onboarding/resume",
+                    name: "Resume your Application"
                 },
                 {
                     href: 'javascript:void()',
