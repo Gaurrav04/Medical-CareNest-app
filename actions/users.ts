@@ -123,6 +123,7 @@ export async function getDoctors() {
             profilePicture: true,
             bio: true,
             operationMode: true,
+            hourlyWage: true,
             availability: {
               select: {
                 monday: true,

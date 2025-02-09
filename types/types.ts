@@ -104,6 +104,7 @@ export type DoctorProfile = {
     bio: string | null;
     gender: string;
     operationMode: string | null;
+    hourlyWage:number;
     availability: DoctorProfileAvailability | null;
   };
 
