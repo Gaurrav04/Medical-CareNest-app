@@ -7,6 +7,7 @@ import { ArrowUpRight, Map } from 'lucide-react'
 import DoctorsListCarousel from './DoctorsListCarousel'
 import { Button } from './ui/button'
 import { User } from '@prisma/client'
+import { Doctor } from '@/types/types'
 
 export default function DoctorsList({
   title="Telehealth Visit",
@@ -16,7 +17,7 @@ export default function DoctorsList({
 }:  {title?:string;
     isInPerson?:boolean;
     className?:string;
-    doctors:User[]
+    doctors:Doctor[];
   }) {
    
   return (
