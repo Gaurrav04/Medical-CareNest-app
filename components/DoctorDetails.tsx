@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Availability from "./Availability";
+import { DoctorDetail } from "@/types/types";
 
-export default function DoctorDetails() {
+export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
     const [isActive, setIsActive] = useState("availability");
 
     return (
