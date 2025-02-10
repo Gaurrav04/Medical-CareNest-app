@@ -1,5 +1,6 @@
 import { Doctor, DoctorProfileAvailability } from '@/types/types';
 import generateSlug from '@/utils/generateSlug';
+import { getDayName } from '@/utils/getDayName';
 import { getFormattedDate } from '@/utils/getFormatedShortDate';
 import { DoctorProfile, User } from '@prisma/client';
 import { getDay } from 'date-fns';
@@ -15,26 +16,18 @@ export default function DoctorCard({
   isInPerson?: boolean;
   doctor: Doctor;
 }) {
-  console.log(doctor);
-
-  const getDayName = (): keyof DoctorProfileAvailability => {
-    const daysOfWeek: (keyof DoctorProfileAvailability)[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-    const today = new Date();
-    const dayName = daysOfWeek[today.getDay()];
-    return dayName;
-  };
+  console.log(doctor.slug);
 
   const today: keyof DoctorProfileAvailability = getDayName();
   const times = doctor.doctorProfile?.availability ? doctor.doctorProfile.availability[today] : null;
   const formattedDate = getFormattedDate();
-  const slug = generateSlug(doctor.slug)
   console.log(times);
 
   return (
     <>
       {times && times.length > 0 && (
         <div className="border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-slate-800 inline-flex flex-col py-8 px-6 rounded-md hover:border-gray-800 duration-300 transition-all">
-          <Link href={`/doctors/${slug}`}>
+          <Link href={`/doctors/${doctor.slug}`}>
             <div>
               <h2 className="uppercase font-bold text-2xl tracking-widest">{doctor.name}</h2>
               {isInPerson && <p className="py-3">678 Margoa-Goa, 403890</p>}
@@ -73,13 +66,13 @@ export default function DoctorCard({
                 return (
                   <Link className="bg-blue-500 text-sm text-white p-2 text-center" 
                   key={i} 
-                  href={`/doctors/${slug}`}>
+                  href={`/doctors/${doctor.slug}`}>
                     {item}
                   </Link>
                 );
               })}
               <Link className="text-[0.7rem] text-center bg-gray-300 dark:bg-gray-700 text-grey py-2 px-3 truncate"
-               href="/doctors/slug">
+                href={`/doctors/${doctor.slug}`}>
                 More times
               </Link>
             </div>

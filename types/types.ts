@@ -148,5 +148,26 @@ export type DoctorDetail = {
     slug: string;
     doctorProfile: DoctorProfileDetail | null;
 };  
+
+export interface AppointmentProps{
+    appointmentDate: string;
+    appointmentYear: string;
+    appointmentMonth: string;
+    doctorId: string;
+    charge: string;
+    appointmentTime: string;
+
+    // Patient Details
+    firstName: string;
+    lastName: string;
+    gender: string;
+    phone: string;
+    email: string;
+    dob: string;
+    location: string;
+    appointmentReason:string;
+    medicalDocuments:string[];
+    occupation:string;
+}
    
   

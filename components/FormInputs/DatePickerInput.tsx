@@ -30,7 +30,12 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 
-export function DatePickerInput({date, setDate, className="col-span-full", title}: DatePickerInputProps) {
+export function DatePickerInput({
+  date, 
+  setDate, 
+  className="col-span-full", 
+  title,
+}: DatePickerInputProps) {
   return (
     <div className={cn("grid", className)}>
     <h2 className="text-base font-normal ">{title}</h2>

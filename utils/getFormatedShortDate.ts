@@ -5,8 +5,8 @@ export function getFormattedDate(): string {
     const today = new Date();
     const dayName = dayOfWeek[today.getDay()]; 
     const monthName = monthOfYear[today.getMonth()]; 
-    const year = today.getFullYear(); 
+    const day = today.getDate(); 
   
-    return `${dayName}, ${monthName} ${year}`;
+    return `${dayName}, ${monthName} ${day}`;
   }
   
