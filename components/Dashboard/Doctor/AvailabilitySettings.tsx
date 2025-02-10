@@ -71,7 +71,7 @@ export default function AvailabilitySettings({
           {
             tabs.map((tab,i)=> {
                 return (
-                    <Tabs.Item active title={tab.title}>
+                    <Tabs.Item key={i} active title={tab.title}>
                     {tab.component}
                 </Tabs.Item>
                 )
