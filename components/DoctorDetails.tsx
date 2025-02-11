@@ -9,19 +9,24 @@ import { Button } from "./ui/button";
 import { Calendar } from "@/components/ui/calendar"
 import { getDayFromDate } from "@/utils/getDayFromDate";
 import { getLongDate } from "@/utils/getLongDate";
-import { MoveRight } from "lucide-react";
+import { Loader2, MoveRight } from "lucide-react";
 import TextInput from "./FormInputs/TextInput";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { DatePickerInput } from "./FormInputs/DatePickerInput";
 import RadioInput from "./FormInputs/RadioInput";
 import TextAreaInput from "./FormInputs/TextAreaInput";
-import MultipleFileUpload from "./FormInputs/MultipleFileUpload";
+import MultipleFileUpload, { File } from "./FormInputs/MultipleFileUpload";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { createAppointment } from "@/actions/appointments";
+import { truncateSync } from "fs";
 
 
 export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
     const [isActive, setIsActive] = useState("availability");
-   
+    const {data:session} = useSession()
+    const patient = session?.user
     const [step,setStep] = useState(1)
     const [selectedTime,setSelectedTime] = useState("")
     const [loading,setLoading] = useState(false);
@@ -32,7 +37,7 @@ export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
 
     console.log(longDate);
     const times = doctor.doctorProfile?.availability ? doctor.doctorProfile.availability[day] : null;
-    const [medicalDocs,setMedicalDocs] = useState([])
+    const [medicalDocs,setMedicalDocs] = useState<File[]>([])
 
     const genderOptions = [
       {
@@ -46,11 +51,49 @@ export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
     ]
     // const [imageUrl, setImageUrl] = useState(initialImageUrl);
     const router = useRouter()
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<AppointmentProps>();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<AppointmentProps>({
+    defaultValues:{
+      email:patient?.email??"",
+    }
+  });
 
   async function onSubmit(data: AppointmentProps) {
-    console.log(data)
+    data.medicalDocuments = medicalDocs.map((item)=>item.url);
+    data.appointmentDate = date;
+    data.appointmentFormattedDate = longDate;
+    data.appointmentTime = selectedTime;
+    data.doctorId = doctor.id.toString();
+    data.charge = doctor.doctorProfile?.hourlyWage ?? 0;
+    data.dob = dob;
+    data.patientId = patient?.id ? Number(patient.id) : undefined;
+    console.log(data);
+
+    try {
+      setLoading(true)
+     const res = await createAppointment(data)
+     const appo = res.data
+     setLoading(false)
+     toast.success("Appointment Created Successfully")
+     router.push("/dashboard")
+     console.log(appo)
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+    }
+  
     // router.push("/dashboard/services")
+
+  }
+  function initiateAppointment(){
+    if(patient?.id){
+      if(!selectedTime){
+        toast.error("Please Select Time")
+        return
+      }
+      setStep((curr) => curr+1);
+    } else {
+      router.push("/login");
+    }
   }
 
     return (
@@ -108,7 +151,7 @@ export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
                              </div>
                    )}
                    <div className="py-4">
-                   <button onClick={()=>setStep(curr=>curr+1)} 
+                   <button onClick={initiateAppointment} 
                     type="button"
                     className="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2">
                      Book Doctor(₹{doctor.doctorProfile?.hourlyWage})
@@ -268,12 +311,21 @@ export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
               >
               Previous
               </Button>
-              <Button 
-                type="submit" 
-                onClick={()=>setStep((currStep) => currStep +1)}
-                >
-                Complete Appointment
-              </Button>
+                 {
+                  loading ? (
+                    <Button disabled>
+                     <Loader2 className="animate-spin" />
+                       Saving Please wait...
+                    </Button>
+                  ): (
+                    <Button 
+                    type="submit" 
+                    onClick={()=>setStep((currStep) => currStep +1)}
+                    >
+                    Complete Appointment
+                  </Button>
+                  )
+                 }
                  </div>
                 </div>
               )

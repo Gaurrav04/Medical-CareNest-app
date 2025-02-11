@@ -21,9 +21,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
-
+import {getInitials} from "@/utils/generateInitials"
 export function SiteHeader({session}:{ session: Session|null }) {
   const user = session?.user;
+  const initials = getInitials(user?.name);
   const router = useRouter();
   async function handleLogout() {
     await signOut()
@@ -46,7 +47,7 @@ export function SiteHeader({session}:{ session: Session|null }) {
                        <Avatar className="cursor-pointer">
                          {user.image ? (
                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
-                          ) :  ( <AvatarFallback>CN</AvatarFallback>
+                          ) :  ( <AvatarFallback>{initials}</AvatarFallback>
                          )}
                        </Avatar>
                    </DropdownMenuTrigger>

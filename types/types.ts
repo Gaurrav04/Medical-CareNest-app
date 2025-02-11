@@ -108,66 +108,66 @@ export interface DoctorProfile {
     availability: DoctorProfileAvailability | null;
  };
 
- interface DoctorProfileDetail extends DoctorProfile{
-    yearOfExperience: number | null,
-    country: string | null,
-    city: string | null,
-    state: string | null,
-    primarySpecializations: string | null,
-    otherSpecialties: string[] | null,
-    boardCerticates: string[] | null,
-    hospitalName: string | null,
-    hospitalAddress: string | null,
-    hospitalContactNumber: string | null,
-    hospitalEmailAddress: string | null,
-    hospitalWebsite: string | null,
-    hospitalHoursOfOperation: number | null,
-    servicesOffered: string[] | null,
-    insuranceAccepted: string | null,
-    languagesSpoken: string[] | null,
-    educationHistory: string | null,
-    research: string | null,
-    accomplishments: string | null,
- }
-
-export type Doctor = {
-    id: number;
+ interface DoctorProfileDetail extends DoctorProfile {
+    id?: string | number; 
+    yearOfExperience: number | null;
+    country: string | null;
+    city: string | null;
+    state: string | null;
+    primarySpecializations: string | null;
+    otherSpecialties: string[] | null;
+    boardCerticates: string[] | null;
+    hospitalName: string | null;
+    hospitalAddress: string | null;
+    hospitalContactNumber: string | null;
+    hospitalEmailAddress: string | null;
+    hospitalWebsite: string | null;
+    hospitalHoursOfOperation: number | null;
+    servicesOffered: string[] | null;
+    insuranceAccepted: string | null;
+    languagesSpoken: string[] | null;
+    educationHistory: string | null;
+    research: string | null;
+    accomplishments: string | null;
+  }
+  
+  export type Doctor = {
+    id: string | number;
     name: string;
     email: string;
     phone: string;
     slug: string;
     doctorProfile: DoctorProfile | null;
- };
+  };
   
-
-export type DoctorDetail = {
-    id: number;
+  export type DoctorDetail = {
+    id: string | number;
     name: string;
     email: string;
     phone: string;
     slug: string;
     doctorProfile: DoctorProfileDetail | null;
-};  
-
-export interface AppointmentProps{
-    appointmentDate: string;
-    appointmentYear: string;
-    appointmentMonth: string;
+  };
+  
+  export interface AppointmentProps {
+    appointmentDate: Date | undefined;
+    appointmentFormattedDate: string;
     doctorId: string;
-    charge: string;
+    charge: number;
     appointmentTime: string;
-
+  
     // Patient Details
     firstName: string;
     lastName: string;
     gender: string;
     phone: string;
     email: string;
-    dob: string;
+    dob?: Date;
     location: string;
-    appointmentReason:string;
-    medicalDocuments:string[];
-    occupation:string;
-}
-   
+    appointmentReason: string;
+    medicalDocuments: string[];
+    occupation: string;
+    patientId?: number;
+  }
+  
   
