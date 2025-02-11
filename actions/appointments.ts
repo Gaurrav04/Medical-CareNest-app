@@ -33,7 +33,7 @@ export async function createAppointment(data: AppointmentProps) {
   }
 }
 
-export async function updateAppointmentB(id: string, data: AppointmentProps) {
+export async function updateAppointmentById(id: string, data: AppointmentProps) {
   try {
     const parsedData = {
       ...data,
@@ -97,19 +97,10 @@ export async function getAppointmentById(id: string) {
         },
       });
 
-      return {
-        data: appointment,
-        status: 200,
-        error: null,
-      };
+      return appointment;
     }
   } catch (error) {
     console.log(error);
-    return {
-      data: null,
-      status: 500,
-      error,
-    };
   }
 }
 

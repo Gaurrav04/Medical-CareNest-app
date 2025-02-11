@@ -9,8 +9,8 @@ export default function PanelHeader({
   icon
 }:{
   title:string;
-  count:string;
-  icon:LucideIcon
+  count:number;
+  icon:LucideIcon;
 }) {
   const Icon = icon
   return (
@@ -19,7 +19,8 @@ export default function PanelHeader({
         <Icon className="w-4 h-4 flex-shrink-0" />
         <span>{title}</span>
         <span className="bg-white w-6 h-6 rounded-full flex items-center 
-        justify-center shadow-sm border text-xs dark:text-slate-900">{count}</span>
+        justify-center shadow-sm border text-xs dark:text-slate-900">
+          {count.toString().padStart(2,"0")}</span>
       </div>
     </div>
   );
