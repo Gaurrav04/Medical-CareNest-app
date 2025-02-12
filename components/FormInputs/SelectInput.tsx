@@ -6,7 +6,7 @@ type SelectInputProps = {
     register: any;
     className?: string;
     multiple?: boolean;
-    options?: SelectOption[];  // Make options optional and type it as SelectOption[]
+    options?: SelectOption[]; 
 };
 
 export type SelectOption = {

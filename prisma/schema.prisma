@@ -135,6 +135,10 @@ model Appointment {
   appointmentReason String?
   medicalDocuments  String[]
   occupation        String?
+
+  status           String @default("pending")
+  meetingLink      String @default("")
+  meetingProvider  String @default("zoom")
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -3,7 +3,7 @@
 import React from 'react' 
 import { ScrollArea } from "@/components/ui/scroll-area"
 import Link from 'next/link'
-import { CalendarCheck, History } from 'lucide-react'
+import { CalendarCheck, Check, CircleEllipsis, History, X } from 'lucide-react'
 import { Appointment } from '@prisma/client'
 import { timeAgo } from "@/utils/timeAgo" 
 import { usePathname } from 'next/navigation'
@@ -24,14 +24,14 @@ export default function ListPanel({
          href={`/dashboard/doctor/appointments/view/${item.id}`} 
          className={cn(
           "border mb-2 border-gray-300 shadow-sm text-xs bg-white dark:text-slate-900 py-3 px-2 inline-block w-full rounded-md",
-         pathname===`/dashboard/doctor/appointments/view/${item.id}` && "border-blue-700 border-2")}>
-
+         pathname===`/dashboard/doctor/appointments/view/${item.id}` && 
+         "border-green-700 border-2 bg-green-50")}>
 
         <div className="flex justify-between items-center pb-2">
            <h2>{item.firstName} {item.lastName}</h2>
            <span className="font-semibold">{item.appointmentTime}</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 border-b">
            <div className="flex items-center font-semibold">
             <CalendarCheck className="w-4 h-4 mr-2"/>
            <span>{item.appointmentFormattedDate}</span>
@@ -41,6 +41,17 @@ export default function ListPanel({
            <span>{timeAgo(item.createdAt)}</span>
            </div>
         </div>
+          <div className={cn("flex items-center pt-2 text-blue-600",item.status==="approved" &&
+             "text-green-600 font-semibold")}>
+            {item.status==="pending"?(
+              <CircleEllipsis className="mr-2 w-4 h-4"/>
+            ):item.status==="approved"?(
+              <Check className="mr-2 w-4 h-4"/>
+            ):(
+              <X className="mr-2 w-4 h-4"/>
+            )}
+            <span>{item.status}</span>
+          </div>
        </Link>
       ))}
   </ScrollArea>

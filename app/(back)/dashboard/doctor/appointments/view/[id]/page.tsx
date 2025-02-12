@@ -3,6 +3,7 @@ import HomeDisplayCard from '@/components/Dashboard/Doctor/HomeDisplayCard'
 import ListPanel from '@/components/Dashboard/Doctor/ListPanel'
 import NewButton from '@/components/Dashboard/Doctor/NewButton'
 import PanelHeader from '@/components/Dashboard/Doctor/PanelHeader'
+import UpdateAppointmentForm from '@/components/Dashboard/Doctor/UpdateAppointmentForm'
 import { Button } from '@/components/ui/button'
 import { Calendar } from 'lucide-react'
 import Link from 'next/link'
@@ -76,6 +77,10 @@ export default async function page({
                 )
               })}
             </div>
+        </div>
+        <div className="">
+           {/* Update Form */}
+           <UpdateAppointmentForm appointment={appointment}/>
         </div>
       </div>
     </div>

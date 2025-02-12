@@ -168,6 +168,9 @@ export interface DoctorProfile {
     medicalDocuments: string[];
     occupation: string;
     patientId?: number;
+    status: string;
+    meetingLink: string;
+    meetingProvider: string;
   }
   
   

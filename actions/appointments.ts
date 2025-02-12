@@ -1,5 +1,6 @@
 "use server";
 
+import { AppointmentUpdateProps } from "@/components/Dashboard/Doctor/UpdateAppointmentForm";
 import { prismaClient } from "@/lib/db";
 import { AppointmentProps } from "@/types/types";
 import { revalidatePath } from "next/cache";
@@ -33,7 +34,7 @@ export async function createAppointment(data: AppointmentProps) {
   }
 }
 
-export async function updateAppointmentById(id: string, data: AppointmentProps) {
+export async function updateAppointment(id: string, data: AppointmentProps) {
   try {
     const parsedData = {
       ...data,
@@ -45,6 +46,33 @@ export async function updateAppointmentById(id: string, data: AppointmentProps) 
         id: parseInt(id, 10),
       },
       data: parsedData,
+    });
+
+    revalidatePath("/dashboard/doctor/appointments");
+    console.log(updatedAppointment);
+
+    return {
+      data: updatedAppointment,
+      status: 201,
+      error: null,
+    };
+  } catch (error) {
+    console.log("Error updating appointment:", error);
+    return {
+      data: null,
+      status: 500,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+export async function updateAppointmentById(id: string, data: AppointmentUpdateProps) {
+  try {
+    const updatedAppointment = await prismaClient.appointment.update({
+      where: {
+        id: parseInt(id, 10),
+      },
+      data,
     });
 
     revalidatePath("/dashboard/doctor/appointments");
