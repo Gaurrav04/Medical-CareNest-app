@@ -1,12 +1,22 @@
 "use server";
 
 import { AppointmentUpdateProps } from "@/components/Dashboard/Doctor/UpdateAppointmentForm";
+import NewAppointmentEmail from "@/components/Emails/new-appointment";
 import { prismaClient } from "@/lib/db";
 import { AppointmentProps } from "@/types/types";
 import { revalidatePath } from "next/cache";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function createAppointment(data: AppointmentProps) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   try {
+    const doctor = await prismaClient.user.findUnique({
+      where: {
+        id: parseInt(data.doctorId, 10),
+      }
+    })
     const parsedData = {
       ...data,
       doctorId: parseInt(data.doctorId, 10),
@@ -15,9 +25,21 @@ export async function createAppointment(data: AppointmentProps) {
     const newAppointment = await prismaClient.appointment.create({
       data: parsedData,
     });
-
+    const firstName = doctor?.name;
+    const doctorMail = doctor?.email
+    const link = `${baseUrl}/dashboard/doctor/appointments/view/${newAppointment.id}`;
+    const message =
+    "You have a new appointment request.Please review and approve it by clicking the button below."
+    const sendMail = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: doctorMail??"",
+      subject: "New Appointment Approval Needed",
+      react: NewAppointmentEmail({ firstName, link, message }),
+    });
     revalidatePath("/dashboard/doctor/appointments");
     console.log(newAppointment);
+
+    //Send the Email to the Doctor
 
     return {
       data: newAppointment,
@@ -98,6 +120,32 @@ export async function getAppointments() {
     const appointments = await prismaClient.appointment.findMany({
       orderBy: {
         createdAt: "desc",
+      },
+    });
+
+    return {
+      data: appointments,
+      status: 200,
+      error: null,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      data: null,
+      status: 500,
+      error,
+    };
+  }
+}
+
+export async function getPatientAppointments(patientId: string) {
+  try {
+    const appointments = await prismaClient.appointment.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      where: {
+        patientId: parseInt(patientId, 10),
       },
     });
 

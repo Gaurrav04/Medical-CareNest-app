@@ -21,31 +21,31 @@ export default function ListPanel({
        {appointments.map((item) => (
          <Link 
          key={item.id}
-         href={`/dashboard/doctor/appointments/view/${item.id}`} 
+         href={`/dashboard/user/appointments/view/${item.id}`} 
          className={cn(
           "border mb-2 border-gray-300 shadow-sm text-xs bg-white dark:text-slate-900 py-3 px-2 inline-block w-full rounded-md",
-         pathname===`/dashboard/doctor/appointments/view/${item.id}` && 
+         pathname===`/dashboard/user/appointments/view/${item.id}` && 
          "border-green-700 border-2 bg-green-50")}>
 
         <div className="flex justify-between items-center pb-2">
            <h2>{item.firstName} {item.lastName}</h2>
-           <span className="font-semibold">{item.appointmentTime}</span>
+           <div className="flex items-center">
+            <History className="w-4 h-4 mr-2"/>
+           <span>{timeAgo(item.createdAt)}</span>
+           </div>
         </div>
         <div className="flex items-center gap-4 border-b">
            <div className="flex items-center font-semibold">
             <CalendarCheck className="w-4 h-4 mr-2"/>
            <span>{item.appointmentFormattedDate}</span>
            </div>
-           <div className="flex items-center">
-            <History className="w-4 h-4 mr-2"/>
-           <span>{timeAgo(item.createdAt)}</span>
-           </div>
+           <span className="font-semibold">{item.appointmentTime}</span>
         </div>
-          <div className={cn("flex items-center pt-2 text-blue-600",item.status==="approved" &&
+          <div className={cn("flex items-center pt-2 text-blue-600",item.status==="APPROVED" &&
              "text-green-600 font-semibold")}>
-            {item.status==="pending"?(
+            {item.status==="PENDING"?(
               <CircleEllipsis className="mr-2 w-4 h-4"/>
-            ):item.status==="approved"?(
+            ):item.status==="APPROVED"?(
               <Check className="mr-2 w-4 h-4"/>
             ):(
               <X className="mr-2 w-4 h-4"/>
