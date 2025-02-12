@@ -15,6 +15,11 @@ export default async function page({
   params: {id:string};
 }) {
   const appointment = await getAppointmentById(id);
+
+    if (!appointment) {
+      return <div>Appointment not found</div>; 
+    }
+
   return (
     <div>
       <div className="flex items-center justify-between px-4 py-4 border-b">

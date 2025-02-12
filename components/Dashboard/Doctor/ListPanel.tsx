@@ -12,8 +12,10 @@ import { cn } from '@/lib/utils'
 
 export default function ListPanel({
   appointments,
+  role
 }:{
   appointments:Appointment[];
+  role: string;
 }) {
   const pathname = usePathname()
   return (
@@ -21,10 +23,10 @@ export default function ListPanel({
        {appointments.map((item) => (
          <Link 
          key={item.id}
-         href={`/dashboard/user/appointments/view/${item.id}`} 
+         href={`/dashboard/${role==="USER"?"user":"doctor"}/appointments/view/${item.id}`} 
          className={cn(
           "border mb-2 border-gray-300 shadow-sm text-xs bg-white dark:text-slate-900 py-3 px-2 inline-block w-full rounded-md",
-         pathname===`/dashboard/user/appointments/view/${item.id}` && 
+         pathname===`/dashboard/doctor/appointments/view/${item.id}` && 
          "border-green-700 border-2 bg-green-50")}>
 
         <div className="flex justify-between items-center pb-2">

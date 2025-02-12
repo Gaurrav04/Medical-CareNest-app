@@ -1,7 +1,10 @@
-import { getAppointments } from '@/actions/appointments';
+import { getAppointments, getDoctorAppointments } from '@/actions/appointments';
 import ListPanel from '@/components/Dashboard/Doctor/ListPanel';
 import PanelHeader from '@/components/Dashboard/Doctor/PanelHeader';
+import NotAuthorized from '@/components/NotAuthorized';
+import { authOptions } from '@/lib/auth';
 import { CalendarDays } from 'lucide-react';
+import { getServerSession } from 'next-auth';
 import React, { ReactNode } from 'react'
 
 export default async function AppointmentLayout({
@@ -9,7 +12,14 @@ export default async function AppointmentLayout({
 }:{
     children:ReactNode;
 }){
-    const appointments = (await getAppointments()).data||[];
+    const session = await getServerSession(authOptions);
+    const user = session?.user
+    if(user?.role !=="DOCTOR"){
+      return (
+        <NotAuthorized/>
+      )
+    }
+    const appointments = (await getDoctorAppointments(user?.id)).data||[];
     return (
         <div>
         {/* Header */}
@@ -23,7 +33,7 @@ export default async function AppointmentLayout({
             icon={CalendarDays}/>
 
            <div className="px-3">
-            <ListPanel appointments={appointments} />
+            <ListPanel appointments={appointments} role={user?.role} />
             </div>
            </div>
 

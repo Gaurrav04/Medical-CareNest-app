@@ -33,7 +33,7 @@ export default async function AppointmentLayout({
             icon={CalendarDays}/>
 
            <div className="px-3">
-            <ListPanel appointments={appointments} />
+            <ListPanel appointments={appointments} role={user?.role} />
             </div>
            </div>
 

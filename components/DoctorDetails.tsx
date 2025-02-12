@@ -74,7 +74,7 @@ export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
      const appo = res.data
      setLoading(false)
      toast.success("Appointment Created Successfully")
-     router.push("/dashboard")
+     router.push("/dashboard/user/appointments")
      console.log(appo)
     } catch (error) {
       setLoading(false)

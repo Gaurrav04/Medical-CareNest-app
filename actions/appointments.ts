@@ -4,6 +4,7 @@ import { AppointmentUpdateProps } from "@/components/Dashboard/Doctor/UpdateAppo
 import NewAppointmentEmail from "@/components/Emails/new-appointment";
 import { prismaClient } from "@/lib/db";
 import { AppointmentProps } from "@/types/types";
+import { AppointmentStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
@@ -16,30 +17,40 @@ export async function createAppointment(data: AppointmentProps) {
       where: {
         id: parseInt(data.doctorId, 10),
       }
-    })
+    });
+
+    if (!data.patientId) {
+      throw new Error("Patient ID is required");
+    }
+
+    const status: AppointmentStatus = data.status as AppointmentStatus || 'PENDING'; 
+
     const parsedData = {
       ...data,
       doctorId: parseInt(data.doctorId, 10),
+      patientId: data.patientId,  
+      status: status, 
     };
 
     const newAppointment = await prismaClient.appointment.create({
       data: parsedData,
     });
+
     const firstName = doctor?.name;
-    const doctorMail = doctor?.email
+    const doctorMail = doctor?.email;
     const link = `${baseUrl}/dashboard/doctor/appointments/view/${newAppointment.id}`;
-    const message =
-    "You have a new appointment request.Please review and approve it by clicking the button below."
+    const message = "You have a new appointment request. Please review and approve it by clicking the button below.";
+
+    // Send email to doctor
     const sendMail = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: doctorMail??"",
+      to: doctorMail ?? "",
       subject: "New Appointment Approval Needed",
       react: NewAppointmentEmail({ firstName, link, message }),
     });
+
     revalidatePath("/dashboard/doctor/appointments");
     console.log(newAppointment);
-
-    //Send the Email to the Doctor
 
     return {
       data: newAppointment,
@@ -56,11 +67,25 @@ export async function createAppointment(data: AppointmentProps) {
   }
 }
 
+
 export async function updateAppointment(id: string, data: AppointmentProps) {
   try {
+    if (!data.status) {
+      throw new Error("Status is required and cannot be null or undefined.");
+    }
+
+    const validStatuses: AppointmentStatus[] = ["PENDING", "REJECTED", "APPROVED"];
+    if (!validStatuses.includes(data.status as AppointmentStatus)) {
+      throw new Error(`Invalid status value: ${data.status}`);
+    }
+
+    console.log("Updating appointment with data:", data);
+
     const parsedData = {
       ...data,
       doctorId: parseInt(data.doctorId, 10),
+      patientId: data.patientId ? parseInt(data.patientId.toString(), 10) : undefined,
+      status: data.status as AppointmentStatus,
     };
 
     const updatedAppointment = await prismaClient.appointment.update({
@@ -79,7 +104,7 @@ export async function updateAppointment(id: string, data: AppointmentProps) {
       error: null,
     };
   } catch (error) {
-    console.log("Error updating appointment:", error);
+    console.error("Error updating appointment:", error);
     return {
       data: null,
       status: 500,
@@ -88,13 +113,19 @@ export async function updateAppointment(id: string, data: AppointmentProps) {
   }
 }
 
+
 export async function updateAppointmentById(id: string, data: AppointmentUpdateProps) {
   try {
+    const updatedData = {
+      ...data,
+      status: data.status.toUpperCase() as AppointmentStatus,  
+    };
+
     const updatedAppointment = await prismaClient.appointment.update({
       where: {
         id: parseInt(id, 10),
       },
-      data,
+      data: updatedData,  
     });
 
     revalidatePath("/dashboard/doctor/appointments");
@@ -114,6 +145,7 @@ export async function updateAppointmentById(id: string, data: AppointmentUpdateP
     };
   }
 }
+
 
 export async function getAppointments() {
   try {
@@ -146,6 +178,32 @@ export async function getPatientAppointments(patientId: string) {
       },
       where: {
         patientId: parseInt(patientId, 10),
+      },
+    });
+
+    return {
+      data: appointments,
+      status: 200,
+      error: null,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      data: null,
+      status: 500,
+      error,
+    };
+  }
+}
+
+export async function getDoctorAppointments(doctorId: string) {
+  try {
+    const appointments = await prismaClient.appointment.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      where: {
+        doctorId: parseInt(doctorId, 10),
       },
     });
 
