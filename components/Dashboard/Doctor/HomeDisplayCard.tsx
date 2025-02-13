@@ -4,9 +4,10 @@ import NewButton from './NewButton'
 
 type HomeDisplayCardProps = {
   count:number;
+  newAppointmentLink: string;
 }
 
-export default function HomeDisplayCard({count}: HomeDisplayCardProps) {
+export default function HomeDisplayCard({count, newAppointmentLink}: HomeDisplayCardProps) {
   return (
       <div className="flex h-1/2 items-center justify-center">
         <div className="py-4 px-6 text-center border border-gray-100 shadow-md 
@@ -16,7 +17,7 @@ export default function HomeDisplayCard({count}: HomeDisplayCardProps) {
           {" "}
         <p>You have {count} appointments today.</p>  
         </div>
-         <NewButton title="New Appointment" href="#"/>
+         <NewButton title="New Appointment" href={newAppointmentLink}/>
     </div>
       </div>
   );

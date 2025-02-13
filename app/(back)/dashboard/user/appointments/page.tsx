@@ -23,10 +23,10 @@ export default async function page() {
     <div>
        <div className="py-2 border-b border-gray-200 flex items-center justify-end px-4">
         <div className="flex items-center gap-4">
-          <NewButton title="New Appointment" href="#"/>
+          <NewButton title="New Appointment" href="/dashboard/user/appointments/new"/>
         </div>
        </div>
-       <HomeDisplayCard count={appointments.length}/>
+       <HomeDisplayCard newAppointmentLink="/dashboard/user/appointments/new" count={appointments.length}/>
     </div>
   );
 }

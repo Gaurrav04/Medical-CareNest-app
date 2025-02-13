@@ -9,9 +9,9 @@ import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function createAppointment(data: AppointmentProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   try {
     const doctor = await prismaClient.user.findUnique({
       where: {
@@ -127,8 +127,25 @@ export async function updateAppointmentById(id: string, data: AppointmentUpdateP
       },
       data: updatedData,  
     });
+    const patientId = updatedAppointment.patientId
+    const patient = await prismaClient.user.findUnique({
+      where: { id: patientId },
+    })
+    
+    const firstName = patient?.name;
+    const doctorMail = patient?.email;
+    const link = `${baseUrl}/dashboard/user/appointments/view/${updatedAppointment.id}`;
+    const message = "Your appointment has been approved.You can View the Details here";
 
-    revalidatePath("/dashboard/doctor/appointments");
+    // Send email to doctor
+    const sendMail = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: doctorMail ?? "",
+      subject: "Appointment Approved",
+      react: NewAppointmentEmail({ firstName, link, message }),
+    });
+    revalidatePath("/dashboard/user/appointments");
+
     console.log(updatedAppointment);
 
     return {
