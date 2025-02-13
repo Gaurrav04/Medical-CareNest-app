@@ -2,6 +2,7 @@ import { getAppointmentByPatientId } from '@/actions/appointments';
 import { getDoctorBySlug } from '@/actions/users';
 import DoctorDetails from '@/components/DoctorDetails';
 import { authOptions } from '@/lib/auth';
+import { Appointment } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import React from 'react';
@@ -50,7 +51,7 @@ export default async function page({
        </div>
 
        <div className="py-2 px-8">
-         <DoctorDetails appointment={appointment} doctor={doctor}/>
+         <DoctorDetails appointment={appointment as Appointment| null} doctor={doctor}/>
        </div>
      </div>
      {/* <FixedBookButton price={doctor.doctorProfile?.hourlyWage}/> */}

@@ -4,7 +4,7 @@ import { AppointmentUpdateProps } from "@/components/Dashboard/Doctor/UpdateAppo
 import NewAppointmentEmail from "@/components/Emails/new-appointment";
 import { prismaClient } from "@/lib/db";
 import { AppointmentProps } from "@/types/types";
-import { AppointmentStatus } from "@prisma/client";
+import { Appointment, AppointmentStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
@@ -224,7 +224,7 @@ export async function getAppointmentByPatientId(patientId: string | undefined) {
       if(!appointment) {
         return null
       }
-      return appointment;
+      return appointment as Appointment;
     } catch (error) {
       console.log(error);
       return {

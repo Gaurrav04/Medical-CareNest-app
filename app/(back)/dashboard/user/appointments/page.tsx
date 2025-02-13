@@ -26,7 +26,10 @@ export default async function page() {
           <NewButton title="New Appointment" href="/dashboard/user/appointments/new"/>
         </div>
        </div>
-       <HomeDisplayCard newAppointmentLink="/dashboard/user/appointments/new" count={appointments.length}/>
+       <HomeDisplayCard 
+       title="Appointment"
+       newAppointmentLink="/dashboard/user/appointments/new" 
+       count={appointments.length}/>
     </div>
   );
 }
