@@ -1,16 +1,9 @@
-import { getServices } from '@/actions/services'
-import { getspecialties } from '@/actions/specialities'
 import { getSymptoms } from '@/actions/symptom'
-import HomeDisplayCard from '@/components/Dashboard/Doctor/HomeDisplayCard'
-import ListPanel from '@/components/Dashboard/Doctor/ListPanel'
 import NewButton from '@/components/Dashboard/Doctor/NewButton'
 import PanelHeader from '@/components/Dashboard/Doctor/PanelHeader'
-import ServiceCard from '@/components/Dashboard/ServiceCard'
-import ServiceForm from '@/components/Dashboard/ServiceForm'
-import SpecialtyCard from '@/components/Dashboard/SpecialtyCard'
 import SymptomCard from '@/components/Dashboard/SymptomCard'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Activity, Calendar, CalendarDays, LayoutGrid, NotebookPen } from 'lucide-react'
+import { Activity} from 'lucide-react'
 import React from 'react'
 
 export default async function page() {
@@ -27,7 +20,7 @@ export default async function page() {
 
              <PanelHeader 
               title="Symptoms" 
-              count={(symptoms.length).toString().padStart(2,"0")} 
+              count={symptoms.length} 
               icon={Activity}/>
 
            <div className="lg:hidden">

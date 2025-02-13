@@ -25,7 +25,7 @@ export default async function page() {
 
              <PanelHeader 
               title="Specialties" 
-              count={(specialties.length).toString().padStart(2,"0")} 
+              count={specialties.length} 
               icon={NotebookPen}/>
 
            <div className="lg:hidden">

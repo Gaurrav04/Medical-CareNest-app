@@ -23,7 +23,7 @@ export default async function page() {
 
              <PanelHeader 
               title="Services" 
-              count={(services.length).toString().padStart(2,"0")} 
+              count={services.length} 
               icon={LayoutGrid}/>
 
            <div className="lg:hidden">
