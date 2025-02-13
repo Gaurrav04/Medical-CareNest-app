@@ -21,9 +21,16 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { createAppointment } from "@/actions/appointments";
 import { truncateSync } from "fs";
+import { Appointment } from "@prisma/client";
 
 
-export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
+export default function DoctorDetails({
+  doctor,
+  appointment,
+}:{
+  doctor:DoctorDetail;
+  appointment:Appointment | null;
+}) {
     const [isActive, setIsActive] = useState("availability");
     const {data:session} = useSession()
     const patient = session?.user
@@ -53,7 +60,13 @@ export default function DoctorDetails({doctor}:{doctor:DoctorDetail}) {
     const router = useRouter()
   const { register, handleSubmit, reset, formState: { errors } } = useForm<AppointmentProps>({
     defaultValues:{
-      email:patient?.email??"",
+      email:appointment?.email ?? "",
+      firstName:appointment?.firstName ?? "",
+      lastName:appointment?.lastName ?? "",
+      phone:appointment?.phone ?? "", 
+      occupation:appointment?.occupation ?? "", 
+      location:appointment?.location ?? "",
+      gender:appointment?.gender ?? "",
     }
   });
 

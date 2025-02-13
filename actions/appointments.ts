@@ -213,6 +213,29 @@ export async function getPatientAppointments(patientId: string) {
   }
 }
 
+export async function getAppointmentByPatientId(patientId: string | undefined) {
+  if(patientId) {
+    try {
+      const appointment = await prismaClient.appointment.findFirst({
+        where: {
+          patientId: parseInt(patientId, 10),
+        },
+      });
+      if(!appointment) {
+        return null
+      }
+      return appointment;
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error,
+      };
+    }
+  }
+}
+
 export async function getDoctorAppointments(doctorId: string) {
   try {
     const appointments = await prismaClient.appointment.findMany({

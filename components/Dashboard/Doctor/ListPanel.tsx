@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils'
 
 export default function ListPanel({
   appointments,
-  role
+  role,
 }:{
   appointments:Appointment[];
   role: string;

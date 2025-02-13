@@ -1,6 +1,8 @@
+import { getAppointmentByPatientId } from '@/actions/appointments';
 import { getDoctorBySlug } from '@/actions/users';
 import DoctorDetails from '@/components/DoctorDetails';
-import FixedBookButton from '@/components/FixedBookButton';
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import React from 'react';
 
@@ -10,7 +12,11 @@ export default async function page({
   params:{slug:string};
 }) {
   //Fetch Doctor
+  const session = await getServerSession(authOptions)
   const doctor = await getDoctorBySlug(slug)|| null;
+  const user = session?.user
+  //Fetch Appointment by PatientId
+  const appointment = await getAppointmentByPatientId(user?.id ?? "");
   return (
    <>
    {doctor && doctor.id ?(
@@ -44,7 +50,7 @@ export default async function page({
        </div>
 
        <div className="py-2 px-8">
-         <DoctorDetails doctor={doctor}/>
+         <DoctorDetails appointment={appointment} doctor={doctor}/>
        </div>
      </div>
      {/* <FixedBookButton price={doctor.doctorProfile?.hourlyWage}/> */}
