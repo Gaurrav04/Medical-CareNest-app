@@ -1,8 +1,9 @@
 import React from 'react'
 import ServiceCard from './ServiceCard'
 import { Service } from '@prisma/client'
+import { ServiceWithDoctorProfileCount } from '@/actions/services'
 
-export default function ServiceList({ data }: {data:Service[]}) {
+export default function ServiceList({ data }: {data:ServiceWithDoctorProfileCount[]}) {
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-col-1 gap-6 ">
     {

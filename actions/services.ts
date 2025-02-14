@@ -123,11 +123,32 @@ export async function createManyServices(){
   }
 }
 
+export interface ServiceWithDoctorProfileCount {
+  id: number;
+  title: string;
+  slug: string;
+  imageUrl: string;
+  _count: {
+    doctorProfiles: number;
+  };
+};
+
 export async function getServices(){
     try {
     const services = await prismaClient.service.findMany({
         orderBy:{
-           createdAt: "desc"
+           createdAt: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          imageUrl: true,
+          _count: {
+            select: {
+              doctorProfiles: true ,
+            },
+          },
         },
       });
       return {

@@ -27,9 +27,9 @@ export default function DoctorCard({
     <>
       {times && times.length > 0 && (
         <div className="border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-slate-800 inline-flex flex-col py-8 px-6 rounded-md hover:border-gray-800 duration-300 transition-all">
-          <Link href={`/doctors/${doctor.slug}`}>
+          <Link href={`/doctors/${doctor.slug}?id=${doctor.id}`}>
             <div>
-              <h2 className="uppercase font-bold text-2xl tracking-widest">{doctor.name}</h2>
+              <h2 className="uppercase font-bold text-2xl tracking-widest">{`${doctor.doctorProfile?.firstName} ${doctor.doctorProfile?.lastName}`}</h2>
               {isInPerson && <p className="py-3">678 Margoa-Goa, 403890</p>}
               <div className="flex items-center gap-4 py-4">
                 <div className="relative">

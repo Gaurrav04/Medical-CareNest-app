@@ -5,10 +5,11 @@ import ServiceList from "./Services/ServiceList";
 import LinkCards from "./Doctors/LinkCards";
 import { Service, Speciality, Symptom } from "@prisma/client";
 import SymptomCards from "./Doctors/SymptomCard";
+import { ServiceWithDoctorProfileCount } from "@/actions/services";
 // import { HiUserCircle } from "react-icons/hi"; 
 
 type TabbedItemsProps = {
-  services:Service[];
+  services:ServiceWithDoctorProfileCount[];
   specialties:Speciality[];
   symptoms: Symptom[];
 }

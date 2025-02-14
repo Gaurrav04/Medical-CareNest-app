@@ -1,6 +1,6 @@
 "use client";
 
-import { updateDoctorProfileWithService } from '@/actions/services';
+import { ServiceWithDoctorProfileCount, updateDoctorProfileWithService } from '@/actions/services';
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -16,7 +16,7 @@ export default function UpdateServiceForm({
   symptoms,
   profile,
 }: {
-  services: Service[] | null;
+  services: ServiceWithDoctorProfileCount[] | null;
   specialties: Speciality[] | null;
   symptoms: Symptom[] | null;
   profile: DoctorProfile | undefined | null;

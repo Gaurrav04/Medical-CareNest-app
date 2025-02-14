@@ -1,5 +1,5 @@
 import { getAppointmentByPatientId } from '@/actions/appointments';
-import { getDoctorBySlug } from '@/actions/users';
+import { getDoctorById, getDoctorBySlug } from '@/actions/users';
 import DoctorDetails from '@/components/DoctorDetails';
 import { authOptions } from '@/lib/auth';
 import { Appointment } from '@prisma/client';
@@ -8,13 +8,18 @@ import Image from 'next/image';
 import React from 'react';
 
 export default async function page({
-  params:{slug},
-}:{
-  params:{slug:string};
+  params: { slug },
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const {id} = searchParams
   //Fetch Doctor
   const session = await getServerSession(authOptions)
-  const doctor = await getDoctorBySlug(slug)|| null;
+  // const doctor = await getDoctorBySlug(slug)|| null;
+  const doctor = await getDoctorById(id as string)|| null;
+
   const user = session?.user
   //Fetch Appointment by PatientId
   const appointment = await getAppointmentByPatientId(user?.id ?? "");
