@@ -1,4 +1,4 @@
-import { DataProps, getDoctorsByServiceSlug} from '@/actions/doctors';
+import { DataProps, getDoctorsBySpecialtySlug} from '@/actions/doctors';
 import DoctorCard from '@/components/DoctorCard';
 import { Doctor } from '@/types/types';
 import Link from 'next/link';
@@ -14,15 +14,15 @@ export default async function Page({
     const {type} = searchParams;
     console.log(type);
     const title = slug.split("-").join(" ");
-    const data = await getDoctorsByServiceSlug(slug) as DataProps;
-    const doctors = data?.doctors as Doctor[];
-    const services = data?.services;
+    const data = await getDoctorsBySpecialtySlug(slug) as DataProps;
+    const doctors = data?.doctors as Doctor[] || [];
+    const services = data?.services || [];
 
     return (
     <div className="container p-8">
          <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl
           pb-6 capitalize">
-           {title} ({doctors.length.toString().padStart(2,"0")})
+           {title} ({doctors.length.toString().padStart(2,"0") || "0"})
          </h1>
         <div className="max-w-6xl mx-auto grid grid-cols-12 gap-6 lg:gap-10">
           <div className="col-span-3 border border-gray-200/50 rounded-sm p-6">
@@ -33,7 +33,7 @@ export default async function Page({
                {services.map((service,i)=>{
                 return (
                   <Link 
-                  key={i} href={`/service/${service.slug}`} className="hover:text-blue-600">
+                  key={i} href={`/specialty/${service.slug}`} className="hover:text-blue-600">
                   {service.title}
                 </Link>
                 )

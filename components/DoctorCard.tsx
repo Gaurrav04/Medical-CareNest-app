@@ -66,13 +66,13 @@ export default function DoctorCard({
                 return (
                   <Link className="bg-blue-500 text-sm text-white p-2 text-center" 
                   key={i} 
-                  href={`/doctors/${doctor.slug}`}>
+                  href={`/doctors/${doctor.slug}?id=${doctor.id}`}>
                     {item}
                   </Link>
                 );
               })}
               <Link className="text-[0.7rem] text-center bg-gray-300 dark:bg-gray-700 text-grey py-2 px-3 truncate"
-                href={`/doctors/${doctor.slug}`}>
+               href={`/doctors/${doctor.slug}?id=${doctor.id}`}>
                 More times
               </Link>
             </div>
