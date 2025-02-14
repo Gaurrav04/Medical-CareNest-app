@@ -115,7 +115,7 @@ export async function createManySymptoms(){
     },
     {
       title: "Sore Throat",
-      slug: "sore throat",
+      slug: "sore-throat",
     },
     {
       title: "Diarrhea",

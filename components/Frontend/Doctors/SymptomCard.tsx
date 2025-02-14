@@ -14,7 +14,7 @@ export default function SymptomCards({ className,symptoms }:LinkCardsProps ) {
         return(
           <Link 
           key={item.id} 
-          href={`/symptoms/${item.slug}`} 
+          href={`/symptoms/${item.slug}?id=${item.id}`}
           className={`rounded-md py-3 px-6 flex gap-4 border-slate-600 bg-blue-600 border dark:text-gray-900 text-gray-900 ${className} justify-between`}>
           <h2 className="text-sm">{item.title}</h2>
             <span aria-hidden="true">&rarr;</span>

@@ -22,7 +22,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import {getInitials} from "@/utils/generateInitials"
-export function SiteHeader({session}:{ session: Session|null }) {
+
+export function SiteHeader({
+  session,
+}:{ 
+  session: Session|null;
+ }) {
   const user = session?.user;
   const initials = getInitials(user?.name);
   const router = useRouter();
@@ -37,9 +42,9 @@ export function SiteHeader({session}:{ session: Session|null }) {
           <MainNav />
           <MobileNav />
           <div className="flex flex-1 items-center justify-between gap-2 md:justify-end">
-            <div className="w-full flex-1 md:w-auto md:flex-none">
+            {/* <div className="w-full flex-1 md:w-auto md:flex-none">
               <CommandMenu />
-            </div>
+            </div> */}
             <nav className="flex items-center gap-4">
               {session && session.user && user?.email?(
                    <DropdownMenu>

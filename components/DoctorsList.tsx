@@ -34,7 +34,7 @@ export default function DoctorsList({
           <ToggleButton/>
         )}
         <Button asChild>
-        <Link className="" href="#">
+        <Link className="" href={`/category?mode=${title}`}>
            See All
            <ArrowUpRight className="h-4 w-4 ms-1"/>
            </Link>  
