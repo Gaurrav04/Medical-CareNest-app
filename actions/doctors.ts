@@ -160,3 +160,71 @@ export async function getDoctorsBySymptomId(symptomId:string){
       return [];
   }
 }
+
+export async function getDoctorsBySearch(query:string){
+  if(query) {
+    const services = await prismaClient.service.findMany({
+      where:{
+        OR: [
+          {title: {contains:query, mode: 'insensitive'}},
+          {slug: {contains:query,mode:'insensitive'}},
+        ],
+      },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        imageUrl: true,
+        _count: {
+          select: {
+            doctorProfiles: true ,
+          },
+        },
+      },
+    })
+    const symptoms = await prismaClient.symptom.findMany({
+      where:{
+        OR: [
+          {title: {contains:query, mode: 'insensitive'}},
+          {slug: {contains:query,mode:'insensitive'}},
+        ],
+      },
+    })
+    const specialties = await prismaClient.speciality.findMany({
+      where:{
+        OR: [
+          {title: {contains:query, mode: 'insensitive'}},
+          {slug: {contains:query,mode:'insensitive'}},
+        ],
+      },
+    })
+    const doctorProfiles = await prismaClient.doctorProfile.findMany({
+      where: {
+        OR: [
+          {firstName: {contains:query, mode: 'insensitive'}},
+          {lastName: {contains:query,mode:'insensitive'}},
+          {servicesOffered: { hasSome: [query]}},
+        ],
+      },
+      include:{
+        availability:true,
+      }
+    });
+    const doctors = doctorProfiles.map((doc)=>{
+      return {
+        id: doc.userId,
+        name: `${doc.firstName} ${doc.lastName}`,
+        email: doc.email??"",
+        phone: doc.phone??"",
+        slug: generateSlug(`${doc.firstName} ${doc.lastName}`),
+        doctorProfile: doc,
+      };
+    });
+    return {
+      services,
+      specialties,
+      symptoms,
+      doctors,
+    }
+  }
+}

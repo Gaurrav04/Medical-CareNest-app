@@ -1,9 +1,9 @@
 import React from "react";
 import TransitionalText from "./TransitionalText";
-import SearchBar from "./SearchBar";
 import { Pill } from "lucide-react";
 import Link from "next/link";
 import { CommandMenu } from "../command-menu";
+import SearchBar from "./SearchBar";
 
 const Hero = () => {
   const TEXTS = [
@@ -42,7 +42,7 @@ const Hero = () => {
                   {/* SEARCH BAR HERE */}
                   {/* <SearchBar /> */}
                       <div className="w-full flex-1 md:flex-none ">
-                      <CommandMenu />
+                      <SearchBar/>
                       </div>
                   {/* CTA BUTTONS */}
                   <ul className="flex flex-wrap items-center mt-6">
