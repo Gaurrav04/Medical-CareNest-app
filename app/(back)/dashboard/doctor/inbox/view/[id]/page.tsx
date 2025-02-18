@@ -1,93 +1,107 @@
-import { getAppointmentById } from '@/actions/appointments'
-import HomeDisplayCard from '@/components/Dashboard/Doctor/HomeDisplayCard'
-import ListPanel from '@/components/Dashboard/Doctor/ListPanel'
-import NewButton from '@/components/Dashboard/Doctor/NewButton'
-import PanelHeader from '@/components/Dashboard/Doctor/PanelHeader'
-import UpdateAppointmentForm from '@/components/Dashboard/Doctor/UpdateAppointmentForm'
-import { Button } from '@/components/ui/button'
-import { Calendar } from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
 
-export default async function page({
-  params: {id},
+import {
+  Reply,
+  Trash2,
+} from "lucide-react"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+
+import { Separator } from "@/components/ui/separator"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { getInboxMessageById } from "@/actions/inbox"
+import { formatDate } from "date-fns"
+import MessageBody from "@/components/MessageBody"
+
+
+export default async function MailDisplay({
+  params:{id},
 }:{
-  params: {id:string};
+  params:{id:string}
 }) {
-  const appointment = await getAppointmentById(id);
-
-    if (!appointment) {
-      return <div>Appointment not found</div>; 
-    }
+  const mail = await getInboxMessageById(id)
+  const today = new Date()
 
   return (
-    <div>
-      <div className="flex items-center justify-between px-4 py-4 border-b">
-        <div className="">
-        <h2 className="scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-          {`${appointment?.firstName} ${appointment?.lastName}`} 
-        </h2>
-         <div className="flex space-x-2 divide-x-2 divide-gray-200 text-sm">
-           <p className="capitalize px-2">{appointment?.gender}</p>
-           <p className="px-2">{appointment?.phone}</p>
-         </div>
+    <div className="flex h-full flex-col">
+      <div className="flex items-center p-2">
+        <div className="flex items-center gap-2">
+          <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" disabled={!mail}>
+                <Trash2 className="h-4 w-4" />
+                <span className="sr-only">Move to trash</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Move to trash</TooltipContent>
+          </Tooltip>
+          </TooltipProvider>
+          <Separator orientation="vertical" className="mx-1 h-6" />
         </div>
-          <div className="">
-          <h2 className="scroll-m-20 pb-2 text-2xl font-medium tracking-tight first:mt-0">
-            {appointment?.appointmentFormattedDate} 
-          </h2>
-          <div className="flex items-center text-sm">
-            <Calendar className="w-4 h-4 mr-2"/>
-            <span>{appointment?.appointmentTime}</span>
-          </div>
+        <div className="ml-auto flex items-center gap-2">
+          <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" disabled={!mail}>
+                <Reply className="h-4 w-4" />
+                <span className="sr-only">Reply</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Reply</TooltipContent>
+          </Tooltip>    
+          </TooltipProvider>  
         </div>
       </div>
-      <div className="py-4">
-        <div className="flex divide-x-2 px-4 py-3 divide-gray-200 border-b">
-          <p className="px-3 text-sm font-semibold">Reason</p>
-          <p className="px-3">
-            {appointment?.appointmentReason}
-          </p>
-        </div>
-        <div className="flex divide-x-2 px-4 py-3 divide-gray-200 border-b">
-          <p className="px-3 text-sm font-semibold">Date of Birth</p>
-          <p className="px-3">
-            {appointment?.dob?.toISOString().split("T")[0]}
-          </p>
-        </div>
-        <div className="flex divide-x-2 px-4 py-3 divide-gray-200 border-b">
-          <p className="px-3 text-sm font-semibold">Email</p>
-          <p className="px-3">
-            {appointment?.email}
-          </p>
-        </div>
-        <div className="flex divide-x-2 px-4 py-3 divide-gray-200 border-b">
-          <p className="px-3 text-sm font-semibold">Location</p>
-          <p className="px-3">
-            {appointment?.location}
-          </p>
-        </div>
-        <div className="flex divide-x-2 px-4 py-3 divide-gray-200 border-b">
-          <p className="px-3 text-sm font-semibold">Medical Docs</p>
-            <div className="grid grid-cols-4 px-3">
-              {appointment?.medicalDocuments.map((item,i)=>{
-                return (
-                  <Button 
-                    key={i} 
-                    variant={"outline"} asChild>
-                    <Link 
-                     target="_blank" 
-                     href={item} download>{`Doc-${i+1}`}</Link>
-                  </Button>
-                )
-              })}
+      <Separator />
+      {mail ? (
+        <div className="flex flex-1 flex-col">
+          <div className="flex items-start p-4">
+            <div className="flex items-start gap-4 text-sm">
+              <Avatar>
+                <AvatarImage alt={mail.senderName} />
+                <AvatarFallback>
+                  {mail.senderName
+                    .split(" ")
+                    .map((chunk:any) => chunk[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid gap-1">
+                <div className="font-semibold">{mail.senderName}</div>
+                <div className="line-clamp-1 text-xs">{mail.subject}</div>
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">Reply-To:</span> {mail.senderEmail}
+                </div>
+              </div>
             </div>
+            {mail.createdAt && (
+              <div className="ml-auto text-xs text-muted-foreground">
+                {formatDate(new Date(mail.createdAt), "PPpp")}
+              </div>
+            )}
+          </div>
+          <Separator />
+          <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
+            {/* {mail.text} */}
+            <MessageBody html={mail.body}/>
+            some text here
+          </div>
+
         </div>
-        <div className="">
-           {/* Update Form */}
-           <UpdateAppointmentForm appointment={appointment}/>
+      ) : (
+        <div className="p-8 text-center text-muted-foreground">
+          No message selected
         </div>
-      </div>
+      )}
     </div>
-  );
+  )
 }

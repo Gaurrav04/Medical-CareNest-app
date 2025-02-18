@@ -88,6 +88,8 @@ export default {
   plugins: [
     require('@tailwindcss/forms'),
     require("tailwindcss-animate"),
+	require("@tailwindcss/typography"),
+
     flowbite.plugin() // Add Flowbite plugin
   ],
 } satisfies Config;

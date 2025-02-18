@@ -78,6 +78,20 @@ export async function getInboxSentMessages(senderId:number){
   }
 }
 
+export async function getInboxMessageById(id:string){
+  try {
+  const message = await prismaClient.inbox.findUnique({
+      where:{
+        id: parseInt(id),
+      }
+    });
+    return message;
+  } catch (error) {
+      console.log(error)
+      return null;
+  }
+}
+
 export async function deleteMessage(id: string){
   try {
     await prismaClient.inbox.delete({

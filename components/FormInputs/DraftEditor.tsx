@@ -63,15 +63,15 @@ const DraftEditor = ({ label, value, onChange, className }: DraftEditorProps) =>
 
       {/* Toolbar for formatting */}
       <div className="draft-editor-toolbar">
-        <button className="toolbar-button" onClick={() => toggleInlineStyle('BOLD')}><strong>B</strong></button>
-        <button className="toolbar-button" onClick={() => toggleInlineStyle('ITALIC')}><em>I</em></button>
-        <button className="toolbar-button" onClick={() => toggleInlineStyle('UNDERLINE')}><u>U</u></button>
-        <button className="toolbar-button" onClick={() => toggleInlineStyle('STRIKETHROUGH')}><del>S</del></button>
+        <button className="toolbar-button" type="button" onClick={() => toggleInlineStyle('BOLD')}><strong>B</strong></button>
+        <button className="toolbar-button" type="button" onClick={() => toggleInlineStyle('ITALIC')}><em>I</em></button>
+        <button className="toolbar-button" type="button" onClick={() => toggleInlineStyle('UNDERLINE')}><u>U</u></button>
+        <button className="toolbar-button" type="button" onClick={() => toggleInlineStyle('STRIKETHROUGH')}><del>S</del></button>
 
         {/* Block styles */}
-        <button className="toolbar-button" onClick={() => toggleBlockStyle('header-one')}>H1</button>
-        <button className="toolbar-button" onClick={() => toggleBlockStyle('unordered-list-item')}>Bullet</button>
-        <button className="toolbar-button" onClick={() => toggleBlockStyle('ordered-list-item')}>Numbered</button>
+        <button className="toolbar-button" type="button" onClick={() => toggleBlockStyle('header-one')}>H1</button>
+        <button className="toolbar-button" type="button" onClick={() => toggleBlockStyle('unordered-list-item')}>Bullet</button>
+        <button className="toolbar-button" type="button" onClick={() => toggleBlockStyle('ordered-list-item')}>Numbered</button>
       </div>
 
       {/* Editor */}
