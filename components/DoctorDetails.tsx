@@ -79,6 +79,7 @@ export default function DoctorDetails({
     data.charge = doctor.doctorProfile?.hourlyWage ?? 0;
     data.dob = dob;
     data.patientId = patient?.id ? Number(patient.id) : undefined;
+    data.doctorName = doctor.name;
     console.log(data);
 
     try {

@@ -21,12 +21,12 @@ export default async function page() {
     <div>
        <div className="py-2 border-b border-gray-200 flex items-center justify-end px-4">
         <div className="flex items-center gap-4">
-          <NewButton title="New Message" href="/dashboard/doctor/inbox/new"/>
+          <NewButton title="New Message" href="/dashboard/user/inbox/new"/>
         </div>
        </div>
        <HomeDisplayCard 
        title="Inbox Messages"
-       newAppointmentLink="/dashboard/doctor/inbox/new" 
+       newAppointmentLink="/dashboard/user/inbox/new" 
        count={messages.length}/>
     </div>
   );

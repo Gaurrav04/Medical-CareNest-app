@@ -140,6 +140,7 @@ model Appointment {
   appointmentDate    DateTime?
   appointmentFormattedDate String
   doctorId          Int
+  doctorName        String?
   patientId         Int
   charge            Int
   appointmentTime   String?

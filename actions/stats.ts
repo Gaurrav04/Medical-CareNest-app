@@ -2,9 +2,10 @@
 
 import { prismaClient } from "@/lib/db";
 import { AlarmClock, LucideIcon, Mail, Users } from "lucide-react";
-import { getDoctorAppointments } from "./appointments";
+import { getDoctorAppointments, getPatientAppointments } from "./appointments";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getInboxMessages } from "./inbox";
 
 export type DoctorAnalyticsProps={
     title: string;
@@ -60,6 +61,9 @@ export async function getDoctorAnalytics(){
   }
   });
     const patients = Array.from(uniquePatientsMap.values());
+    const userId = user?.id ? Number(user.id) : 0;
+
+    const messages = (await getInboxMessages(userId)).data || [];
 
   const analytics = [
     {
@@ -78,10 +82,61 @@ export async function getDoctorAnalytics(){
     },
     {
       title:"Inbox",
-      count:1000,
+      count:messages.length,
       icon:Mail,
       unit:"",
       detailLink:"/dashboard/doctor/inbox"
+    },
+  ]
+    return analytics as DoctorAnalyticsProps[];
+  } catch (error) {
+      console.log(error)
+      return [];
+  }
+}
+
+export async function getUserAnalytics(){
+  try {
+    const session = await getServerSession(authOptions)
+    const user = session?.user
+    const appointments = (await getPatientAppointments(user?.id??"")).data||[];
+   
+    const uniquePatientsMap = new Map();
+
+    appointments.forEach((app) => {
+      if(!uniquePatientsMap.has(app.doctorId)) {
+        uniquePatientsMap.set(app.doctorId,{
+        doctorId: app.doctorId,
+        name: `${app.firstName} ${app.lastName}`,
+    });
+  }
+  });
+    const doctors = Array.from(uniquePatientsMap.values());
+    const userId = user?.id ? Number(user.id) : 0;
+
+    const messages = (await getInboxMessages(userId)).data || [];
+
+  const analytics = [
+    {
+      title:"Appointments",
+      count: appointments.length??0,
+      icon:AlarmClock,
+      unit:"",
+      detailLink:"/dashboard/user/appointments"
+    },
+    {
+      title:"Doctors",
+      count:doctors.length,
+      icon:Users,
+      unit:"",
+      detailLink:"/dashboard/user/doctors"
+    },
+    {
+      title:"Inbox",
+      count:messages.length,
+      icon:Mail,
+      unit:"",
+      detailLink:"/dashboard/user/inbox"
     },
   ]
     return analytics as DoctorAnalyticsProps[];

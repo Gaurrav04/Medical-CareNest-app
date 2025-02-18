@@ -36,7 +36,7 @@ export default function InboxForm({
   title,
   initialData,
   users,
-  session
+  session,
 }: {
   title: string;
   initialData?: Service;
@@ -52,7 +52,8 @@ export default function InboxForm({
   const router = useRouter();
 
   async function onSubmit(data: InboxProps) {
-    data.receiverId = isNaN(Number(selectedUser.value)) ? 0 : Number(selectedUser.value);
+    const receiverId = selectedUser?.value ? Number(selectedUser.value) : 0;
+    data.receiverId = receiverId;
     data.senderId = Number(session?.user.id) ?? 0; 
     data.senderName = session?.user.name ?? "";
     data.senderEmail = session?.user.email ?? "";
@@ -73,7 +74,7 @@ export default function InboxForm({
         reset();
         setIsLoading(false)
         toast.success("Message sent Successfully")
-        router.push("/dashboard/doctor/inbox")
+        router.push(`/dashboard/${session?.user.role==="DOCTOR"?"doctor":"user"}/inbox`);
       }
     } catch (error) {
       setIsLoading(false)

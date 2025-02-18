@@ -162,6 +162,7 @@ export interface DoctorProfile {
     appointmentDate: Date | undefined;
     appointmentFormattedDate: string;
     doctorId: string;
+    doctorName: string;
     charge: number;
     appointmentTime: string;
   

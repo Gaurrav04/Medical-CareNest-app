@@ -38,6 +38,8 @@ export default function Sidebar({ session }: { session: Session }) {
         path: "/dashboard/user/appointments",
         icon: AlarmClock,
       },
+      { title: "Doctors", path: "/dashboard/user/doctors", icon: Users },
+
       { title: "Inbox", path: "/dashboard/user/inbox", icon: Mail },
       {
         title: "Settings",

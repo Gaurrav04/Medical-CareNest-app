@@ -28,7 +28,8 @@ export default function MailListPanel({
             key={item.id}
             className={cn(
               "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-              // mail.selected === item.id && "bg-muted"
+               pathname===`/dashboard/${role==="DOCTOR"?"doctor":"user"}/inbox/view/${item.id}` && 
+              "border-green-700 border-2 bg-green-50"
             )}
             // onClick={() =>
             //   setMail({

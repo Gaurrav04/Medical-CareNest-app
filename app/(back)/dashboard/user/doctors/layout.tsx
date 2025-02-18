@@ -1,4 +1,5 @@
-import { getDoctorAppointments } from '@/actions/appointments';
+import { getDoctorAppointments, getPatientAppointments } from '@/actions/appointments';
+import DoctorsPanel from '@/components/Dashboard/Doctor/DoctorsPanel';
 import ListPanel from '@/components/Dashboard/Doctor/ListPanel';
 import PanelHeader from '@/components/Dashboard/Doctor/PanelHeader';
 import PatientPanel from '@/components/Dashboard/Doctor/PatientPanel';
@@ -32,35 +33,24 @@ export default async function PatientLayout({
 }){
     const session = await getServerSession(authOptions);
     const user = session?.user
-    if(user?.role !=="DOCTOR"){
+    if(user?.role !=="USER"){
       return (
         <NotAuthorized/>
       )
     }
-    const appointments = (await getDoctorAppointments(user?.id)).data||[];
+    const appointments = (await getPatientAppointments(user?.id)).data||[];
 
-    //1 [patientIds] => remove duplicates => fetch users with these id
+  const uniquePatientsMap = new Map();
 
-    //2 [patientId,name,email] => remove duplicates
-    const uniquePatientsMap = new Map();
-
-    appointments.forEach((app) => {
-      if(!uniquePatientsMap.has(app.patientId)) {
-        uniquePatientsMap.set(app.patientId,{
-        patientId: app.patientId,
-        name: `${app.firstName} ${app.lastName}`,
-        email: app.email,
-        phone:app.phone,
-        location:app.location,
-        gender:app.gender,
-        occupation:app.occupation,
-        dob:app.dob,
-
-    });
-  }
+  appointments.forEach((app) => {
+    if(!uniquePatientsMap.has(app.doctorId)) {
+      uniquePatientsMap.set(app.doctorId,{
+      doctorId: app.doctorId,
+      doctorName: app.doctorName??"Name Not Provided",
+  });
+}
 });
-    const patients = Array.from(uniquePatientsMap.values()) as PatientProps[];
-    console.log(patients)
+  const doctors = Array.from(uniquePatientsMap.values()) as DoctorProps[];
     return (
         <div>
          <div className="grid grid-cols-12">
@@ -68,11 +58,11 @@ export default async function PatientLayout({
            <div className="col-span-4 py-3 border-r border-gray-100">
             <PanelHeader 
             title="Patients" 
-            count={patients.length ?? 0} 
+            count={doctors.length ?? 0} 
             icon={Users}/>
 
            <div className="px-3">
-            <PatientPanel patients={patients} role={user?.role} />
+            <DoctorsPanel doctors={doctors} role={user?.role} />
             </div>
            </div>
 
