@@ -12,8 +12,7 @@ export default async function page() {
   if(role==="DOCTOR"){
     return (
     <>
-      <p>The User Role is {user?.role}</p>
-      <DoctorDashboard/>
+      <DoctorDashboard session={session}/>
     </>
     );
   }

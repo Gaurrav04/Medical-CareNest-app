@@ -149,6 +149,8 @@ export async function getServices(){
               doctorProfiles: true ,
             },
           },
+          createdAt:true,
+          updatedAt:true,
         },
       });
       return {

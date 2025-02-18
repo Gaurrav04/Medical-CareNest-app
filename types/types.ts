@@ -130,6 +130,15 @@ export interface DoctorProfile {
     research: string | null;
     accomplishments: string | null;
   }
+
+  export type InboxProps = { 
+    receiverId: number;
+    senderId: number;
+    senderName: string;
+    senderEmail: string;
+    subject: string; 
+    body: string;
+  };
   
   export type Doctor = {
     id: string | number;
@@ -172,5 +181,7 @@ export interface DoctorProfile {
     meetingLink: string;
     meetingProvider: string;
   }
+
+
   
   

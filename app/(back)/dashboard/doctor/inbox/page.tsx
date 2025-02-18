@@ -1,9 +1,31 @@
+import { getInboxMessages } from '@/actions/inbox'
+import HomeDisplayCard from '@/components/Dashboard/Doctor/HomeDisplayCard'
+import NewButton from '@/components/Dashboard/Doctor/NewButton'
+import NotAuthorized from '@/components/NotAuthorized'
+import { authOptions } from '@/lib/auth'
+import { getServerSession } from 'next-auth'
 import React from 'react'
 
-export default function page() {
+export default async function page() {
+  const session = await getServerSession(authOptions);
+  const user = session?.user
+  if(user?.role !=="DOCTOR"){
+    return (
+      <NotAuthorized/>
+    )
+  }
+  const messages = (await getInboxMessages()).data||[];
   return (
     <div>
-        <h2>Inbox</h2>
+       <div className="py-2 border-b border-gray-200 flex items-center justify-end px-4">
+        <div className="flex items-center gap-4">
+          <NewButton title="New Message" href="/dashboard/doctor/inbox/new"/>
+        </div>
+       </div>
+       <HomeDisplayCard 
+       title="Inbox Messages"
+       newAppointmentLink="/dashboard/doctor/inbox/new" 
+       count={messages.length}/>
     </div>
-  )
+  );
 }

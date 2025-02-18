@@ -20,7 +20,6 @@ export type SpecialtyProps = {
   slug: string;
 };
 
-
 export default function SpecialtyForm({
   title,
   initialData

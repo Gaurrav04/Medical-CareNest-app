@@ -56,18 +56,10 @@ export default function Sidebar({ session }: { session: Session }) {
       { title: "Settings", path: "/dashboard/settings", icon: Settings },
     ],
 
-    // DOCTORASSISTANT: [
-    //   { title: "Dashboard", path: "/dashboard", icon: Home },
-    //   { title: "Doctors", path: "/dashboard/doctors", icon: Users },
-    //   { title: "Patients", path: "/dashboard/patients", icon: Users },
-    //   { title: "Appointments", path: "/dashboard/appointments", icon: Users },
-    //   { title: "Settings", path: "/dashboard/settings", icon: Settings },
-    // ],
     DOCTOR: [
       { title: "Dashboard", path: "/dashboard", icon: Home },
       { title: "Appointments", path: "/dashboard/doctor/appointments", icon: AlarmClock },
       { title: "Patients", path: "/dashboard/doctor/patients", icon: Users },
-      { title: "Tasks", path: "/dashboard/doctor/tasks", icon: Users },
       { title: "Inbox", path: "/dashboard/doctor/inbox", icon: Mail },
       { title: "Settings", path: "/dashboard/doctor/settings", icon: Settings },
     ],

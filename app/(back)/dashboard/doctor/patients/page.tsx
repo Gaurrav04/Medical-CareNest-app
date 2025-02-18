@@ -37,7 +37,7 @@ export default async function page() {
 }
 });
   const patients = Array.from(uniquePatientsMap.values()) as PatientProps[];
-  console.log(patients)
+  // console.log(patients)
   return (
     <div>
        <div className="py-2 border-b border-gray-200 flex items-center justify-end px-4">
