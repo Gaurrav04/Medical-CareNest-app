@@ -14,7 +14,9 @@ export default async function page() {
       <NotAuthorized/>
     )
   }
-  const messages = (await getInboxMessages()).data||[];
+  const userId = user?.id ? Number(user.id) : 0;
+
+      const messages = (await getInboxMessages(userId)).data || [];
   return (
     <div>
        <div className="py-2 border-b border-gray-200 flex items-center justify-end px-4">

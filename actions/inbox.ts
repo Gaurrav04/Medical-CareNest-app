@@ -28,12 +28,15 @@ export async function createInboxMessage(data: InboxProps){
 }
 
 
-export async function getInboxMessages(){
+export async function getInboxMessages(receiverId:number){
     try {
     const messages = await prismaClient.inbox.findMany({
         orderBy:{
            createdAt: "desc"
         },
+        where:{
+          receiverId:receiverId
+        }
       });
       return {
         data:messages,
@@ -48,6 +51,31 @@ export async function getInboxMessages(){
             error,
           };
     }
+}
+
+export async function getInboxSentMessages(senderId:number){
+  try {
+  const messages = await prismaClient.inbox.findMany({
+      orderBy:{
+         createdAt: "desc"
+      },
+      where:{
+        senderId
+      }
+    });
+    return {
+      data:messages,
+      status:200,
+      error:null,
+    };
+  } catch (error) {
+      console.log(error)
+      return {
+          data:null,
+          status:500,
+          error,
+        };
+  }
 }
 
 export async function deleteMessage(id: string){

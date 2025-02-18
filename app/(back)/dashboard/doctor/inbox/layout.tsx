@@ -1,5 +1,5 @@
 import { getAppointments, getDoctorAppointments } from '@/actions/appointments';
-import { getInboxMessages } from '@/actions/inbox';
+import { getInboxMessages, getInboxSentMessages } from '@/actions/inbox';
 import ListPanel from '@/components/Dashboard/Doctor/ListPanel';
 import MailListPanel from '@/components/Dashboard/Doctor/MailListPanel';
 import PanelHeader from '@/components/Dashboard/Doctor/PanelHeader';
@@ -8,6 +8,8 @@ import { authOptions } from '@/lib/auth';
 import { CalendarDays, Mail } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import React, { ReactNode } from 'react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 
 export default async function AppointmentLayout({
     children,
@@ -21,7 +23,10 @@ export default async function AppointmentLayout({
         <NotAuthorized/>
       )
     }
-    const messages = (await getInboxMessages()).data||[];
+    const userId = user?.id ? Number(user.id) : 0;
+
+      const messages = (await getInboxMessages(userId)).data || [];
+      const sentmessages = (await getInboxSentMessages(userId)).data||[];
     return (
         <div>
         {/* Header */}
@@ -35,7 +40,19 @@ export default async function AppointmentLayout({
             icon={Mail}/>
 
            <div className="px-3">
+           <Tabs defaultValue="received" className="">
+            <TabsList>
+              <TabsTrigger value="received">Received({messages.length.toString().padStart(2,"0")})</TabsTrigger>
+              <TabsTrigger value="sent">Sent({sentmessages.length.toString().padStart(2,"0")})</TabsTrigger>
+            </TabsList>
+            <TabsContent value="received">
             <MailListPanel messages={messages} role={user?.role} />
+            </TabsContent>
+            <TabsContent value="sent">
+            <MailListPanel messages={sentmessages} role={user?.role} />
+            </TabsContent>
+          </Tabs>
+
             </div>
            </div>
 

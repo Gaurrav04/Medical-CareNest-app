@@ -9,6 +9,7 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
 	"./src/**/*.{ts,tsx,mdx}", 
+	"./node_modules/react-tailwindcss-select/dist/index.esm.js",
     flowbite.content(), // Add Flowbite content scanning
   ],
   theme: {
