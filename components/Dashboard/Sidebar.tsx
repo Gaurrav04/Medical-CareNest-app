@@ -38,6 +38,7 @@ export default function Sidebar({ session }: { session: Session }) {
         path: "/dashboard/user/appointments",
         icon: AlarmClock,
       },
+      { title: "Inbox", path: "/dashboard/user/inbox", icon: Mail },
       {
         title: "Settings",
         path: "/dashboard/user/settings",
