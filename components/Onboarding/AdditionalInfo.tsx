@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import SubmitButton from "../FormInputs/SubmitButton";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import TextAreaInput from "../FormInputs/TextAreaInput";
 import MultipleFileUpload from "../FormInputs/MultipleFileUpload";
 import { StepFormProps } from "./BioDataForm";
@@ -20,9 +20,13 @@ export default function AdditionalInfo({
   formId,
   userId,
   nextPage,
+  doctorProfile,
 }:StepFormProps){
   const {additionalData,savedDBData,setAdditionalData} = useOnboardingContext()
+  const pathname = usePathname();
   const initialDocs = additionalData.additionalDocs || savedDBData.additionalDocs;
+
+  const isOnboarding = pathname.split("/").includes("onboarding")
   const [isloading, setIsLoading]=useState(false);
   const [additionalDocs, setAdditionalDocs] = useState<File[]>([initialDocs]);
   console.log(formId)
@@ -32,10 +36,10 @@ export default function AdditionalInfo({
 
   const {register,handleSubmit,reset, formState:{errors}}=useForm<AdditionalFormProps>({
     defaultValues:{
-      educationHistory: additionalData.educationHistory || savedDBData.educationHistory,
-      research: additionalData.research || savedDBData.research,
-      accomplishments: additionalData.accomplishments || savedDBData.accomplishments,
-      page: additionalData.page || savedDBData.page,
+      educationHistory: doctorProfile.educationHistory || savedDBData.educationHistory,
+      research: doctorProfile.research || savedDBData.research,
+      accomplishments: doctorProfile.accomplishments || savedDBData.accomplishments,
+      page: doctorProfile.page || savedDBData.page,
     }
   });
   const router = useRouter()
@@ -46,19 +50,34 @@ export default function AdditionalInfo({
     setIsLoading(true);
   
     try {
-      const res = await CompleteProfile(formId, data);
-      setAdditionalData(data);
-      if (res?.status === 201) {
-        setIsLoading(false);
-
-        //Send a welcome email
-        toast.success("Profile Completed Succesfully")
-
-        //Route to login
-        router.push("/login");
+      if (isOnboarding) {
+        const res = await CompleteProfile(String(doctorProfile.id), data);
+        setAdditionalData(data);
+        if (res?.status === 201) {
+          setIsLoading(false);
+          toast.success("Profile Completed Successfully");
+  
+          if (isOnboarding) {
+            router.push("/login");
+          }
+        } else {
+          setIsLoading(false);
+          throw new Error("Something went wrong");
+        }
       } else {
-        setIsLoading(false);
-        throw new Error("Something went wrong");
+        const res = await updateDoctorProfile(String(doctorProfile.id), data);
+        setAdditionalData(data);
+        if (res?.status === 201) {
+          setIsLoading(false);
+          toast.success("Profile Updated Successfully");
+
+          if (isOnboarding) {
+            router.push("/login");
+          }
+        } else {
+          setIsLoading(false)
+          throw new Error("Something went wrong");
+        }
       }
     } catch (error) {
       setIsLoading(false);
@@ -66,8 +85,6 @@ export default function AdditionalInfo({
     }
   }
   
-  
-      
     return (
       <div className="w-full">
       <div className="text-center border-b border-gray-200 dark:border-slate-600 pb-4">
@@ -116,7 +133,7 @@ export default function AdditionalInfo({
 
         <div className="mt-8 flex justify-center items-center">
         <SubmitButton
-        title="Complete" 
+        title={isOnboarding?"Complete":"Save"}
         isloading={isloading} 
         loadingTitle="Saving please wait..."/>
         </div>

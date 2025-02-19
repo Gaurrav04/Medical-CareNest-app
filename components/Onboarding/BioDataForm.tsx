@@ -7,13 +7,13 @@ import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { DatePickerInput } from "../FormInputs/DatePickerInput";
 import RadioInput from "../FormInputs/RadioInput";
 import { generateTrackingNumber } from "@/lib/generateTracking";
 import { createDoctorProfile, updateDoctorProfile } from "@/actions/onboarding";
 import { useOnboardingContext } from "@/context/context";
-import { Speciality } from "@prisma/client";
+import { DoctorProfile, Speciality } from "@prisma/client";
 
 export type StepFormProps={
     page:string;
@@ -23,6 +23,7 @@ export type StepFormProps={
     nextPage?:string;
     formId?: string;
     specialties?:Speciality[];
+    doctorProfile:DoctorProfile;
 
 }
 export default function BioDataForm({
@@ -32,7 +33,10 @@ export default function BioDataForm({
   userId,
   nextPage,
   formId="",
+  doctorProfile,
 }:StepFormProps){
+
+  const pathname = usePathname();
 // Get context data
 const { truckingNumber,
   setTruckingNumber,
@@ -41,7 +45,7 @@ const { truckingNumber,
 console.log(truckingNumber,doctorProfileId);
   const [isloading, setIsLoading]=useState(false)
   const {bioData,savedDBData,setBioData} = useOnboardingContext()
-  const initialDOB = bioData.dob ? new Date(bioData.dob) : undefined || savedDBData.dob;
+  const initialDOB = doctorProfile.dob ? new Date(doctorProfile.dob) : undefined || savedDBData.dob;
   const [dob, setDOB] = useState<Date | undefined>(initialDOB);
   const defaultData = bioData || savedDBData
   console.log(savedDBData)
@@ -62,13 +66,13 @@ console.log(truckingNumber,doctorProfileId);
 
   const {register,handleSubmit,reset, formState:{errors}}=useForm<BioDataFormProps>({
     defaultValues:  { 
-    firstName: bioData.firstName || savedDBData.firstName,
-    lastName: bioData.lastName || savedDBData.lastName,
-    middleName: bioData.middleName || savedDBData.middleName,
-    dob: bioData.dob || savedDBData.dob,
-    gender: bioData.gender || savedDBData.gender,
-    page: bioData.page || savedDBData.page,
-    trackingNumber: bioData.trackingNumber || savedDBData.trackingNumber,
+    firstName: doctorProfile.firstName || savedDBData.firstName,
+    lastName: doctorProfile.lastName || savedDBData.lastName,
+    middleName: doctorProfile.middleName || savedDBData.middleName,
+    dob: doctorProfile.dob || savedDBData.dob,
+    gender: doctorProfile.gender || savedDBData.gender,
+    page: doctorProfile.page || savedDBData.page,
+    trackingNumber: doctorProfile.trackingNumber || savedDBData.trackingNumber,
     },
   });
   const router = useRouter()
@@ -100,7 +104,7 @@ console.log(truckingNumber,doctorProfileId);
         userId: parseInt(data.userId,10), 
       };
      if(formId){
-      const res = await updateDoctorProfile(formId,data);
+      const res = await updateDoctorProfile(String(doctorProfile.id), data);
       if (res && res.status === 201) {
         setIsLoading(false);
         toast.success("Bio Data Updated Successfully");   
@@ -108,7 +112,7 @@ console.log(truckingNumber,doctorProfileId);
         setDoctorProfileId(res.data?.id?.toString() ?? "");
              
         //Route to the Next Form
-        router.push(`/onboarding/${userId}?page=${nextPage}`);
+        router.push(`${pathname}?page=${nextPage}`);
         } else {
         setIsLoading(false);
         throw new Error("Something went wrong");

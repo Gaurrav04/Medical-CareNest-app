@@ -224,7 +224,7 @@ export async function getDoctorProfileById(userId: string | undefined) {
         },
       });
 
-      console.log(profile);
+      // console.log(profile);
       return {
         data: profile,
         error: null,

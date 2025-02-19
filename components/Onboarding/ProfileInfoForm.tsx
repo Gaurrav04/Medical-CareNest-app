@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { DatePickerInput } from "../FormInputs/DatePickerInput";
 import TextAreaInput from "../FormInputs/TextAreaInput";
 import ImageInput from "../FormInputs/ImageInput";
@@ -21,23 +21,24 @@ export default function ProfileInfoForm({
   formId,
   userId,
   nextPage,
+  doctorProfile,
 }: StepFormProps) {
   const [isloading, setIsLoading] = useState(false);
-
+  const pathname = usePathname();
   const { profileData, savedDBData, setProfileData } = useOnboardingContext();
-  const initialExpiryDate = profileData.medicalLicenseExpiry||savedDBData.medicalLicenseExpiry;
-  const initialProfileImage = profileData.profilePicture || savedDBData.profilePicture ;
+  const initialExpiryDate = doctorProfile.medicalLicenseExpiry||savedDBData.medicalLicenseExpiry;
+  const initialProfileImage = doctorProfile.profilePicture || savedDBData.profilePicture ;
   const [expiry, setExpiry] = useState<Date>(initialExpiryDate);
   const [profileImage, setProfileImage] = useState(initialProfileImage);
-  console.log(savedDBData);
+  // console.log(savedDBData);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ProfileFormProps>({
     defaultValues:{
-    bio: profileData.bio||savedDBData.bio,
-    page: profileData.page||savedDBData.page,
-    medicalLicense: profileData.medicalLicense||savedDBData.medicalLicense,
-    medicalLicenseExpiry: profileData.medicalLicenseExpiry||savedDBData.medicalLicenseExpiry,
-    yearOfExperience: profileData.yearOfExperience||savedDBData.yearOfExperience,
+    bio: doctorProfile.bio||savedDBData.bio,
+    page: doctorProfile.page||savedDBData.page,
+    medicalLicense: doctorProfile.medicalLicense||savedDBData.medicalLicense,
+    medicalLicenseExpiry: doctorProfile.medicalLicenseExpiry||savedDBData.medicalLicenseExpiry,
+    yearOfExperience: doctorProfile.yearOfExperience||savedDBData.yearOfExperience,
     },
   });
   const router = useRouter();
@@ -55,13 +56,13 @@ export default function ProfileInfoForm({
     data.profilePicture = profileImage;
 
     try {
-      const res = await updateDoctorProfile(`${formId?formId:savedDBData.id}`, data);
+      const res = await updateDoctorProfile(String(doctorProfile.id), data);
       setProfileData(data)
       if (res?.status === 201) {
         setIsLoading(false);
         toast.success("Profile Info Updated Succesfully")
 
-        router.push(`/onboarding/${userId}?page=${nextPage}`);
+        router.push(`${pathname}?page=${nextPage}`);
       } else {
         setIsLoading(false);
         throw new Error("Something went wrong");

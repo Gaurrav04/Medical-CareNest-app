@@ -1,5 +1,5 @@
 "use client"
-import { AlarmClock, Bell, Globe, Home, LineChart, Mail, Package, Package2, Power, Settings, Settings2, ShoppingCart, Users } from "lucide-react";
+import { AlarmClock, Bell, Globe, Home, LineChart, Mail, Package, Package2, Power, Settings, Settings2, ShoppingCart, User2, Users } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,7 @@ interface RoleLink {
 export default function Sidebar({ session }: { session: Session }) {
   const { user } = session;
   const role = user?.role as UserRole; // Ensure type assertion for `role`
+  const id = user.id
   const pathname = usePathname();
   const roles: Record<UserRole, RoleLink[]> = {
     USER: [
@@ -64,6 +65,7 @@ export default function Sidebar({ session }: { session: Session }) {
       { title: "Appointments", path: "/dashboard/doctor/appointments", icon: AlarmClock },
       { title: "Patients", path: "/dashboard/doctor/patients", icon: Users },
       { title: "Inbox", path: "/dashboard/doctor/inbox", icon: Mail },
+      { title: "Profile", path: `/dashboard/doctor/profile/${id}`, icon: User2 },
       { title: "Settings", path: "/dashboard/doctor/settings", icon: Settings },
     ],
   };

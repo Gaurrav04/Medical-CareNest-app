@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ArrayItemsInput from "../FormInputs/ArrayInput";
 import ShadSelectInput from "../FormInputs/ShadSelectInput";
 import { StepFormProps } from "./BioDataForm";
@@ -21,11 +21,12 @@ export default function BioDataForm({
   formId,
   userId,
   nextPage,
+  doctorProfile,
 }:StepFormProps){
 
   const [isloading, setIsLoading]=useState(false)
   const{practiceData,savedDBData, setPracticeData } = useOnboardingContext()
-
+  const pathname = usePathname();
 
   const insuranceOptions = [
     {
@@ -38,12 +39,12 @@ export default function BioDataForm({
     },
 ];
 const initialServices = 
-practiceData.servicesOffered.length>0 ? practiceData.servicesOffered: savedDBData.servicesOffered;
+doctorProfile.servicesOffered.length>0 ? doctorProfile.servicesOffered: savedDBData.servicesOffered;
 const initialLanguages = 
-practiceData.languagesSpoken.length>0 ? practiceData.languagesSpoken: savedDBData.languagesSpoken;
-const initialInsuranceStatus = practiceData.insuranceAccepted || savedDBData.insuranceAccepted;
+doctorProfile.languagesSpoken.length>0 ? doctorProfile.languagesSpoken: savedDBData.languagesSpoken;
+const initialInsuranceStatus = doctorProfile.insuranceAccepted || savedDBData.insuranceAccepted;
 const [services,setServices] = useState(initialServices);
-console.log(services,initialServices)
+// console.log(services,initialServices)
 const [languages,setLanguages] = useState(initialLanguages);
 const [insuranceAccepted,setInsuranceAccepted] = useState(initialInsuranceStatus);
 
@@ -52,15 +53,16 @@ const [insuranceAccepted,setInsuranceAccepted] = useState(initialInsuranceStatus
 
   const {register,handleSubmit,reset, formState:{errors}}=useForm<PracticeFormProps>({
     defaultValues:{
-      hospitalName: practiceData.hospitalName || savedDBData.hospitalName,
-      hospitalAddress: practiceData.hospitalAddress || savedDBData.hospitalAddress,
-      hospitalContactNumber: practiceData.hospitalContactNumber || savedDBData.hospitalContactNumber,
-      hospitalEmailAddress: practiceData.hospitalEmailAddress || savedDBData.hospitalEmailAddress,
-      hospitalWebsite: practiceData.hospitalWebsite || savedDBData.hospitalWebsite,
-      hospitalHoursOfOperation:practiceData.hospitalHoursOfOperation || savedDBData.hospitalHoursOfOperation,
-      insuranceAccepted: practiceData.insuranceAccepted || savedDBData.insuranceAccepted,
-      languagesSpoken:practiceData.languagesSpoken || savedDBData.languagesSpoken,
-      page: practiceData.page || savedDBData.page,
+      hospitalName: doctorProfile.hospitalName || savedDBData.hospitalName,
+      hospitalAddress: doctorProfile.hospitalAddress || savedDBData.hospitalAddress,
+      hospitalContactNumber: doctorProfile.hospitalContactNumber || savedDBData.hospitalContactNumber,
+      hospitalEmailAddress: doctorProfile.hospitalEmailAddress || savedDBData.hospitalEmailAddress,
+      hospitalWebsite: doctorProfile.hospitalWebsite || savedDBData.hospitalWebsite,
+      hospitalHoursOfOperation:doctorProfile.hospitalHoursOfOperation || savedDBData.hospitalHoursOfOperation,
+      insuranceAccepted: doctorProfile.insuranceAccepted || savedDBData.insuranceAccepted,
+      languagesSpoken:doctorProfile.languagesSpoken || savedDBData.languagesSpoken,
+      page: doctorProfile.page || savedDBData.page,
+      hourlyWage: doctorProfile.hourlyWage || savedDBData.hourlyWage,
     },
   });
   const router = useRouter()
@@ -78,13 +80,13 @@ const [insuranceAccepted,setInsuranceAccepted] = useState(initialInsuranceStatus
     setIsLoading(true);
   
     try {
-      const res = await updateDoctorProfile(formId, data);
+      const res = await updateDoctorProfile(String(doctorProfile.id), data);
       setPracticeData(data);
       if (res?.status === 201) {
         setIsLoading(false);
         toast.success("Practice Info Updated Succesfully")
 
-        router.push(`/onboarding/${userId}?page=${nextPage}`);
+        router.push(`${pathname}?page=${nextPage}`);
       } else {
         setIsLoading(false);
         throw new Error("Something went wrong");

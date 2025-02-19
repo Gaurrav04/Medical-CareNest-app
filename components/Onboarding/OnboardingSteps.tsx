@@ -1,7 +1,7 @@
 "use client"
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import React from 'react';
 import BioDataForm from "./BioDataForm"
 import ContactInfo from "./ContactInfo"
@@ -10,16 +10,19 @@ import EducationInfo from './EducationInfo';
 import PracticeInfo from './PracticeInfo';
 import AdditionalInfo from './AdditionalInfo';
 import { useOnboardingContext } from '@/context/context';
-import { Speciality } from '@prisma/client';
+import { DoctorProfile, Speciality } from '@prisma/client';
 
 export default function OnboardingSteps({
     id,
-    specialties
+    specialties,
+    doctorProfile,
 }:{
     id:string,
-    specialties:Speciality[]
+    specialties:Speciality[];
+    doctorProfile:DoctorProfile;
 }){
     const params = useSearchParams();
+    const pathname = usePathname();
     const page = params.get("page")??"bio-data";
     const { truckingNumber,doctorProfileId, savedDBData} = useOnboardingContext();
     console.log(page);
@@ -33,7 +36,8 @@ export default function OnboardingSteps({
             description="Please fill in your Bio Data Info"
             page={page}
             nextPage = "profile"
-            formId={doctorProfileId?doctorProfileId:savedDBData.id}
+            formId={doctorProfile.id ? doctorProfileId:savedDBData.id}
+            doctorProfile={doctorProfile}
             />
             ),
         },
@@ -45,8 +49,9 @@ export default function OnboardingSteps({
             description="Please fill in your Profile Info"
             page={page}
             nextPage = "contact"
-            formId={doctorProfileId?doctorProfileId:savedDBData.id}
+            formId={doctorProfile.id ?doctorProfileId:savedDBData.id}
             userId={id}
+            doctorProfile={doctorProfile}
             />
             ),
         },
@@ -58,8 +63,9 @@ export default function OnboardingSteps({
             description="Please fill in your Contact Info"
             page={page}
             nextPage = "education"
-            formId={doctorProfileId?doctorProfileId:savedDBData.id}
+            formId={doctorProfile.id ?doctorProfileId:savedDBData.id}
             userId={id}
+            doctorProfile={doctorProfile}
             />
             ),
         },
@@ -72,8 +78,9 @@ export default function OnboardingSteps({
             description="Please fill in your Education Info"
             page={page}
             nextPage = "practice"
-            formId={doctorProfileId?doctorProfileId:savedDBData.id}
+            formId={doctorProfile.id ?doctorProfileId:savedDBData.id}
             userId={id}
+            doctorProfile={doctorProfile}
             />
             ),
         },
@@ -85,8 +92,9 @@ export default function OnboardingSteps({
             description="Please fill in your Practice Info"
             page={page}
             nextPage = "additional"
-            formId={doctorProfileId?doctorProfileId:savedDBData.id}
+            formId={doctorProfile.id ?doctorProfileId:savedDBData.id}
             userId={id}
+            doctorProfile={doctorProfile}
             />
             ),
         },
@@ -98,8 +106,9 @@ export default function OnboardingSteps({
             description="Please fill in your Additional Info"
             page={page}
             nextPage = "final"
-            formId={doctorProfileId?doctorProfileId:savedDBData.id}
+            formId={doctorProfile.id ?doctorProfileId:savedDBData.id}
             userId={id}
+            doctorProfile={doctorProfile}
             />
             ),
         },
@@ -131,7 +140,7 @@ export default function OnboardingSteps({
                 return (
                     <Link  
                     key={i}
-                    href={`/onboarding/${id}?page=${step.page}`} 
+                    href={`${pathname}?page=${step.page}`} 
                     className={cn("block py-3 px-4 bg-gray-200 text-gray-800 shadow-inner uppercase text-sm", 
                         step.page === page?"bg-teal-800 text-gray-100 ":"")}
                     >

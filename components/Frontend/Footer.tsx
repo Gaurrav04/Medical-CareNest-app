@@ -13,10 +13,6 @@ export default function Footer() {
                     name: "List Your Service",
                 },
                 {
-                    href: "/joins/hospital",
-                    name: "Hospital Plan",
-                },
-                {
                     href: "/onboarding/resume",
                     name: "Resume your Application"
                 },

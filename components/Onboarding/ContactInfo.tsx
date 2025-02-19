@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { StepFormProps } from "./BioDataForm";
 import { updateDoctorProfile } from "@/actions/onboarding";
 import { useOnboardingContext } from "@/context/context";
@@ -18,21 +18,22 @@ export default function ContactInfo({
   formId,
   userId,
   nextPage,
+  doctorProfile,
 }:StepFormProps){
   const {contactData,savedDBData,setContactData} = useOnboardingContext()
   const [isloading, setIsLoading]=useState(false)
-
+  const pathname = usePathname();
 
   // console.log(date);
 
   const {register,handleSubmit,reset, formState:{errors}}=useForm<ContactFormProps>({
     defaultValues:{
-      email: contactData.email || savedDBData.email,
-      phone: contactData.phone || savedDBData.phone,
-      country: contactData.country || savedDBData.country,
-      city: contactData.city || savedDBData.city,
-      state: contactData.state || savedDBData.state,
-      page: contactData.page || savedDBData.page,
+      email: doctorProfile.email || savedDBData.email,
+      phone: doctorProfile.phone || savedDBData.phone,
+      country: doctorProfile.country || savedDBData.country,
+      city: doctorProfile.city || savedDBData.city,
+      state: doctorProfile.state || savedDBData.state,
+      page: doctorProfile.page || savedDBData.page,
     }
   });
   const router = useRouter()
@@ -44,14 +45,14 @@ export default function ContactInfo({
     // setIsLoading(true);
 
     try {
-      const res = await updateDoctorProfile(formId, data);
+      const res = await updateDoctorProfile(String(doctorProfile.id), data);
       setContactData(data)
       if (res?.status === 201) {
         setIsLoading(false);
         toast.success("Contact Info Updated Succesfully")
 
 
-        router.push(`/onboarding/${userId}?page=${nextPage}`);
+        router.push(`${pathname}?page=${nextPage}`);
       } else {
         setIsLoading(false);
         throw new Error("Something went wrong");
