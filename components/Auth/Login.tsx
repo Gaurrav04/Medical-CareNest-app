@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { LoginInputProps } from "@/types/types";
 import SubmitButton from "../FormInputs/SubmitButton";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Alert } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
@@ -18,6 +18,8 @@ import Image from "next/image";
 export  default function LoginFormWithBg() {
 const [isloading, setIsLoading]=useState(false)
 const [showNotification, setShowNotification]=useState(false)
+const searchParams = useSearchParams()
+const returnUrl = searchParams.get("returnUrl")|| "/dashboard"
 
 const router = useRouter()
 const {register,handleSubmit,reset, formState:{errors}}=useForm<LoginInputProps>();
@@ -40,7 +42,7 @@ async function onSubmit (data: LoginInputProps){
       reset();
       setIsLoading(false);
       toast.success("Login Successful");
-      router.push("/dashboard");
+      router.push(returnUrl);
     }
   } catch (error) {
     setIsLoading(false);

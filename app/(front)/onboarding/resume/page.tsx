@@ -1,11 +1,16 @@
-import { getUserById } from "@/actions/users";
 import TrackingForm from "@/components/Frontend/TrackingForm";
-import VerifyTokenForm from "@/components/Frontend/VerifyTokenForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function VerifyTrackingNumber(){
-
+  const session = await getServerSession(authOptions)
+    const id = session?.user.id
+    if(id) {
+        redirect(`/onboarding/${id}`)
+    }
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card className="mx-auto max-w-md">
