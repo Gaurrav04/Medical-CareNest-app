@@ -290,3 +290,81 @@ export async function getDoctorById(id:string) {
    }
   }
  }
+
+ export async function getDoctorProfile(id:string) {
+  if(id){
+   try {
+     const doctor = await prismaClient.user.findFirst({
+       where: {
+         role: "DOCTOR",
+         id: parseInt(id),
+       },
+       select: {
+         id: true,
+         name: true,
+         email: true,
+         slug: true,
+         phone: true,
+         doctorProfile: {
+           select: {
+             firstName: true,
+             lastName: true,
+             gender: true,
+             dob: true,
+             email: true,
+             phone: true,
+             profilePicture: true,
+             bio: true,
+             operationMode: true,
+             hourlyWage: true,
+             yearOfExperience: true,
+             country:true,
+             city:true,
+             state:true,
+             primarySpecializations:true,
+             otherSpecialties:true,
+             boardCerticates:true,
+             hospitalName:true,
+             hospitalAddress:true,
+             hospitalContactNumber:true,
+             hospitalEmailAddress:true,
+             hospitalWebsite:true,
+             hospitalHoursOfOperation:true,
+             servicesOffered:true,
+             insuranceAccepted:true,
+             languagesSpoken:true,
+             educationHistory:true,
+             research:true,
+             accomplishments:true,
+             status: true,
+             middleName: true,
+             medicalLicense: true,
+             medicalLicenseExpiry: true,
+             medicalSchool: true,
+             graduationYear: true,
+             availability: {
+               select: {
+                 monday: true,
+                 tuesday: true,
+                 wednesday: true,
+                 thursday: true,
+                 friday: true,
+                 saturday: true,
+                 sunday: true,
+               },
+             },
+           },
+         },
+       },
+     });
+     if(!doctor){
+       return null
+     }
+     return doctor;
+   } catch (error) {
+     console.error(error);
+     return null;
+   }
+  }
+ }
+
