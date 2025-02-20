@@ -2,7 +2,7 @@
 
 import EmailTemplate from "@/components/Emails/email-template";
 import { prismaClient } from "@/lib/db";
-import { RegisterInputProps } from "@/types/types";
+import { DoctorDetail, RegisterInputProps } from "@/types/types";
 import generateSlug from "@/utils/generateSlug";
 import bcrypt from "bcrypt";
 import { Resend } from "resend";
@@ -129,6 +129,7 @@ export async function getDoctors() {
             bio: true,
             operationMode: true,
             hourlyWage: true,
+            status: true,
             availability: {
               select: {
                 monday: true,
@@ -144,8 +145,8 @@ export async function getDoctors() {
         },
       },
     });
-    return doctors;
-  } catch (error) {
+    return doctors as DoctorDetail[];
+      } catch (error) {
     console.error(error);
     return null;
   }
@@ -238,6 +239,7 @@ export async function getDoctorById(id:string) {
              firstName: true,
              lastName: true,
              gender: true,
+             dob: true,
              profilePicture: true,
              bio: true,
              operationMode: true,
@@ -261,6 +263,8 @@ export async function getDoctorById(id:string) {
              educationHistory:true,
              research:true,
              accomplishments:true,
+             status: true,
+             middleName: true,
              availability: {
                select: {
                  monday: true,

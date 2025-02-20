@@ -69,6 +69,12 @@ model User {
   updatedAt     DateTime       @updatedAt
 }
 
+enum DoctorStatus {
+  Pending
+  Approved
+  Rejected
+}
+
 model Availability {
   id              Int           @id @default(autoincrement())
   doctorProfileId Int           @unique
@@ -168,6 +174,7 @@ model DoctorProfile {
   id                   Int           @id @default(autoincrement())
   userId               Int           @unique
   user                 User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  status               DoctorStatus  @default(Pending)
   trackingNumber       String        @unique
   firstName            String
   lastName             String

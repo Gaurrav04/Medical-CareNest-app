@@ -1,5 +1,5 @@
 import { File } from "@/components/FormInputs/MultipleFileUpload";
-import { UserRole } from "@prisma/client";
+import { DoctorStatus, UserRole } from "@prisma/client";
 
 export type ServiceProps={  title: string,
     imageUrl: string,
@@ -114,6 +114,8 @@ export interface DoctorProfile {
     country: string | null;
     city: string | null;
     state: string | null;
+    dob: Date,
+    middleName: string | null;
     primarySpecializations: string | null;
     otherSpecialties: string[] | null;
     boardCerticates: string[] | null;
@@ -129,6 +131,7 @@ export interface DoctorProfile {
     educationHistory: string | null;
     research: string | null;
     accomplishments: string | null;
+    status: DoctorStatus;
   }
 
   export type InboxProps = { 
