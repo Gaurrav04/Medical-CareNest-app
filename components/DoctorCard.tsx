@@ -30,7 +30,7 @@ export default function DoctorCard({
           <Link href={`/doctors/${doctor.slug}?id=${doctor.id}`}>
             <div>
               <h2 className="uppercase font-bold text-2xl tracking-widest">{`${doctor.doctorProfile?.firstName} ${doctor.doctorProfile?.lastName}`}</h2>
-              {isInPerson && <p className="py-3">678 Margoa-Goa, 403890</p>}
+              {isInPerson && <p className="py-3">{`${doctor.doctorProfile?.bio}`}</p>}
               <div className="flex items-center gap-4 py-4">
                 <div className="relative">
                   <Image

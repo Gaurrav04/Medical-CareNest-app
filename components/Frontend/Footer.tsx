@@ -73,28 +73,28 @@ export default function Footer() {
     const socialLinks = [
         {
             title:"Linkedin",
-            href:"https://www.linkedin.com/company/medical-app",
+            href:"/",
             icon: FaLinkedin,
             color:"text-blue-600"
 
         },
         {
             title:"Youtube",
-            href:"https://www.linkedin.com/company/medical-app",
+            href:"/",
             icon: FaYoutube,
             color:"text-red-600"
 
         },
         {
             title:"X",
-            href:"https://www.linkedin.com/company/medical-app",
+            href:"/",
             icon: FaXTwitter,
             color:"text-gray-900 dark:text-slate-500"
 
         },
         {
             title:"Instagram",
-            href:"https://www.linkedin.com/company/medical-app",
+            href:"/",
             icon:FaInstagram,
             color:"text-pink-600"
 
@@ -107,7 +107,8 @@ export default function Footer() {
                     <div className="max-w-xs">
                         <img src="https://www.floatui.com/logo.svg" className="w-32" />
                         <p className="leading-relaxed mt-2 text-[15px]">
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                        At CareNest,we are dedicated to providing reliable healthcare information and connecting you with trusted medical professionals.
+                        Whether you need guidance on symptoms,information about treatments or expert medical advice,we are here to support your health journey.
                         </p>
                     </div>
                 </div>

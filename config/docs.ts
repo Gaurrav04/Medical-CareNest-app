@@ -14,7 +14,7 @@ export const docsConfig: DocsConfig = {
     },
     {
       title: "Find Doctor",
-      href: "/find-doctor",
+      href: "/",
     },
     {
       title: "Telehealth Visit",
