@@ -114,7 +114,7 @@ export interface DoctorProfile {
     country: string | null;
     city: string | null;
     state: string | null;
-    dob: Date,
+    dob: Date | null;
     middleName: string | null;
     primarySpecializations: string | null;
     otherSpecialties: string[] | null;

@@ -1,5 +1,5 @@
 "use client"
-import { AlarmClock, Bell, Globe, Home, LineChart, Mail, Package, Package2, Power, Settings, Settings2, ShoppingCart, User2, Users } from "lucide-react";
+import { AlarmClock, Bell, Globe, HeartPulse, Home, LineChart, Mail, Microscope, Package, Package2, Power, Settings, Settings2, ShieldPlus, ShoppingCart, Stethoscope, User2, Users } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -51,12 +51,12 @@ export default function Sidebar({ session }: { session: Session }) {
 
     ADMIN: [
       { title: "Dashboard", path: "/dashboard", icon: Home },
-      { title: "Services", path: "/dashboard/services", icon: Users },
-      { title: "Specialties", path: "/dashboard/specialties", icon: Users },
-      { title: "Symptoms", path: "/dashboard/symptoms", icon: Users },
-      { title: "Doctors", path: "/dashboard/doctors", icon: Users },
+      { title: "Services", path: "/dashboard/services", icon: Stethoscope },
+      { title: "Specialties", path: "/dashboard/specialties", icon: HeartPulse },
+      { title: "Symptoms", path: "/dashboard/symptoms", icon: Microscope },
+      { title: "Doctors", path: "/dashboard/doctors", icon: ShieldPlus },
       { title: "Patients", path: "/dashboard/patients", icon: Users },
-      { title: "Appointments", path: "/dashboard/appointments", icon: Users },
+      { title: "Appointments", path: "/dashboard/appointments", icon: AlarmClock },
       { title: "Settings", path: "/dashboard/settings", icon: Settings },
     ],
 
