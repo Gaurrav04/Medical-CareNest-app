@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import Availability from "./Availability";
 import { AppointmentProps, DoctorDetail, DoctorProfileAvailability } from "@/types/types";
 import { getFormattedDate } from "@/utils/getFormatedShortDate";
@@ -46,6 +47,11 @@ export default function DoctorDetails({
     const times = doctor.doctorProfile?.availability ? doctor.doctorProfile.availability[day] : null;
     const [medicalDocs,setMedicalDocs] = useState<File[]>([])
 
+
+  useEffect(() => {
+    setDob(appointment?.dob ? new Date(appointment.dob) : undefined);
+  }, [appointment]);
+
     const genderOptions = [
       {
         label:"Male",
@@ -67,6 +73,8 @@ export default function DoctorDetails({
       occupation:appointment?.occupation ?? "", 
       location:appointment?.location ?? "",
       gender:appointment?.gender ?? "",
+      dob: appointment?.dob ? new Date(appointment.dob) : undefined, 
+
     }
   });
 
@@ -88,6 +96,8 @@ export default function DoctorDetails({
      const appo = res.data
      setLoading(false)
      toast.success("Appointment Created Successfully")
+     reset();
+      setDob(undefined);
      router.push("/dashboard/user/appointments")
      console.log(appo)
     } catch (error) {
@@ -98,13 +108,18 @@ export default function DoctorDetails({
     // router.push("/dashboard/services")
 
   }
-  function initiateAppointment(){
-    if(patient?.id){
-      if(!selectedTime){
-        toast.error("Please Select Time")
-        return
+  function initiateAppointment() {
+    if (!date || date.getTime() < new Date().setHours(0, 0, 0, 0)) {
+      toast.error("You cannot book an appointment for a past date.");
+      return;
+    }
+
+    if (patient?.id) {
+      if (!selectedTime) {
+        toast.error("Please Select Time");
+        return;
       }
-      setStep((curr) => curr+1);
+      setStep((curr) => curr + 1);
     } else {
       router.push("/login");
     }
