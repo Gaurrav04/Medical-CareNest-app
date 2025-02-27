@@ -45,6 +45,19 @@ export const ourFileRouter = {
       return { uploadedBy: "Gaurav" };
     }),
 
+    pdfUpload: f({
+      pdf: {
+        maxFileSize: "1MB", maxFileCount: 1
+      },
+    })
+      .onUploadComplete(async ({ metadata, file }) => {
+        // Log the uploaded file info and metadata
+        console.log("Pdf upload Sucessfully");
+        console.log("Metadata:", metadata);
+        console.log("File:", file);
+        return { uploadedBy: "Gaurav" };
+      }),
+
     patientMedicalFiles: f({
       pdf: {
         maxFileSize: "4MB", maxFileCount: 4
