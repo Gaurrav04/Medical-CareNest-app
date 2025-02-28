@@ -1,6 +1,6 @@
 import React from "react";
 import TransitionalText from "./TransitionalText";
-import { Pill } from "lucide-react";
+import { BotIcon, Pill } from "lucide-react";
 import Link from "next/link";
 import { CommandMenu } from "../command-menu";
 import SearchBar from "./SearchBar";
@@ -129,6 +129,11 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      <Link href="/ai">
+        <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all cursor-pointer">
+          <BotIcon className="h-6 w-6" />
+        </div>
+      </Link>
     </>
   );
 };

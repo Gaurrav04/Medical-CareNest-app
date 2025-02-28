@@ -42,11 +42,6 @@ export default function Sidebar({ session }: { session: Session }) {
       { title: "Doctors", path: "/dashboard/user/doctors", icon: Users },
 
       { title: "Inbox", path: "/dashboard/user/inbox", icon: Mail },
-      {
-        title: "Settings",
-        path: "/dashboard/user/settings",
-        icon: Settings2,
-      },
     ],
 
     ADMIN: [

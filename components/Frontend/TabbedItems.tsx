@@ -38,12 +38,12 @@ export default function TabbedItems({
       component:<LinkCards className="bg-cyan-500" specialties={specialties}/>, 
       content: [],
     },
-    {
-      title: "Symptoms",
-      icon: Microscope, 
-      component:<SymptomCards symptoms={symptoms} className="bg-blue-500"/>,
-      content: [],
-    },
+    // {
+    //   title: "Symptoms",
+    //   icon: Microscope, 
+    //   component:<SymptomCards symptoms={symptoms} className="bg-blue-500"/>,
+    //   content: [],
+    // },
   ];
 
   return (
