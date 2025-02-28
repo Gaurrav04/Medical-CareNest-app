@@ -1,5 +1,5 @@
 "use client"
-import { AlarmClock, Bell, Globe, HeartPulse, Home, LineChart, Mail, Microscope, Package, Package2, Power, Settings, Settings2, ShieldPlus, ShoppingCart, Stethoscope, User2, Users } from "lucide-react";
+import { AlarmClock, Bell, BotIcon, Globe, HeartPulse, Home, LineChart, Mail, Microscope, Package, Package2, Power, Settings, Settings2, ShieldPlus, ShoppingCart, Stethoscope, User2, Users } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -51,8 +51,7 @@ export default function Sidebar({ session }: { session: Session }) {
       { title: "Symptoms", path: "/dashboard/symptoms", icon: Microscope },
       { title: "Doctors", path: "/dashboard/doctors", icon: ShieldPlus },
       { title: "Patients", path: "/dashboard/patients", icon: Users },
-      { title: "Appointments", path: "/dashboard/appointments", icon: AlarmClock },
-      { title: "Settings", path: "/dashboard/settings", icon: Settings },
+      { title: "AI Chatbot", path: "/upload", icon: BotIcon },
     ],
 
     DOCTOR: [

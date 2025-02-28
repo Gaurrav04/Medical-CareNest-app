@@ -1,11 +1,15 @@
-import React from "react";
+"use client"
+
+import React, { useState } from "react";
 import TransitionalText from "./TransitionalText";
-import { BotIcon, Pill } from "lucide-react";
+import { BotIcon, Pill, X } from "lucide-react";
 import Link from "next/link";
 import { CommandMenu } from "../command-menu";
 import SearchBar from "./SearchBar";
+import { Chat } from "../chat";
 
 const Hero = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const TEXTS = [
     "Ophthalmologists",
     "Cardiologists",
@@ -129,11 +133,33 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      <Link href="/ai">
-        <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all cursor-pointer">
-          <BotIcon className="h-6 w-6" />
-        </div>
-      </Link>
+        {/* Chat Button (Bottom Right) */}
+      <div
+        onClick={() => setIsChatOpen(true)}
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all cursor-pointer z-50"
+      >
+        <BotIcon className="h-6 w-6" />
+      </div>
+
+      {/* AI Chat Modal (Always on Top) */}
+      <div
+        className={`fixed bottom-0 right-0 md:right-6 md:bottom-6 w-[90%] max-w-[400px] bg-white dark:bg-gray-900 p-6 rounded-t-lg md:rounded-lg shadow-lg transition-transform duration-300 ${
+          isChatOpen ? "translate-x-0" : "translate-x-full"
+        } z-50`}
+      >
+        {/* Close Button */}
+        <button
+          onClick={() => setIsChatOpen(false)}
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-gray-300"
+        >
+          <X className="h-6 w-6" />
+        </button>
+
+        <h2 className="text-lg font-bold mb-4 text-center text-blue-600">
+          Carenest AI Assistant
+        </h2>
+        <Chat />
+      </div>
     </>
   );
 };
