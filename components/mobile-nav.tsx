@@ -17,6 +17,7 @@ import {
 export function MobileNav() {
   const [open, setOpen] = React.useState(false)
   const { setMetaColor, metaColor } = useMetaColor()
+  const [openDropdown, setOpenDropdown] = React.useState<string | null>(null)
 
   const onOpenChange = React.useCallback(
     (open: boolean) => {
@@ -25,7 +26,7 @@ export function MobileNav() {
     },
     [setMetaColor, metaColor]
   )
-  
+
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>
@@ -41,11 +42,7 @@ export function MobileNav() {
             stroke="currentColor"
             className="!size-6"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 9h16.5m-16.5 6.75h16.5"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
           </svg>
           <span className="sr-only">Toggle Menu</span>
         </Button>
@@ -53,18 +50,33 @@ export function MobileNav() {
       <DrawerContent className="max-h-[60svh] p-0">
         <div className="overflow-auto p-6">
           <div className="flex flex-col space-y-3">
-            {docsConfig.mainNav?.map(
-              (item) =>
-                item.href && (
-                  <MobileLink
-                    key={item.href}
-                    href={item.href}
-                    onOpenChange={setOpen}
+            {docsConfig.mainNav?.map((item) =>
+              item.dropdown ? (
+                <div key={item.title}>
+                  <button
+                    onClick={() => setOpenDropdown(openDropdown === item.title ? null : item.title)}
+                    className="flex justify-between items-center w-full text-base font-medium py-2 hover:text-primary"
                   >
                     {item.title}
-                    
-                  </MobileLink>
-                )
+                    <span className={`transform transition-transform duration-200 ${openDropdown === item.title ? "rotate-180" : ""}`}>
+                      ▼
+                    </span>
+                  </button>
+                  {openDropdown === item.title && (
+                    <div className="ml-4 space-y-2 border-l-2 border-gray-200 pl-3">
+                      {item.dropdown.map((subItem) => (
+                        <MobileLink key={subItem.href} href={subItem.href ?? "#"} onOpenChange={setOpen}>
+                          {subItem.title}
+                        </MobileLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <MobileLink key={item.href} href={item.href ?? "#"} onOpenChange={setOpen}>
+                  {item.title}
+                </MobileLink>
+              )
             )}
           </div>
         </div>
@@ -79,13 +91,7 @@ interface MobileLinkProps extends LinkProps {
   className?: string
 }
 
-function MobileLink({
-  href,
-  onOpenChange,
-  className,
-  children,
-  ...props
-}: MobileLinkProps) {
+function MobileLink({ href = "#", onOpenChange, className, children, ...props }: MobileLinkProps) {
   const router = useRouter()
   return (
     <Link
@@ -94,7 +100,7 @@ function MobileLink({
         router.push(href.toString())
         onOpenChange?.(false)
       }}
-      className={cn("text-base", className)}
+      className={cn("text-base block py-2 hover:text-primary", className)}
       {...props}
     >
       {children}

@@ -1,15 +1,19 @@
 "use client"
+
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { signOut } from "next-auth/react"
+import { Session } from "next-auth"
+import { LogIn } from "lucide-react"
 
 import { siteConfig } from "@/config/site"
-import { CommandMenu } from "@/components/command-menu"
-import { Icons } from "@/components/icons"
+import { getInitials } from "@/utils/generateInitials"
+
 import { MainNav } from "@/components/main-nav"
 import { MobileNav } from "@/components/mobile-nav"
 import ModeToggle from "@/components/ModeToggle"
-import { Button } from "@/components/ui/button"
-import { LogIn, MailOpen } from "lucide-react"
-import { Session } from "next-auth"
+import SearchBar from "@/components/Frontend/SearchBar"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,24 +22,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
-import { signOut } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import {getInitials} from "@/utils/generateInitials"
-import SearchBar from "./Frontend/SearchBar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 
-export function SiteHeader({
-  session,
-}:{ 
-  session: Session|null;
- }) {
-  const user = session?.user;
-  const initials = getInitials(user?.name);
-  const router = useRouter();
+export function SiteHeader({ session }: { session: Session | null }) {
+  const user = session?.user
+  const initials = getInitials(user?.name)
+  const router = useRouter()
+
   async function handleLogout() {
     await signOut()
-    router.push("/login");
+    router.push("/login")
   }
+
   return (
     <header className="border-grid sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container-wrapper">
@@ -43,37 +42,40 @@ export function SiteHeader({
           <MainNav />
           <MobileNav />
           <div className="flex flex-1 items-center justify-between gap-2 md:justify-end">
-            <div className="w-full flex-1 ">
-              <SearchBar/>
+            <div className="w-full flex-1">
+              <SearchBar />
             </div>
             <nav className="flex items-center gap-4">
-              {session && session.user && user?.email?(
-                   <DropdownMenu>
-                   <DropdownMenuTrigger asChild>
-                       <Avatar className="cursor-pointer">
-                         {user.image ? (
-                           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
-                          ) :  ( <AvatarFallback>{initials}</AvatarFallback>
-                         )}
-                       </Avatar>
-                   </DropdownMenuTrigger>
-                   <DropdownMenuContent align="end">
-                     <DropdownMenuLabel className="text-center">{user.name}</DropdownMenuLabel>
-                     <DropdownMenuLabel className="text-center font-light text-sm text-slate-500">{user.email}</DropdownMenuLabel>
-                     <DropdownMenuSeparator />
-                     <DropdownMenuItem>
+              {session && user?.email ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Avatar className="cursor-pointer">
+                      {user.image ? (
+                        <AvatarImage src={user.image} alt={user.name ?? "User"} />
+                      ) : (
+                        <AvatarFallback>{initials}</AvatarFallback>
+                      )}
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel className="text-center">{user.name}</DropdownMenuLabel>
+                    <DropdownMenuLabel className="text-center font-light text-sm text-slate-500">
+                      {user.email}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
                       <Link href="/dashboard">Dashboard</Link>
-                     </DropdownMenuItem>
-                     <DropdownMenuSeparator />
-                     <DropdownMenuItem onClick={()=>handleLogout()}>Logout</DropdownMenuItem>
-                   </DropdownMenuContent>
-                 </DropdownMenu>
-              ): (
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
                 <Button asChild>
-                <Link href="/login">
-                <LogIn className="" /> Login
-                </Link>
-              </Button>
+                  <Link href="/login">
+                    <LogIn className="mr-2" /> Login
+                  </Link>
+                </Button>
               )}
               <ModeToggle />
             </nav>

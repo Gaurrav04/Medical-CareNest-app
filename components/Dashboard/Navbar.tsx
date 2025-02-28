@@ -39,9 +39,11 @@ import ModeToggle from "../ModeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import { getInitials } from "@/utils/generateInitials";
 
 export default function Navbar({session}:{session:Session}){
   const user = session.user;
+  const initials = getInitials(user?.name);
   const router = useRouter();
   async function handleLogout() {
     await signOut()
@@ -136,7 +138,7 @@ export default function Navbar({session}:{session:Session}){
                 <Avatar className="cursor-pointer">
                   {user.image ? (
                     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
-                   ) :  ( <AvatarFallback>CN</AvatarFallback>
+                   ) :  ( <AvatarFallback>{initials}</AvatarFallback>
                   )}
                 </Avatar>
             </DropdownMenuTrigger>

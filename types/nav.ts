@@ -13,6 +13,8 @@ export interface NavItemWithChildren extends NavItem {
   items: NavItemWithChildren[]
 }
 
-export interface MainNavItem extends NavItem {}
+export interface MainNavItem extends NavItem {
+  dropdown?: { title: string; href: string }[]
+}
 
 export interface SidebarNavItem extends NavItemWithChildren {}

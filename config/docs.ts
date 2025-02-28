@@ -5,12 +5,15 @@ export interface DocsConfig {
   sidebarNav: SidebarNavItem[]
   chartsNav: SidebarNavItem[]
 }
-
 export const docsConfig: DocsConfig = {
   mainNav: [
     {
       title: "Home",
-      href: "/",
+      dropdown: [
+        { title: "Services", href: "/service/family-care" },
+        { title: "Speciality", href: "/specialty/men-health" },
+        { title: "Symptoms", href: "/symptoms/fever?id=1" },
+      ],
     },
     {
       title: "Find Doctor",
@@ -25,10 +28,11 @@ export const docsConfig: DocsConfig = {
       href: "/category?mode=In-Person%20Doctor%20visit",
     },
     {
-      title: "Be service provider",
+      title: "Be a Service Provider",
       href: "/join/doctors",
     },
   ],
+
   sidebarNav: [
     {
       title: "Getting Started",
