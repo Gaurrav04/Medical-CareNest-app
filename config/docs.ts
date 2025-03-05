@@ -29,7 +29,9 @@ export const docsConfig: DocsConfig = {
     },
     {
       title: "Be a Service Provider",
-      href: "/join/doctors",
+      dropdown: [
+        { title: "Join Doctor", href: "/join/doctors" },
+      ],
     },
   ],
 

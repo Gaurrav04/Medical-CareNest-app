@@ -106,7 +106,7 @@ export default function Sidebar({ session }: { session: Session }) {
           </nav>
         </div>
         <div className="mt-auto p-4">
-        <Button size="sm" className="w-full">
+        <Button size="sm" className="w-full" onClick={handleLogout}>
           <Power className="w- h-4 mr-1"/>
             Logout
         </Button>

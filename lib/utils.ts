@@ -41,7 +41,7 @@ export const initialMessages: Message[] = [
     role: "assistant",
     id: "0",
     content:
-      "Hi! Customer assistant From CareNest.Please Ask anything about Medical and i am here to help",
+      "Hi! Customer assistant From CareNest.Please Ask anything about Medicine and i am here to help",
   },
 ];
 

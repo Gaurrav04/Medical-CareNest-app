@@ -146,6 +146,7 @@ export default function Navbar({session}:{session:Session}){
               <DropdownMenuLabel className="text-center">{user.name}</DropdownMenuLabel>
               <DropdownMenuLabel className="text-center font-light text-sm text-slate-500">{user.email}</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => router.push("/")}>Home</DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
