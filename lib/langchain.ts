@@ -21,16 +21,12 @@ export async function processUserMessage({
   conversationHistory,
   vectorStore,
   model,
-}: ProcessMessageArgs) {
+}: ProcessMessageArgs): Promise<ProcessMessageResponse> {
   try {
-    // Create non-streaming model for inquiry generation
-    const nonStreamingModel = new ChatOpenAI({
-      modelName: "gpt-3.5-turbo",
-      temperature: 0,
-      streaming: false,
-    });
+    // Use the same model instance instead of creating a new one
+    const nonStreamingModel = model;
 
-    // Generate focused inquiry using non-streaming model
+    // Generate focused inquiry
     const inquiryResult = await inquiryPrompt
       .pipe(nonStreamingModel)
       .pipe(new StringOutputParser())
@@ -43,93 +39,63 @@ export async function processUserMessage({
     const relevantDocs = await vectorStore.similaritySearch(inquiryResult, 3);
     const context = relevantDocs.map((doc) => doc.pageContent).join("\n\n");
 
-    return qaPrompt.pipe(model).pipe(new StringOutputParser()).stream({
-      context,
-      question: inquiryResult,
-    });
+    // Generate response using context
+    const response = await qaPrompt
+      .pipe(model)
+      .pipe(new StringOutputParser())
+      .invoke({
+        context,
+        question: inquiryResult,
+      });
+
+    return {
+      answer: response,
+      inquiry: inquiryResult,
+    };
   } catch (error) {
     console.error("Error processing message:", error);
-    throw new Error("Failed to process your message");
+    throw new Error("Failed to process your message.");
   }
 }
 
-// Updated prompt templates
+// Inquiry prompt for refining the question
 const inquiryPrompt = ChatPromptTemplate.fromMessages([
   [
     "system",
-    `Given the following user prompt and conversation log, formulate a question that would be the most relevant to provide the user with an answer from a knowledge base.
-    
-    Rules:
-    - Always prioritize the user prompt over the conversation log
-    - Ignore any conversation log that is not directly related to the user prompt
-    - Only attempt to answer if a question was posed
-    - The question should be a single sentence
-    - Remove any punctuation from the question
-    - Remove any words that are not relevant to the question
-    - If unable to formulate a question, respond with the same USER PROMPT received`,
+    `Given the following user prompt and conversation log, generate the most relevant question for retrieving an answer.
+
+    **Rules:**
+    - Prioritize the user prompt over the conversation log.
+    - Ignore unrelated conversation history.
+    - If the user prompt is already a question, return it as is.
+    - Ensure the generated question is **concise, clear, and to the point**.
+    - Do **not** add punctuation at the end.
+    `,
   ],
-  [
-    "human",
-    `USER PROMPT: {userPrompt}\n\nCONVERSATION LOG: {conversationHistory}`,
-  ],
+  ["human", "USER PROMPT: {userPrompt}\n\nCONVERSATION LOG: {conversationHistory}"],
 ]);
 
-// const qaPrompt = ChatPromptTemplate.fromMessages([
-//   [
-//     "system",
-//     `You are an AI assistant specialized in providing accurate, context-based responses. Analyze the provided context carefully and follow these guidelines:
-
-//     CORE RESPONSIBILITIES:
-//     - Base responses primarily on the provided context
-//     - Cite specific parts of the context to support answers
-//     - Maintain high accuracy and transparency
-//     - Acknowledge limitations clearly
-
-//     RESPONSE GUIDELINES:
-//     1. Use the context precisely and effectively
-//     2. Distinguish between context-based facts and general knowledge
-//     3. Structure responses clearly and logically
-//     4. Include relevant quotes when beneficial
-//     5. State confidence levels when appropriate
-
-//     IMPORTANT RULES:
-//     - Never make up information not present in the context
-//     - Don't speculate beyond the given information
-//     - If the context is insufficient, explicitly state what's missing
-//     - Ask for clarification if the question is ambiguous
-
-//     When you cannot answer based on the context:
-//     1. State clearly that the context lacks the necessary information
-//     2. Explain what specific information would be needed
-//     3. Suggest how the question might be refined
-
-//     Context: {context}`,
-//   ],
-//   ["human", "Question: {question}"],
-// ]);
-
-
+// Updated QA prompt with structured responses
 const qaPrompt = ChatPromptTemplate.fromMessages([
   [
     "system",
-    `You are an AI assistant providing **accurate, structured, and context-aware answers**.  
-    Your responses must be based on the retrieved **document context**.  
+    `You are an AI assistant providing **precise and structured answers**.  
+    Your response must be based on the retrieved **document context**.
 
     ### **Response Strategy**
-    1. **If context is available:** Use it to generate a precise and well-structured answer.  
+    1. **If context is available:** Use it to generate a well-structured answer.
     2. **If context is missing:**  
-       - Seamlessly generate a response using general knowledge.  
-       - **Include the following disclaimer before the response:**  
+       - Answer using general knowledge, but add this disclaimer first:  
           *This AI is for informational purposes only. It does not provide medical diagnoses.  
-         Please consult a doctor for proper medical advice and treatment.*  
-       - Ensure the response remains **useful and relevant** to the user's question.  
-       - **Always encourage consulting a doctor for medical concerns.**  
+          Please consult a doctor for proper medical advice and treatment.*  
+       - Ensure relevance and clarity.  
+       - **Always encourage users to consult a doctor for medical concerns.**
 
     ### **Rules**
-    - **Never fabricate information.**  
-    - **Ensure clarity and accuracy in responses.**  
-    - **Provide a direct, informative answer without exposing retrieval failures.**  
-    - **If the question is related to health, gently remind the user to seek medical advice.**  
+    - **Never fabricate information.**
+    - **Ensure clarity and factual accuracy.**
+    - **If unsure, explicitly state what's missing.**
+    - **For medical queries, remind users to consult a doctor.**
 
     ---
     
