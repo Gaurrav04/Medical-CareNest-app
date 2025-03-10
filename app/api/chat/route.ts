@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
 
     // Parse request body
     const body = await req.json();
-    console.log("Request Body:", JSON.stringify(body, null, 2));
 
     const messages: Message[] = body.messages ?? [];
     if (!messages.length) {
@@ -38,7 +37,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Doctor Details (Now Includes Book Appointment)
+    // Doctor Details
     if (currentQuestion === "doctor_details") {
       return NextResponse.json({
         text: "What kind of doctor are you looking for?",
@@ -84,42 +83,54 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Book Appointment (Now Shows Buttons Instead of Redirecting)
+    // Book Appointment Flow
     if (currentQuestion === "book_appointment") {
       return NextResponse.json({
         text: "Would you like a Telehealth Consultation or an In-Person Visit?",
         buttons: [
-          { text: "Telehealth Consultation", value: "/category?mode=Telehealth%20Visit" },
-          { text: "In-Person Visit", value: "/category?mode=In-Person%20Doctor%20visit" },
+          { text: "Telehealth Consultation", value: "telehealth_consult" },
+          { text: "In-Person Visit", value: "in_person_consult" },
         ],
       });
     }
 
+    if (currentQuestion === "telehealth_consult") {
+      return NextResponse.json({
+        text: "Here are the available telehealth doctors.",
+        redirect: { url: "/category?mode=Telehealth%20Visit", redirect: true },
+      });
+    }
+
+    if (currentQuestion === "in_person_consult") {
+      return NextResponse.json({
+        text: "Here are the available in-person doctors.",
+        redirect: { url: "/category?mode=In-Person%20Doctor%20visit", redirect: true },
+      });
+    }
+
+    console.log("Initializing Pinecone...");
+    const pc = await getPineconeClient();
+    const vectorStore = await getVectorStore(pc);
+
     // Medicine Inquiry (Uses RAG)
     if (currentQuestion.includes("uses") || currentQuestion.includes("side effects")) {
-      console.log("Medicine inquiry detected...");
-
-      const pc = await getPineconeClient();
-      const vectorStore = await getVectorStore(pc);
+      console.log("Medicine inquiry detected");
 
       const response = await processUserMessage({
         userPrompt: currentQuestion,
         conversationHistory: "",
         vectorStore,
-        model: new ChatOpenAI({ modelName: "gpt-3.5-turbo" }),
+        model: new ChatOpenAI({ modelName: "gpt-3.5-turbo" }), // Non-streaming for medicine queries
       });
 
       return NextResponse.json({
-        text: response.answer, // Only returns AI-generated answer
+        text: response.answer, 
       });
     }
 
-    // General Queries (Send to RAG)
     console.log("Processing message through AI & RAG...");
 
     const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo", streaming: true });
-    const pc = await getPineconeClient();
-    const vectorStore = await getVectorStore(pc);
 
     const response = await processUserMessage({
       userPrompt: currentQuestion,
@@ -127,8 +138,6 @@ export async function POST(req: NextRequest) {
       vectorStore,
       model,
     });
-
-    console.log("AI Response:", response.answer);
 
     return NextResponse.json({ text: response.answer });
 
