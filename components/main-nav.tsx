@@ -4,7 +4,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
 import { ShieldPlus, ChevronDown } from "lucide-react"
 import { docsConfig } from "@/config/docs"
 
@@ -17,6 +16,16 @@ import {
 
 export function MainNav() {
   const pathname = usePathname();
+
+  // Function to handle smooth scrolling
+  const scrollToSection = (id: string) => {
+    if (typeof window !== "undefined") {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   return (
     <div className="mr-4 hidden md:flex">
@@ -42,30 +51,44 @@ export function MainNav() {
               >
                 {item.dropdown.map((subItem, index) => (
                   <DropdownMenuItem key={index} asChild>
-                    <Link
-                      href={subItem.href}
-                      className="block px-4 py-3 text-sm text-gray-700 font-medium hover:bg-gray-100 rounded-md transition"
+                    <button
+                      className="block px-4 py-3 text-sm text-gray-700 font-medium hover:bg-gray-100 rounded-md transition w-full text-left"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (subItem.href.startsWith("/#") && pathname === "/") {
+                          scrollToSection(subItem.href.replace("/#", ""));
+                        } else {
+                          window.location.href = subItem.href;
+                        }
+                      }}
                     >
                       {subItem.title}
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link
+            <button
               key={i}
-              href={item.href ?? "#"}
               className={cn(
                 "font-medium transition-colors hover:text-primary",
                 pathname === item.href ? "text-primary" : "text-foreground"
               )}
+              onClick={(e) => {
+                e.preventDefault();
+                if (item.href?.startsWith("/#") && pathname === "/") {
+                  scrollToSection(item.href.replace("/#", ""));
+                } else {
+                  window.location.href = item.href ?? "#";
+                }
+              }}
             >
               {item.title}
-            </Link>
+            </button>
           )
         ))}
       </nav>
     </div>
-  )
+  );
 }

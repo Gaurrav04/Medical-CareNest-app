@@ -7,28 +7,34 @@ import { getDoctors } from "@/actions/users";
 
 export default async function Home() {
   const doctors = await getDoctors() || []
-  console.log(doctors);
-
+  
   const telhealthDoctors = doctors.filter(
-    (doctor)=>doctor.doctorProfile?.operationMode==="Telehealth Visit"
+    (doctor) => doctor.doctorProfile?.operationMode === "Telehealth Visit"
   );
 
   const inpersonDoctors = doctors.filter(
-    (doctor)=>doctor.doctorProfile?.operationMode==="In-Person Doctor visit"
+    (doctor) => doctor.doctorProfile?.operationMode === "In-Person Doctor visit"
   );
-  console.log(telhealthDoctors);
+
   return (
     <section className="">
       <Hero />
       <Brands/>
       <TabbedSection />
-      <DoctorsList doctors={telhealthDoctors}  title="Telehealth Visit"/>
-      <DoctorsList 
-      className="bg-blue-100 dark:bg-slate-900 py-8 lg:py-24"
-      title="In-Person Doctor visit"
-      isInPerson={true}
-      doctors={inpersonDoctors}
-      />
+
+      {/* Telehealth Doctors Section */}
+      <section id="telehealth" className="py-20">
+        <DoctorsList doctors={telhealthDoctors} title="Telehealth Visit"/>
+      </section>
+
+      {/* In-Person Doctors Section */}
+      <section id="inperson" className="bg-blue-100 dark:bg-slate-900 py-8 lg:py-24">
+        <DoctorsList 
+          title="In-Person Doctor visit"
+          isInPerson={true}
+          doctors={inpersonDoctors}
+        />
+      </section>
     </section>
   );
 }

@@ -269,3 +269,8 @@ border: 0px !important;
 /* .novel-list-disc {
   list-style: circle;
 } */
+
+html {
+  scroll-behavior: smooth;
+}
+

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link, { LinkProps } from "next/link"
-import { useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 
 import { docsConfig } from "@/config/docs"
 import { cn } from "@/lib/utils"
@@ -18,6 +18,7 @@ export function MobileNav() {
   const [open, setOpen] = React.useState(false)
   const { setMetaColor, metaColor } = useMetaColor()
   const [openDropdown, setOpenDropdown] = React.useState<string | null>(null)
+  const pathname = usePathname()
 
   const onOpenChange = React.useCallback(
     (open: boolean) => {
@@ -26,6 +27,18 @@ export function MobileNav() {
     },
     [setMetaColor, metaColor]
   )
+
+  function handleSmoothScroll(targetId: string) {
+    setOpen(false) // Close menu after clicking
+    if (pathname === "/") {
+      const targetElement = document.getElementById(targetId)
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" })
+      }
+    } else {
+      window.location.href = `/#${targetId}` // Navigate to homepage 
+    }
+  }
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -65,15 +78,23 @@ export function MobileNav() {
                   {openDropdown === item.title && (
                     <div className="ml-4 space-y-2 border-l-2 border-gray-200 pl-3">
                       {item.dropdown.map((subItem) => (
-                        <MobileLink key={subItem.href} href={subItem.href ?? "#"} onOpenChange={setOpen}>
+                        <MobileLink key={subItem.href ?? "#"} href={subItem.href ?? "#"} onOpenChange={setOpen}>
                           {subItem.title}
                         </MobileLink>
                       ))}
                     </div>
                   )}
                 </div>
+              ) : item.href === "/#telehealth" || item.href === "/#inperson" ? (
+                <button
+                  key={item.href ?? ""}
+                  onClick={() => handleSmoothScroll(item.href?.replace("/#", "") ?? "")}
+                  className="text-base block py-2 text-left hover:text-primary"
+                >
+                  {item.title}
+                </button>
               ) : (
-                <MobileLink key={item.href} href={item.href ?? "#"} onOpenChange={setOpen}>
+                <MobileLink key={item.href ?? "#"} href={item.href ?? "#"} onOpenChange={setOpen}>
                   {item.title}
                 </MobileLink>
               )
@@ -92,14 +113,10 @@ interface MobileLinkProps extends LinkProps {
 }
 
 function MobileLink({ href = "#", onOpenChange, className, children, ...props }: MobileLinkProps) {
-  const router = useRouter()
   return (
     <Link
       href={href}
-      onClick={() => {
-        router.push(href.toString())
-        onOpenChange?.(false)
-      }}
+      onClick={() => onOpenChange?.(false)}
       className={cn("text-base block py-2 hover:text-primary", className)}
       {...props}
     >
