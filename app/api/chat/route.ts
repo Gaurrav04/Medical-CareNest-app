@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
         text: "Select a medical service:",
         buttons: [
           { text: "Family Care", value: "/service/family-care" },
-          { text: "Mental Health", value: "/service/mental-health-consult" },
+          { text: "Mental Health Consult", value: "/service/mental-health-consult" },
           { text: "Telehealth", value: "/service/telehealth" },
         ],
       });

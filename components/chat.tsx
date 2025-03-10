@@ -21,7 +21,7 @@ interface AIResponseMessage {
   sources?: string[]; 
 }
 export function Chat() {
-  console.log("🔄 Chat component rendered");
+  console.log(" Chat component rendered");
 
   const containerRef = useRef<HTMLDivElement>(null!);
 
@@ -60,14 +60,14 @@ export function Chat() {
   
       const data = await response.json();
   
-      // ✅ Check if API sent a redirection
+      // Check if API sent a redirection
       if (data.redirect && data.redirect.url) {
-        console.log("🔀 Redirecting to:", data.redirect.url);
+        console.log(" Redirecting to:", data.redirect.url);
         window.location.href = data.redirect.url; // Perform redirection
         return;
       }
   
-      // ✅ If no redirect, process AI response normally
+      //  If no redirect, process AI response normally
       const aiMessage: AIResponseMessage = {
         role: "assistant",
         content: data.text,
